@@ -20,7 +20,6 @@
         "pretty": true,
         "watch": false,
         "typeRoots": ["node_modules/@types"],
-        "sourceRoot": "src",
         "outDir": "dist"
     },
     "files": [
@@ -28,6 +27,8 @@
         "index.ts"
     ],
     "include": [
+        "./test.ts",
+        "./app.ts",
         "./src/**/*.ts",
         "./factory/**/*.ts",
         "./test/**.ts"

@@ -1,99 +1,103 @@
 {
-  "name": "ts-json-schema-generator",
-  "version": "0.40.0",
-  "description": "Generate JSON schema from your Typescript sources",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "ts-json-schema-generator": "./bin/ts-json-schema-generator"
-  },
-  "author": {
-    "name": "Alexander Evtushenko",
-    "email": "aevtushenko@xiag.ch"
-  },
-  "contributors": [
-    {
-      "name": "Dominik Moritz",
-      "email": "domoritz@gmail.com"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vega/ts-json-schema-generator.git"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ],
-  "keywords": [
-    "ts",
-    "typescript",
-    "json",
-    "schema",
-    "jsonschema"
-  ],
-  "engines": {
-    "node": ">=6.0.0"
-  },
-  "dependencies": {
-    "commander": "~2.19.0",
-    "glob": "~7.1.3",
-    "json-stable-stringify": "^1.0.1",
-    "typescript": "~3.3.3"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/jest": "^24.0.5",
-    "@types/json-stable-stringify": "^1.0.32",
-    "@types/node": "^11.9.4",
-    "ajv": "~6.9.1",
-    "chai": "~4.2.0",
-    "jest": "^24.1.0",
-    "jest-junit": "^6.2.1",
-    "source-map-support": "~0.5.10",
-    "ts-jest": "^24.0.0",
-    "ts-node": "^8.0.2",
-    "tslint": "~5.12.1"
-  },
-  "scripts": {
-    "prepublishOnly": "npm run build",
-    "preversion": "npm run lint",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "lint": "tslint -p .",
-    "fix": "tslint -p . --fix",
-    "test": "jest test/ --verbose",
-    "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
-    "run": "ts-node ts-json-schema-generator.ts"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+    "name": "ts-to-json",
+    "version": "0.40.0",
+    "description": "Generate JSON schema from your Typescript sources",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "bin": {
+      "ts-json-schema-generator": "./bin/ts-json-schema-generator"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
+    "author": {
+      "name": "Alexander Evtushenko",
+      "email": "aevtushenko@xiag.ch"
+    },
+    "contributors": [
+      {
+        "name": "Dominik Moritz",
+        "email": "domoritz@gmail.com"
+      }
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Cyrus-d/ts-json-schema-generator.git"
+    },
+    "licenses": [
+      {
+        "type": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+      }
+    ],
+    "keywords": [
       "ts",
-      "tsx",
-      "js",
-      "jsx",
+      "typescript",
       "json",
-      "node"
+      "schema",
+      "jsonschema"
     ],
-    "testPathIgnorePatterns": [
-      "node_modules",
-      "test-runtime",
-      "<rootDir>/build",
-      "_site",
-      "src"
+    "engines": {
+      "node": ">=6.0.0"
+    },
+    "dependencies": {
+      "commander": "~2.19.0",
+      "glob": "~7.1.3",
+      "json-stable-stringify": "^1.0.1",
+      "typescript": "~3.3.3"
+    },
+    "devDependencies": {
+      "@types/glob": "^7.1.1",
+      "@types/jest": "^24.0.5",
+      "@types/json-stable-stringify": "^1.0.32",
+      "@types/node": "^11.9.4",
+      "ajv": "~6.9.1",
+      "chai": "~4.2.0",
+      "jest": "^24.1.0",
+      "jest-junit": "^6.2.1",
+      "source-map-support": "~0.5.10",
+      "ts-jest": "^24.0.0",
+      "ts-node": "^8.0.2",
+      "tslint": "~5.12.1"
+    },
+    "scripts": {
+      "prepublish": "npm run build && yarn run build",
+      "prepublishOnly": "npm run build",
+      "preversion": "npm run lint",
+      "build": "tsc",
+      "watch": "tsc -w",
+      "lint": "tslint -p .",
+      "fix": "tslint -p . --fix",
+      "test": "jest test/ --verbose",
+      "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
+      "run": "ts-node ts-json-schema-generator.ts"
+    },
+    "files": [
+      "dist"
     ],
-    "coverageReporters": [
-      "html",
-      "cobertura"
-    ],
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": false,
-    "testEnvironment": "node"
+    "jest": {
+      "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+      },
+      "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+      "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "node"
+      ],
+      "testPathIgnorePatterns": [
+        "node_modules",
+        "test-runtime",
+        "<rootDir>/build",
+        "_site",
+        "src"
+      ],
+      "coverageReporters": [
+        "html",
+        "cobertura"
+      ],
+      "coverageDirectory": "./coverage/",
+      "collectCoverage": false,
+      "testEnvironment": "node"
+    }
   }
-}
