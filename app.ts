@@ -11,7 +11,7 @@ import { SchemaGenerator } from "./src/SchemaGenerator";
 
 const basePath = "test/";
 const config: Config = {
-    type: "myFunction",
+    type: "MyObject",
     expose: "all",
     topRef: true,
     jsDoc: "extended",
@@ -25,7 +25,7 @@ const generator: SchemaGenerator = new SchemaGenerator(
 );
 
 
-console.log(JSON.stringify(generator.createSchema("myFunction"), null, "  "));
+console.log(JSON.stringify(generator.createSchema("MyObject"), null, "  "));
 
 // const rootTypes = getRootTypes(program, config.path);
 // // @ts-ignore
