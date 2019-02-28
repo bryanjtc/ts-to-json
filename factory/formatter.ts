@@ -24,6 +24,7 @@ import { StringTypeFormatter } from "../src/TypeFormatter/StringTypeFormatter";
 import { TupleTypeFormatter } from "../src/TypeFormatter/TupleTypeFormatter";
 import { UndefinedTypeFormatter } from "../src/TypeFormatter/UndefinedTypeFormatter";
 import { UnionTypeFormatter } from "../src/TypeFormatter/UnionTypeFormatter";
+import { UnknownNodeFormatter } from "../src/TypeFormatter/UnknownNodeFormatter";
 import { VoidKeywordFormatter } from "../src/TypeFormatter/VoidKeywordFormatter";
 
 
@@ -63,7 +64,9 @@ export function createFormatter(config: Config): TypeFormatter {
         .addTypeFormatter(new IntersectionTypeFormatter(circularReferenceTypeFormatter))
 
         .addTypeFormatter(new VoidKeywordFormatter())
-        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter));
+        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter))
+
+        .addTypeFormatter(new UnknownNodeFormatter());
 
     return circularReferenceTypeFormatter;
 }
