@@ -8,7 +8,7 @@ import { createProgram } from "./factory/program";
 import { Config, DEFAULT_CONFIG } from "./src/Config";
 import { Schema } from "./src/Schema/Schema";
 import { SchemaGenerator } from "./src/SchemaGenerator";
-import { getRootTypes } from "./src/Utils";
+
 const basePath = "test/";
 const config: Config = {
     type: "myFunction",
