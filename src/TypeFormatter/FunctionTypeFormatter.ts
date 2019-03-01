@@ -72,7 +72,6 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
 
     private getObjectDefinition(type: FunctionType): Definition {
         const objectParameters: FunctionParameter[] = type.getParameters();
-        const additionalParameters: BaseType | boolean = type.getAdditionalParameters();
 
         const required = objectParameters
             .map((parameter) => this.prepareObjectParameter(parameter))
@@ -92,12 +91,6 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             }),
             ...(Object.keys(parameters).length > 0 ? { parameters } : {}),
             ...(required.length > 0 ? { required } : {}),
-            ...(additionalParameters === true || additionalParameters instanceof AnyType ? {} :
-                {
-                    additionalParameters: additionalParameters instanceof BaseType ?
-                        this.childTypeFormatter.getDefinition(additionalParameters) :
-                        additionalParameters,
-                }),
         };
     }
     private prepareObjectParameter(parameter: FunctionParameter): FunctionParameter {
