@@ -9,6 +9,7 @@ import { Config, DEFAULT_CONFIG } from "./src/Config";
 import { Schema } from "./src/Schema/Schema";
 import { SchemaGenerator } from "./src/SchemaGenerator";
 
+
 const basePath = "test/";
 const config: Config = {
     type: "MyObject",
@@ -25,7 +26,7 @@ const generator: SchemaGenerator = new SchemaGenerator(
 );
 
 
-console.log(JSON.stringify(generator.createSchema("MyObject"), null, "  "));
+console.log(JSON.stringify(generator.createSchemaByNodeKind(ts.SyntaxKind.FunctionDeclaration), null, "  "));
 
 // const rootTypes = getRootTypes(program, config.path);
 // // @ts-ignore
