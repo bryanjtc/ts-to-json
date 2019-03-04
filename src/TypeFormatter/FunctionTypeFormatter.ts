@@ -85,6 +85,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             }), {});
         const def = this.childTypeFormatter.getDefinition(type.getReturnType());
         return {
+            typeof: "function",
             ...(def.type ? def : {
                 type: "any",
                 properties: def as DefinitionMap,
