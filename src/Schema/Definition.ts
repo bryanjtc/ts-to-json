@@ -22,6 +22,7 @@ export interface Definition {
     properties?: DefinitionMap;
     defaultProperties?: string[];
     locale?: string;
+    key?: string;
 
     typeof?: "function";
 }

@@ -11,6 +11,7 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         "format",
         "pattern",
 
+        "key",
         "locale",
     ];
     private static jsonTags: string[] = [
