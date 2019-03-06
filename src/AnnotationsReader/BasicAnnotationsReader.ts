@@ -10,6 +10,8 @@ export class BasicAnnotationsReader implements AnnotationsReader {
 
         "format",
         "pattern",
+
+        "locale",
     ];
     private static jsonTags: string[] = [
         "minimum",
@@ -33,6 +35,8 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         "examples",
 
         "default",
+
+
     ];
 
     public getAnnotations(node: ts.Node): Annotations | undefined {
