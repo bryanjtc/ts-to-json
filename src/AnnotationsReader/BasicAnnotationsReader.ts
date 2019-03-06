@@ -13,6 +13,8 @@ export class BasicAnnotationsReader implements AnnotationsReader {
 
         "key",
         "locale",
+        "name",
+        "label",
     ];
     private static jsonTags: string[] = [
         "minimum",

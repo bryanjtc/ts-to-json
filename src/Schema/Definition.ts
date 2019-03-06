@@ -23,7 +23,8 @@ export interface Definition {
     defaultProperties?: string[];
     locale?: string;
     key?: string;
-
+    label?: string;
+    name?: string;
     typeof?: "function";
 }
 
