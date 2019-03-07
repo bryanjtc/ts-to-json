@@ -3,6 +3,7 @@ import { NoRootTypeError } from "./Error/NoRootTypeError";
 import { Context, NodeParser } from "./NodeParser";
 import { Definition } from "./Schema/Definition";
 import { Schema } from "./Schema/Schema";
+import { TopRefNodeParser } from "./TopRefNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { TypeFormatter } from "./TypeFormatter";
@@ -50,6 +51,9 @@ export class SchemaGenerator {
         if (!nodes || !nodes.length) { return null; }
         let allSchema: Schema = { definitions: {} };
         nodes.forEach((node) => {
+            const name = this.getFullName(node, typeChecker);
+            // hack read more in TopRefNodeParser file
+            (this.nodeParser as TopRefNodeParser).setFullName(name);
             const rootType = this.nodeParser.createType(node, new Context());
             const definitions = this.getRootChildDefinitions(rootType);
             allSchema = {

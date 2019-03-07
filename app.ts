@@ -12,8 +12,8 @@ import { SchemaGenerator } from "./src/SchemaGenerator";
 
 const basePath = "test/";
 const config: Config = {
-    type: "MyObject",
-    expose: "all",
+    type: "*",
+    expose: "none",
     topRef: true,
     jsDoc: "extended",
     path: resolve(`test.ts`),

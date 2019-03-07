@@ -10,6 +10,11 @@ export class TopRefNodeParser implements NodeParser {
         private topRef: boolean,
     ) {
     }
+    // hack to change the fullName by 'createSchemaByNodeKind' for parsing multiple node
+    // other option would be adding a 'fullName' field to BaseType
+    public setFullName(fullName: string) {
+        this.fullName = fullName;
+    }
 
     public createType(node: ts.Node, context: Context): BaseType {
         const baseType = this.childNodeParser.createType(node, context);
