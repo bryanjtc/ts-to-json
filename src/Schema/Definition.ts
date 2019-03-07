@@ -20,6 +20,7 @@ export interface Definition {
     required?: string[];
     propertyOrder?: string[];
     properties?: DefinitionMap;
+    parameters?: DefinitionMap;
     defaultProperties?: string[];
     locale?: string;
     typeof?: "function";
