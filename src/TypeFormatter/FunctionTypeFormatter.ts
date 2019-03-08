@@ -84,6 +84,10 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
                 [parameter.getName()]: this.childTypeFormatter.getDefinition(parameter.getType()),
             }), {});
         const def = this.childTypeFormatter.getDefinition(type.getReturnType());
+        const anyParam = Object.keys(parameters).length;
+        if (anyParam) {
+            (parameters as any).__obj__ = true;
+        }
         return {
             typeof: "function",
             ...(def.type ? def : {
@@ -91,7 +95,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
                 properties: def as DefinitionMap,
             }),
             ...(Object.keys(parameters).length > 0 ? { parameters } : {}),
-            ...(required.length > 0 ? { required } : {}),
+            ...(anyParam ? { required } : {}),
         };
     }
     private prepareObjectParameter(parameter: FunctionParameter): FunctionParameter {

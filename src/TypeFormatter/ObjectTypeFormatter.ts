@@ -61,10 +61,13 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
                 ...result,
                 [property.getName()]: this.childTypeFormatter.getDefinition(property.getType()),
             }), {});
-
+        const anyProps = Object.keys(properties).length;
+        if (anyProps) {
+            (properties as any).__obj__ = true;
+        }
         return {
             type: "object",
-            ...(Object.keys(properties).length > 0 ? { properties } : {}),
+            ...(anyProps ? { properties } : {}),
             ...(required.length > 0 ? { required } : {}),
             ...(additionalProperties === true || additionalProperties instanceof AnyType ? {} :
                 {
