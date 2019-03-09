@@ -89,7 +89,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             (parameters as any).__obj__ = true;
         }
         return {
-            typeof: "function",
+            typeOf: "function",
             ...(def.type ? def : {
                 type: "any",
                 properties: def as DefinitionMap,
