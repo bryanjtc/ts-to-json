@@ -24,6 +24,8 @@ export interface Definition {
     defaultProperties?: string[];
     locale?: string;
     typeOf?: "function";
+    name?: string;
+    label?: string;
 }
 
 export interface DefinitionMap {

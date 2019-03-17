@@ -7,6 +7,8 @@ export class BasicAnnotationsReader implements AnnotationsReader {
     private static textTags: string[] = [
         "title",
         "description",
+        "name",
+        "label",
 
         "format",
         "pattern",
