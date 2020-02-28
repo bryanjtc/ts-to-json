@@ -1,6 +1,6 @@
 {
   "name": "ts-to-json",
-  "version": "0.42.1",
+  "version": "0.42.3",
   "description": "Generate JSON schema from your Typescript sources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,14 +19,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cyrus-d/ts-json-schema-generator.git"
+    "url": "https://github.com/Cyrus-d/ts-to-json"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ],
+  "license": "MIT",
   "keywords": [
     "ts",
     "typescript",
@@ -69,9 +64,6 @@
     "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
     "run": "ts-node ts-json-schema-generator.ts"
   },
-  "files": [
-    "dist"
-  ],
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

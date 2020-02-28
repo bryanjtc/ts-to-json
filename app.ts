@@ -8,25 +8,21 @@ import { createProgram } from "./factory/program";
 import { Config, DEFAULT_CONFIG } from "./src/Config";
 import { Schema } from "./src/Schema/Schema";
 import { SchemaGenerator } from "./src/SchemaGenerator";
+import * as tsj from "./index";
 
-
-const basePath = "test/";
 const config: Config = {
-    type: "*",
-    expose: "none",
+    type: "IOption",
+    expose: "all",
     topRef: true,
     jsDoc: "extended",
     path: resolve(`test.ts`),
+    skipTypeCheck: true
 };
-const program: ts.Program = createProgram(config);
-const generator: SchemaGenerator = new SchemaGenerator(
-    program,
-    createParser(program, config),
-    createFormatter(config),
-);
 
+const gen = tsj.createGenerator(config);
+const schema = gen.createSchema(config.type);
 
-console.log(JSON.stringify(generator.createSchemaByNodeKind(ts.SyntaxKind.FunctionDeclaration), null, "  "));
+console.log(JSON.stringify(schema, null, "  "));
 
 // const rootTypes = getRootTypes(program, config.path);
 // // @ts-ignore

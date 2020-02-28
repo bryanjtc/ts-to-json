@@ -10,6 +10,7 @@ import { BooleanType } from "../Type/BooleanType";
 import { NullType } from "../Type/NullType";
 import { NumberType } from "../Type/NumberType";
 import { StringType } from "../Type/StringType";
+import { UnknownNodeType } from "../Type/UnknownNodeType";
 
 export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public supportsType(type: UnionType): boolean {
@@ -18,8 +19,8 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public getDefinition(type: UnionType): Definition {
         return {
             type: uniqueArray(
-                type.getTypes().map((item) => this.getPrimitiveType(item)),
-            ),
+                type.getTypes().map(item => this.getPrimitiveType(item))
+            )
         };
     }
     public getChildren(type: UnionType): BaseType[] {
@@ -27,7 +28,7 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     }
 
     private isPrimitiveUnion(type: UnionType): boolean {
-        return type.getTypes().every((item) => item instanceof PrimitiveType);
+        return type.getTypes().every(item => item instanceof PrimitiveType);
     }
     private getPrimitiveType(item: BaseType): string {
         if (item instanceof StringType) {
@@ -38,6 +39,8 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
             return "boolean";
         } else if (item instanceof NullType) {
             return "null";
+        } else if (item instanceof UnknownNodeType) {
+            return item.getId();
         }
 
         throw new LogicError("Unexpected code branch");
