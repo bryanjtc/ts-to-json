@@ -11,12 +11,13 @@ import { SchemaGenerator } from "./src/SchemaGenerator";
 import * as tsj from "./index";
 
 const config: Config = {
-    type: "IOption",
-    expose: "all",
+    // type: "AllTypes",
+    expose: "export",
     topRef: true,
     jsDoc: "extended",
-    path: resolve(`test.ts`),
+    path: resolve("test.ts"),
     skipTypeCheck: true
+    // tsconfig: resolve("tsconfig2.json")
 };
 
 const gen = tsj.createGenerator(config);

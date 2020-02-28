@@ -4,20 +4,16 @@ import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
 
-const reserveTypes: { [index: number]: boolean } = {
-    [ts.SyntaxKind.TypeAliasDeclaration]: true,
-};
-
 export class CircularReferenceNodeParser implements SubNodeParser {
     private circular = new Map<string, BaseType>();
 
-    public constructor(
-        private childNodeParser: SubNodeParser,
-    ) {
-    }
+    public constructor(private childNodeParser: SubNodeParser) {}
 
     public supportsNode(node: ts.Node): boolean {
-        if (!reserveTypes[node.kind] && node.getSourceFile().fileName.includes("/node_modules/")) {
+        // to prevent circular dependencies error
+        if (
+            node.getSourceFile().fileName.includes("/node_modules/typescript/")
+        ) {
             return false;
         }
         return this.childNodeParser.supportsNode(node);
@@ -30,18 +26,30 @@ export class CircularReferenceNodeParser implements SubNodeParser {
 
         const reference = new ReferenceType();
         this.circular.set(key, reference);
-        reference.setType(this.childNodeParser.createType(node, context));
+        const newType = this.childNodeParser.createType(node, context);
+        reference.setType(newType);
         this.circular.delete(key);
 
         return reference.getType();
     }
 
-    private createCacheKey(node: ts.Node | undefined, context: Context): string {
+    private createCacheKey(
+        node: ts.Node | undefined,
+        context: Context
+    ): string {
         const ids: number[] = [];
         while (node) {
             ids.push(node.pos, node.end);
             node = node.parent;
         }
-        return ids.join("-") + "<" + context.getArguments().map((arg) => arg.getId()).join(",") + ">";
+        return (
+            ids.join("-") +
+            "<" +
+            context
+                .getArguments()
+                .map(arg => arg.getId())
+                .join(",") +
+            ">"
+        );
     }
 }
