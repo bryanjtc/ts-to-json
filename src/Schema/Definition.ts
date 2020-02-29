@@ -1,33 +1,11 @@
-export type RawType = number | boolean | string | null;
+import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 
-export interface Definition {
-    $ref?: string;
-    description?: string;
-    not?: Definition;
-    allOf?: Definition[];
-    oneOf?: Definition[];
-    anyOf?: Definition[];
-    title?: string;
-    type?: string | string[];
-    format?: string;
-    items?: Definition | Definition[];
-    minItems?: number;
-    maxItems?: number;
-    additionalItems?: Definition;
-    enum?: (RawType | Definition)[];
-    default?: RawType | Object;
-    additionalProperties?: false | Definition;
-    required?: string[];
+export interface Definition extends JSONSchema7 {
     propertyOrder?: string[];
-    properties?: DefinitionMap;
-    parameters?: DefinitionMap;
+    parameters?: JSONSchema7Definition;
     defaultProperties?: string[];
     locale?: string;
     typeOf?: "function";
     name?: string;
     label?: string;
-}
-
-export interface DefinitionMap {
-    [name: string]: Definition;
 }

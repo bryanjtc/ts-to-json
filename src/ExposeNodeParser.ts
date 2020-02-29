@@ -3,29 +3,32 @@ import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
+import { ReferenceType } from "./Type/ReferenceType";
 import { symbolAtNode } from "./Utils/symbolAtNode";
 
 export class ExposeNodeParser implements SubNodeParser {
     public constructor(
         private typeChecker: ts.TypeChecker,
         private subNodeParser: SubNodeParser,
-        private expose: "all" | "none" | "export",
-    ) {
-    }
+        private expose: "all" | "none" | "export"
+    ) {}
 
     public supportsNode(node: ts.Node): boolean {
         return this.subNodeParser.supportsNode(node);
     }
-    public createType(node: ts.Node, context: Context): BaseType {
-        const baseType: BaseType = this.subNodeParser.createType(node, context);
+
+    public createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType | undefined {
+        const baseType = this.subNodeParser.createType(node, context, reference);
+
+        if (baseType === undefined) {
+            return undefined;
+        }
+
         if (!this.isExportNode(node)) {
             return baseType;
         }
 
-        return new DefinitionType(
-            this.getDefinitionName(node, context),
-            baseType,
-        );
+        return new DefinitionType(this.getDefinitionName(node, context), baseType);
     }
 
     private isExportNode(node: ts.Node): boolean {
@@ -41,7 +44,7 @@ export class ExposeNodeParser implements SubNodeParser {
     private getDefinitionName(node: ts.Node, context: Context): string {
         const symbol = symbolAtNode(node)!;
         const fullName = this.typeChecker.getFullyQualifiedName(symbol).replace(/^".*"\./, "");
-        const argumentIds = context.getArguments().map((arg) => arg.getId());
+        const argumentIds = context.getArguments().map(arg => arg?.getName());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
     }

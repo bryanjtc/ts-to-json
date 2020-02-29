@@ -1,44 +1,58 @@
+import * as stringify from "json-stable-stringify";
 import * as ts from "typescript";
-import { LogicError } from "./Error/LogicError";
 import { BaseType } from "./Type/BaseType";
+import { ReferenceType } from "./Type/ReferenceType";
+import { getKey } from "./Utils/nodeKey";
 
 export class Context {
-    private arguments: BaseType[] = [];
+    private cacheKey: string | null = null;
+    private arguments: (BaseType | undefined)[] = [];
     private parameters: string[] = [];
     private reference?: ts.Node;
-    private defaultArgument = new Map<string, BaseType>();
+    private defaultArgument = new Map<string, BaseType | undefined>();
 
     public constructor(reference?: ts.Node) {
         this.reference = reference;
     }
 
-    public pushArgument(argumentType: BaseType): void {
+    public pushArgument(argumentType: BaseType | undefined): void {
         this.arguments.push(argumentType);
+        this.cacheKey = null;
     }
+
     public pushParameter(parameterName: string): void {
         this.parameters.push(parameterName);
     }
 
-    public setDefault(parameterName: string, argumentType: BaseType) {
+    public setDefault(parameterName: string, argumentType: BaseType | undefined) {
         this.defaultArgument.set(parameterName, argumentType);
     }
 
-    public getArgument(parameterName: string): BaseType {
+    public getCacheKey() {
+        if (this.cacheKey == null) {
+            this.cacheKey = stringify([
+                this.reference ? getKey(this.reference, this) : "",
+                this.arguments.map(argument => argument?.getId()),
+            ]);
+        }
+        return this.cacheKey;
+    }
+
+    public getArgument(parameterName: string): BaseType | undefined {
         const index: number = this.parameters.indexOf(parameterName);
         if (index < 0 || !this.arguments[index]) {
             if (this.defaultArgument.has(parameterName)) {
                 return this.defaultArgument.get(parameterName)!;
             }
-            throw new LogicError(`Could not find type parameter "${parameterName}"`);
         }
 
         return this.arguments[index];
     }
 
-    public getParameters(): ReadonlyArray<string> {
+    public getParameters(): readonly string[] {
         return this.parameters;
     }
-    public getArguments(): ReadonlyArray<BaseType> {
+    public getArguments(): readonly (BaseType | undefined)[] {
         return this.arguments;
     }
 
@@ -48,5 +62,5 @@ export class Context {
 }
 
 export interface NodeParser {
-    createType(node: ts.Node, context: Context): BaseType;
+    createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType | undefined;
 }

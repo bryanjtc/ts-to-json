@@ -14,12 +14,12 @@ export class SchemaGenerator {
     private allTypes: Map<string, ts.Node>;
     private prioritizedFiles: ts.SourceFile[];
     private unPrioritizedFiles: ts.SourceFile[];
-    private nodeInfo: { node: ts.Node, name: string, exported: boolean, kind: ts.SyntaxKind }[] = [];
+    private nodeInfo: { node: ts.Node; name: string; exported: boolean; kind: ts.SyntaxKind }[] = [];
 
     public constructor(
         private program: ts.Program,
         private nodeParser: NodeParser,
-        private typeFormatter: TypeFormatter,
+        private typeFormatter: TypeFormatter
     ) {
         this.allTypes = new Map<string, ts.Node>();
 
@@ -39,8 +39,8 @@ export class SchemaGenerator {
         const rootNode = this.findRootNode(fullName);
         const rootType = this.nodeParser.createType(rootNode, new Context());
         return {
-            definitions: this.getRootChildDefinitions(rootType),
-            ...this.getRootTypeDefinition(rootType),
+            definitions: this.getRootChildDefinitions(rootType!),
+            ...this.getRootTypeDefinition(rootType!),
         };
     }
 
@@ -48,14 +48,16 @@ export class SchemaGenerator {
         const typeChecker = this.program.getTypeChecker();
         this.setPrioritizedFiles(typeChecker);
         const nodes = this.getRootNodesByKind(Array.isArray(nodeKinds) ? nodeKinds : [nodeKinds]);
-        if (!nodes || !nodes.length) { return null; }
+        if (!nodes || !nodes.length) {
+            return null;
+        }
         let allSchema: Schema = { definitions: {} };
-        nodes.forEach((node) => {
+        nodes.forEach(node => {
             const name = this.getFullName(node, typeChecker);
             // hack read more in TopRefNodeParser file
             (this.nodeParser as TopRefNodeParser).setFullName(name);
             const rootType = this.nodeParser.createType(node, new Context());
-            const definitions = this.getRootChildDefinitions(rootType);
+            const definitions = this.getRootChildDefinitions(rootType!);
             allSchema = {
                 ...allSchema,
                 definitions: {
@@ -101,12 +103,13 @@ export class SchemaGenerator {
         }
     }
     private getRootNodesByKind(kinds: ts.SyntaxKind[]): ts.Node[] | null {
-        const nodes = this.nodeInfo.filter(n => n.exported)
+        const nodes = this.nodeInfo
+            .filter(n => n.exported)
             .reduce((result: ts.Node[], inf) => {
                 if (inf.kind === ts.SyntaxKind.ExportAssignment) {
                     const assignmentNode = this.nodeInfo
                         .filter(n => n.name === inf.name && kinds.indexOf(n.kind) > -1)
-                        .map((n) => {
+                        .map(n => {
                             return n.node;
                         });
                     result = [...result, ...assignmentNode];
@@ -137,7 +140,7 @@ export class SchemaGenerator {
             });
             allTypes.set(this.getFullName(node, typeChecker), node);
         } else {
-            ts.forEachChild(node, (subNode) => this.inspectNode(subNode, typeChecker, allTypes));
+            ts.forEachChild(node, subNode => this.inspectNode(subNode, typeChecker, allTypes));
         }
     }
 
@@ -146,10 +149,7 @@ export class SchemaGenerator {
         return localSymbol ? "exportSymbol" in localSymbol : false;
     }
     private isGenericType(node: ts.TypeAliasDeclaration): boolean {
-        return !!(
-            node.typeParameters &&
-            node.typeParameters.length > 0
-        );
+        return !!(node.typeParameters && node.typeParameters.length > 0);
     }
     private getFullName(node: ts.Node, typeChecker: ts.TypeChecker): string {
         const symbol = symbolAtNode(node)!;
@@ -160,11 +160,15 @@ export class SchemaGenerator {
         return this.typeFormatter.getDefinition(rootType);
     }
     private getRootChildDefinitions(rootType: BaseType): StringMap<Definition> {
-        return this.typeFormatter.getChildren(rootType)
-            .filter((child) => child instanceof DefinitionType)
-            .reduce((result: StringMap<Definition>, child: DefinitionType) => ({
-                ...result,
-                [child.getId()]: this.typeFormatter.getDefinition(child.getType()),
-            }), {});
+        return this.typeFormatter
+            .getChildren(rootType)
+            .filter(child => child instanceof DefinitionType)
+            .reduce(
+                (result: StringMap<Definition>, child: DefinitionType) => ({
+                    ...result,
+                    [child.getId()]: this.typeFormatter.getDefinition(child.getType()),
+                }),
+                {}
+            );
     }
 }

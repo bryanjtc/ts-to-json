@@ -2,18 +2,11 @@ import { BaseType } from "../Type/BaseType";
 import { BaseError } from "./BaseError";
 
 export class UnknownTypeError extends BaseError {
-    public constructor(private type: BaseType) {
-        super();
+    public constructor(private type: BaseType | undefined) {
+        super(`Unknown type "${type ? type.getId() : undefined}"`);
     }
 
-    public get name(): string {
-        return "UnknownTypeError";
-    }
-    public get message(): string {
-        return `Unknown type "${this.type.getId()}"`;
-    }
-
-    public getType(): BaseType {
+    public getType(): BaseType | undefined {
         return this.type;
     }
 }

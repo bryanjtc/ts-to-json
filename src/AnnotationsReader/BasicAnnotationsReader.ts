@@ -4,18 +4,23 @@ import { Annotations } from "../Type/AnnotatedType";
 import { symbolAtNode } from "../Utils/symbolAtNode";
 
 export class BasicAnnotationsReader implements AnnotationsReader {
-    private static textTags: string[] = [
+    private static textTags = new Set<string>([
         "title",
         "description",
-        "name",
-        "label",
 
         "format",
         "pattern",
 
+        // New since draft-07:
+        "$comment",
+        "contentMediaType",
+        "contentEncoding",
+
         "locale",
-    ];
-    private static jsonTags: string[] = [
+        "name",
+        "label",
+    ]);
+    private static jsonTags = new Set<string>([
         "minimum",
         "exclusiveMinimum",
 
@@ -26,6 +31,9 @@ export class BasicAnnotationsReader implements AnnotationsReader {
 
         "minLength",
         "maxLength",
+
+        "minProperties",
+        "maxProperties",
 
         "minItems",
         "maxItems",
@@ -38,8 +46,15 @@ export class BasicAnnotationsReader implements AnnotationsReader {
 
         "default",
 
+        // New since draft-07:
+        "if",
+        "then",
+        "else",
+        "readOnly",
+        "writeOnly",
+    ]);
 
-    ];
+    public constructor(private extraTags?: Set<string>) {}
 
     public getAnnotations(node: ts.Node): Annotations | undefined {
         const symbol = symbolAtNode(node);
@@ -68,11 +83,14 @@ export class BasicAnnotationsReader implements AnnotationsReader {
             return undefined;
         }
 
-        if (BasicAnnotationsReader.textTags.indexOf(jsDocTag.name) >= 0) {
+        if (BasicAnnotationsReader.textTags.has(jsDocTag.name)) {
             return jsDocTag.text;
-        } else if (BasicAnnotationsReader.jsonTags.indexOf(jsDocTag.name) >= 0) {
+        } else if (BasicAnnotationsReader.jsonTags.has(jsDocTag.name)) {
             return this.parseJson(jsDocTag.text);
+        } else if (this.extraTags?.has(jsDocTag.name)) {
+            return this.parseJson(jsDocTag.text) ?? jsDocTag.text;
         } else {
+            // Unknown jsDoc tag.
             return undefined;
         }
     }

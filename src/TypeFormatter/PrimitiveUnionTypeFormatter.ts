@@ -1,26 +1,24 @@
 import { LogicError } from "../Error/LogicError";
 import { Definition } from "../Schema/Definition";
+import { RawTypeName } from "../Schema/RawType";
 import { SubTypeFormatter } from "../SubTypeFormatter";
 import { BaseType } from "../Type/BaseType";
-import { PrimitiveType } from "../Type/PrimitiveType";
-import { UnionType } from "../Type/UnionType";
-import { uniqueArray } from "../Utils/uniqueArray";
-
 import { BooleanType } from "../Type/BooleanType";
 import { NullType } from "../Type/NullType";
 import { NumberType } from "../Type/NumberType";
+import { PrimitiveType } from "../Type/PrimitiveType";
 import { StringType } from "../Type/StringType";
-import { UnknownNodeType } from "../Type/UnknownNodeType";
+import { UnionType } from "../Type/UnionType";
+import { uniqueArray } from "../Utils/uniqueArray";
+import { UnknownType } from "../Type/UnknownType";
 
 export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public supportsType(type: UnionType): boolean {
-        return type instanceof UnionType && this.isPrimitiveUnion(type);
+        return type instanceof UnionType && type.getTypes().length > 0 && this.isPrimitiveUnion(type);
     }
     public getDefinition(type: UnionType): Definition {
         return {
-            type: uniqueArray(
-                type.getTypes().map(item => this.getPrimitiveType(item))
-            )
+            type: uniqueArray(type.getTypes().map(item => this.getPrimitiveType(item))),
         };
     }
     public getChildren(type: UnionType): BaseType[] {
@@ -30,7 +28,7 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     private isPrimitiveUnion(type: UnionType): boolean {
         return type.getTypes().every(item => item instanceof PrimitiveType);
     }
-    private getPrimitiveType(item: BaseType): string {
+    private getPrimitiveType(item: BaseType): RawTypeName {
         if (item instanceof StringType) {
             return "string";
         } else if (item instanceof NumberType) {
@@ -39,8 +37,8 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
             return "boolean";
         } else if (item instanceof NullType) {
             return "null";
-        } else if (item instanceof UnknownNodeType) {
-            return item.getId();
+        } else if (item instanceof UnknownType) {
+            return item.getId() as RawTypeName;
         }
 
         throw new LogicError("Unexpected code branch");

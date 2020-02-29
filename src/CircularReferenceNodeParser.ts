@@ -3,6 +3,7 @@ import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
+import { getKey } from "./Utils/nodeKey";
 
 export class CircularReferenceNodeParser implements SubNodeParser {
     private circular = new Map<string, BaseType>();
@@ -11,45 +12,25 @@ export class CircularReferenceNodeParser implements SubNodeParser {
 
     public supportsNode(node: ts.Node): boolean {
         // to prevent circular dependencies error
-        if (
-            node.getSourceFile().fileName.includes("/node_modules/typescript/")
-        ) {
+        if (node.getSourceFile().fileName.includes("/node_modules/typescript/")) {
             return false;
         }
         return this.childNodeParser.supportsNode(node);
     }
-    public createType(node: ts.Node, context: Context): BaseType {
-        const key = this.createCacheKey(node, context);
+    public createType(node: ts.Node, context: Context): BaseType | undefined {
+        const key = getKey(node, context);
         if (this.circular.has(key)) {
             return this.circular.get(key)!;
         }
 
         const reference = new ReferenceType();
         this.circular.set(key, reference);
-        const newType = this.childNodeParser.createType(node, context);
-        reference.setType(newType);
+        const type = this.childNodeParser.createType(node, context, reference);
+        if (type) {
+            reference.setType(type);
+        }
         this.circular.delete(key);
 
-        return reference.getType();
-    }
-
-    private createCacheKey(
-        node: ts.Node | undefined,
-        context: Context
-    ): string {
-        const ids: number[] = [];
-        while (node) {
-            ids.push(node.pos, node.end);
-            node = node.parent;
-        }
-        return (
-            ids.join("-") +
-            "<" +
-            context
-                .getArguments()
-                .map(arg => arg.getId())
-                .join(",") +
-            ">"
-        );
+        return type;
     }
 }

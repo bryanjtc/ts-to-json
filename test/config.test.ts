@@ -6,45 +6,47 @@ import * as ts from "typescript";
 import { createFormatter } from "../factory/formatter";
 import { createParser } from "../factory/parser";
 import { createProgram } from "../factory/program";
-import { Config, DEFAULT_CONFIG, PartialConfig } from "../src/Config";
+import { Config, DEFAULT_CONFIG } from "../src/Config";
 import { SchemaGenerator } from "../src/SchemaGenerator";
-
-const validator = new Ajv();
-const metaSchema: object = require("ajv/lib/refs/json-schema-draft-06.json");
-validator.addMetaSchema(metaSchema);
 
 const basePath = "test/config";
 
-function assertSchema(
-    name: string,
-    partialConfig: PartialConfig & { type: string },
-) {
+function assertSchema(name: string, userConfig: Config & { type: string }, tsconfig?: boolean) {
     return () => {
         const config: Config = {
             ...DEFAULT_CONFIG,
-            ...partialConfig,
-            path: resolve(`${basePath}/${name}/*.ts`),
+            ...userConfig,
+            skipTypeCheck: !!process.env.FAST_TEST,
         };
+        if (tsconfig) {
+            config.tsconfig = resolve(`${basePath}/${name}/tsconfig.json`);
+        } else {
+            config.path = resolve(`${basePath}/${name}/*.ts`);
+        }
 
         const program: ts.Program = createProgram(config);
         const generator: SchemaGenerator = new SchemaGenerator(
             program,
             createParser(program, config),
-            createFormatter(config),
+            createFormatter(config)
         );
 
-        const expected: any = JSON.parse(
-            readFileSync(resolve(`${basePath}/${name}/schema.json`), "utf8"),
-        );
-        const actual: any = JSON.parse(
-            JSON.stringify(generator.createSchema(config.type)),
-        );
+        const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${name}/schema.json`), "utf8"));
+        const actual: any = JSON.parse(JSON.stringify(generator.createSchema(config.type)));
 
         expect(typeof actual).toBe("object");
         expect(actual).toEqual(expected);
 
+        const validator = new Ajv({
+            extendRefs: "fail",
+            // skip full check if we are not encoding refs
+            format: config.encodeRefs === false ? undefined : "full",
+        });
+
         validator.validateSchema(actual);
         expect(validator.errors).toBeNull();
+
+        validator.compile(actual); // Will find MissingRef errors
     };
 }
 
@@ -56,7 +58,7 @@ describe("config", () => {
             expose: "all",
             topRef: true,
             jsDoc: "none",
-        }),
+        })
     );
     it(
         "expose-all-topref-false",
@@ -65,7 +67,7 @@ describe("config", () => {
             expose: "all",
             topRef: false,
             jsDoc: "none",
-        }),
+        })
     );
 
     it(
@@ -75,7 +77,7 @@ describe("config", () => {
             expose: "none",
             topRef: true,
             jsDoc: "none",
-        }),
+        })
     );
     it(
         "expose-none-topref-false",
@@ -84,7 +86,7 @@ describe("config", () => {
             expose: "none",
             topRef: false,
             jsDoc: "none",
-        }),
+        })
     );
 
     it(
@@ -94,7 +96,7 @@ describe("config", () => {
             expose: "export",
             topRef: true,
             jsDoc: "none",
-        }),
+        })
     );
     it(
         "expose-export-topref-false",
@@ -103,7 +105,7 @@ describe("config", () => {
             expose: "export",
             topRef: false,
             jsDoc: "none",
-        }),
+        })
     );
 
     it(
@@ -113,7 +115,7 @@ describe("config", () => {
             expose: "export",
             topRef: true,
             jsDoc: "none",
-        }),
+        })
     );
     it(
         "jsdoc-complex-basic",
@@ -122,7 +124,7 @@ describe("config", () => {
             expose: "export",
             topRef: true,
             jsDoc: "basic",
-        }),
+        })
     );
     it(
         "jsdoc-complex-extended",
@@ -131,7 +133,7 @@ describe("config", () => {
             expose: "export",
             topRef: true,
             jsDoc: "extended",
-        }),
+        })
     );
     it(
         "jsdoc-description-only",
@@ -140,18 +142,29 @@ describe("config", () => {
             expose: "export",
             topRef: true,
             jsDoc: "extended",
-        }),
+        })
     );
 
     it(
-        "jsdoc-hide",
-        assertSchema("jsdoc-hide", {
+        "jsdoc-hidden",
+        assertSchema("jsdoc-hidden", {
             type: "MyObject",
             expose: "export",
             topRef: true,
             jsDoc: "extended",
-        }),
+        })
     );
+
+    it(
+        "jsdoc-hidden-types",
+        assertSchema("jsdoc-hidden", {
+            type: "MyObject",
+            expose: "export",
+            topRef: true,
+            jsDoc: "extended",
+        })
+    );
+
     it(
         "jsdoc-inheritance",
         assertSchema("jsdoc-inheritance", {
@@ -159,7 +172,16 @@ describe("config", () => {
             expose: "export",
             topRef: true,
             jsDoc: "extended",
-        }),
+        })
+    );
+    it(
+        "jsdoc-inheritance-exclude",
+        assertSchema("jsdoc-inheritance-exclude", {
+            type: "MyType",
+            expose: "export",
+            topRef: true,
+            jsDoc: "extended",
+        })
     );
 
     // ensure that skipping type checking doesn't alter the JSON schema output
@@ -171,6 +193,31 @@ describe("config", () => {
             topRef: true,
             jsDoc: "extended",
             skipTypeCheck: true,
-        }),
+        })
+    );
+
+    it(
+        "tsconfig-support",
+        assertSchema(
+            "tsconfig-support",
+            {
+                type: "MyObject",
+                expose: "all",
+                topRef: false,
+                jsDoc: "none",
+            },
+            true
+        )
+    );
+
+    it(
+        "no-ref-encode",
+        assertSchema("no-ref-encode", {
+            type: "MyObject",
+            expose: "all",
+            encodeRefs: false,
+            topRef: true,
+            jsDoc: "none",
+        })
     );
 });

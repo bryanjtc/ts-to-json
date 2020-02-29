@@ -1,6 +1,6 @@
+import { Config } from "./../src/Config";
 import { ChainTypeFormatter } from "../src/ChainTypeFormatter";
 import { CircularReferenceTypeFormatter } from "../src/CircularReferenceTypeFormatter";
-import { Config } from "../src/Config";
 import { TypeFormatter } from "../src/TypeFormatter";
 import { AliasTypeFormatter } from "../src/TypeFormatter/AliasTypeFormatter";
 import { AnnotatedTypeFormatter } from "../src/TypeFormatter/AnnotatedTypeFormatter";
@@ -24,10 +24,8 @@ import { StringTypeFormatter } from "../src/TypeFormatter/StringTypeFormatter";
 import { TupleTypeFormatter } from "../src/TypeFormatter/TupleTypeFormatter";
 import { UndefinedTypeFormatter } from "../src/TypeFormatter/UndefinedTypeFormatter";
 import { UnionTypeFormatter } from "../src/TypeFormatter/UnionTypeFormatter";
-import { UnknownNodeFormatter } from "../src/TypeFormatter/UnknownNodeFormatter";
-import { VoidKeywordFormatter } from "../src/TypeFormatter/VoidKeywordFormatter";
-
-
+import { UnknownTypeFormatter } from "../src/TypeFormatter/UnknownTypeFormatter";
+import { VoidTypeFormatter } from "../src/TypeFormatter/VoidTypeFormatter";
 
 export function createFormatter(config: Config): TypeFormatter {
     const chainTypeFormatter = new ChainTypeFormatter([]);
@@ -43,12 +41,14 @@ export function createFormatter(config: Config): TypeFormatter {
 
         .addTypeFormatter(new AnyTypeFormatter())
         .addTypeFormatter(new UndefinedTypeFormatter())
+        .addTypeFormatter(new UnknownTypeFormatter())
+        .addTypeFormatter(new VoidTypeFormatter())
 
         .addTypeFormatter(new LiteralTypeFormatter())
         .addTypeFormatter(new EnumTypeFormatter())
 
-        .addTypeFormatter(new ReferenceTypeFormatter(circularReferenceTypeFormatter))
-        .addTypeFormatter(new DefinitionTypeFormatter(circularReferenceTypeFormatter))
+        .addTypeFormatter(new ReferenceTypeFormatter(circularReferenceTypeFormatter, config.encodeRefs ?? true))
+        .addTypeFormatter(new DefinitionTypeFormatter(circularReferenceTypeFormatter, config.encodeRefs ?? true))
         .addTypeFormatter(new ObjectTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new AliasTypeFormatter(circularReferenceTypeFormatter))
 
@@ -62,11 +62,7 @@ export function createFormatter(config: Config): TypeFormatter {
         .addTypeFormatter(new TupleTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new UnionTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new IntersectionTypeFormatter(circularReferenceTypeFormatter))
-
-        .addTypeFormatter(new VoidKeywordFormatter())
-        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter))
-
-        .addTypeFormatter(new UnknownNodeFormatter());
+        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter));
 
     return circularReferenceTypeFormatter;
 }

@@ -7,96 +7,116 @@ import { UndefinedType } from "../Type/UndefinedType";
 import { UnionType } from "../Type/UnionType";
 import { TypeFormatter } from "../TypeFormatter";
 import { getAllOfDefinitionReducer } from "../Utils/allOfDefinition";
+import { derefType } from "../Utils/derefType";
+import { preserveAnnotation } from "../Utils/preserveAnnotation";
+import { removeUndefined } from "../Utils/removeUndefined";
 import { StringMap } from "../Utils/StringMap";
+import { uniqueArray } from "../Utils/uniqueArray";
 
 export class ObjectTypeFormatter implements SubTypeFormatter {
-    public constructor(
-        private childTypeFormatter: TypeFormatter,
-    ) {
-    }
+    public constructor(private childTypeFormatter: TypeFormatter) {}
 
     public supportsType(type: ObjectType): boolean {
         return type instanceof ObjectType;
     }
     public getDefinition(type: ObjectType): Definition {
-        if (type.getBaseTypes().length === 0) {
+        const types = type.getBaseTypes();
+        if (types.length === 0) {
             return this.getObjectDefinition(type);
         }
 
-        return type.getBaseTypes().reduce(
-            getAllOfDefinitionReducer(this.childTypeFormatter), this.getObjectDefinition(type));
+        return types.reduce(getAllOfDefinitionReducer(this.childTypeFormatter, false), this.getObjectDefinition(type));
     }
     public getChildren(type: ObjectType): BaseType[] {
-        const properties: ObjectProperty[] = type.getProperties();
+        const properties = type.getProperties();
         const additionalProperties: BaseType | boolean = type.getAdditionalProperties();
 
-        return [
-            ...type.getBaseTypes().reduce((result: BaseType[], baseType) => [
-                ...result,
-                ...this.childTypeFormatter.getChildren(baseType).slice(1),
-            ], []),
+        const children = [
+            ...type
+                .getBaseTypes()
+                .reduce(
+                    (result: BaseType[], baseType) => [
+                        ...result,
+                        ...this.childTypeFormatter
+                            .getChildren(baseType)
+                            .filter(childType => childType.getName() !== baseType.getName()),
+                    ],
+                    []
+                ),
 
-            ...additionalProperties instanceof BaseType ?
-                this.childTypeFormatter.getChildren(additionalProperties) :
-                [],
+            ...(additionalProperties instanceof BaseType
+                ? this.childTypeFormatter.getChildren(additionalProperties)
+                : []),
 
-            ...properties.reduce((result: BaseType[], property) => [
-                ...result,
-                ...this.childTypeFormatter.getChildren(property.getType()),
-            ], []),
+            ...properties.reduce((result: BaseType[], property) => {
+                const propertyType = property.getType();
+                if (propertyType === undefined) {
+                    return result;
+                }
+
+                return [...result, ...this.childTypeFormatter.getChildren(propertyType)];
+            }, []),
         ];
+
+        return uniqueArray(children);
     }
 
     private getObjectDefinition(type: ObjectType): Definition {
-        const objectProperties: ObjectProperty[] = type.getProperties();
+        const objectProperties = type.getProperties();
         const additionalProperties: BaseType | boolean = type.getAdditionalProperties();
 
-        const required = objectProperties
-            .map((property) => this.prepareObjectProperty(property))
-            .filter((property) => property.isRequired())
-            .map((property) => property.getName());
-        const properties = objectProperties
-            .map((property) => this.prepareObjectProperty(property))
-            .reduce((result: StringMap<Definition>, property) => ({
-                ...result,
-                [property.getName()]: this.childTypeFormatter.getDefinition(property.getType()),
-            }), {});
+        const preparedProperties = objectProperties.map(property => this.prepareObjectProperty(property));
+
+        const required = preparedProperties
+            .filter(property => property.isRequired())
+            .map(property => property.getName());
+
+        const properties = preparedProperties.reduce((result: StringMap<Definition>, property) => {
+            const propertyType = property.getType();
+
+            if (propertyType !== undefined) {
+                result[property.getName()] = this.childTypeFormatter.getDefinition(propertyType);
+            }
+
+            return result;
+        }, {});
+
         const anyProps = Object.keys(properties).length;
         if (anyProps) {
             (properties as any).__obj__ = true;
         }
+
         return {
             type: "object",
             ...(anyProps ? { properties } : {}),
+            ...(Object.keys(properties).length > 0 ? { properties } : {}),
             ...(required.length > 0 ? { required } : {}),
-            ...(additionalProperties === true || additionalProperties instanceof AnyType ? {} :
-                {
-                    additionalProperties: additionalProperties instanceof BaseType ?
-                        this.childTypeFormatter.getDefinition(additionalProperties) :
-                        additionalProperties,
-                }),
+            ...(additionalProperties === true || additionalProperties instanceof AnyType
+                ? {}
+                : {
+                      additionalProperties:
+                          additionalProperties instanceof BaseType
+                              ? this.childTypeFormatter.getDefinition(additionalProperties)
+                              : additionalProperties,
+                  }),
         };
     }
 
     private prepareObjectProperty(property: ObjectProperty): ObjectProperty {
-        const propType = property.getType();
+        const propertyType = property.getType();
+        const propType = derefType(propertyType);
         if (propType instanceof UndefinedType) {
-            return new ObjectProperty(property.getName(), new UndefinedType(), false);
+            return new ObjectProperty(property.getName(), propertyType, false);
         } else if (!(propType instanceof UnionType)) {
             return property;
         }
 
-        const requiredTypes = propType.getTypes().filter((it) => !(it instanceof UndefinedType));
-        if (propType.getTypes().length === requiredTypes.length) {
+        const { newType: newPropType, numRemoved } = removeUndefined(propType);
+
+        if (numRemoved == 0) {
             return property;
-        } else if (requiredTypes.length === 0) {
-            return new ObjectProperty(property.getName(), new UndefinedType(), false);
         }
 
-        return new ObjectProperty(
-            property.getName(),
-            requiredTypes.length === 1 ? requiredTypes[0] : new UnionType(requiredTypes),
-            false,
-        );
+        return new ObjectProperty(property.getName(), preserveAnnotation(propertyType!, newPropType), false);
     }
 }

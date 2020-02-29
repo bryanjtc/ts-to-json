@@ -5,12 +5,10 @@ import { OptionalType } from "../Type/OptionalType";
 import { RestType } from "../Type/RestType";
 import { TupleType } from "../Type/TupleType";
 import { TypeFormatter } from "../TypeFormatter";
+import { uniqueArray } from "../Utils/uniqueArray";
 
 export class TupleTypeFormatter implements SubTypeFormatter {
-    public constructor(
-        private childTypeFormatter: TypeFormatter,
-    ) {
-    }
+    public constructor(private childTypeFormatter: TypeFormatter) {}
 
     public supportsType(type: TupleType): boolean {
         return type instanceof TupleType;
@@ -19,11 +17,11 @@ export class TupleTypeFormatter implements SubTypeFormatter {
         const subTypes = type.getTypes();
 
         const requiredElements = subTypes.filter(t => !(t instanceof OptionalType) && !(t instanceof RestType));
-        const optionalElements  = subTypes.filter(t => t instanceof OptionalType) as OptionalType[];
+        const optionalElements = subTypes.filter(t => t instanceof OptionalType) as OptionalType[];
         const restElements = subTypes.filter(t => t instanceof RestType) as RestType[];
 
-        const requiredDefinitions = requiredElements.map((item) => this.childTypeFormatter.getDefinition(item));
-        const optionalDefinitions = optionalElements.map((item) => this.childTypeFormatter.getDefinition(item));
+        const requiredDefinitions = requiredElements.map(item => this.childTypeFormatter.getDefinition(item));
+        const optionalDefinitions = optionalElements.map(item => this.childTypeFormatter.getDefinition(item));
         const itemsTotal = requiredDefinitions.length + optionalDefinitions.length;
 
         const restType = restElements.length ? restElements[0].getType().getItem() : undefined;
@@ -40,9 +38,10 @@ export class TupleTypeFormatter implements SubTypeFormatter {
         };
     }
     public getChildren(type: TupleType): BaseType[] {
-        return type.getTypes().reduce((result: BaseType[], item) => [
-            ...result,
-            ...this.childTypeFormatter.getChildren(item),
-        ], []);
+        return uniqueArray(
+            type
+                .getTypes()
+                .reduce((result: BaseType[], item) => [...result, ...this.childTypeFormatter.getChildren(item)], [])
+        );
     }
 }

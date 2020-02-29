@@ -1,17 +1,13 @@
 import { BaseType } from "./BaseType";
+import { strip } from "../Utils/String";
 
 export class ObjectProperty {
-    public constructor(
-        private name: string,
-        private type: BaseType,
-        private required: boolean,
-    ) {
-    }
+    public constructor(private name: string, private type: BaseType | undefined, private required: boolean) {}
 
     public getName(): string {
-        return this.name;
+        return strip(this.name);
     }
-    public getType(): BaseType {
+    public getType(): BaseType | undefined {
         return this.type;
     }
     public isRequired(): boolean {
@@ -22,9 +18,9 @@ export class ObjectProperty {
 export class ObjectType extends BaseType {
     public constructor(
         private id: string,
-        private baseTypes: BaseType[],
-        private properties: ObjectProperty[],
-        private additionalProperties: BaseType|boolean,
+        private baseTypes: readonly BaseType[],
+        private properties: readonly ObjectProperty[],
+        private additionalProperties: BaseType | boolean
     ) {
         super();
     }
@@ -33,13 +29,13 @@ export class ObjectType extends BaseType {
         return this.id;
     }
 
-    public getBaseTypes(): BaseType[] {
+    public getBaseTypes(): readonly BaseType[] {
         return this.baseTypes;
     }
-    public getProperties(): ObjectProperty[] {
+    public getProperties(): readonly ObjectProperty[] {
         return this.properties;
     }
-    public getAdditionalProperties(): BaseType|boolean {
+    public getAdditionalProperties(): BaseType | boolean {
         return this.additionalProperties;
     }
 }
