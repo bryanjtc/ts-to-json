@@ -9,3 +9,7 @@ export interface Definition extends JSONSchema7 {
     name?: string;
     label?: string;
 }
+
+export interface DefinitionMap {
+    [name: string]: JSONSchema7Definition;
+}

@@ -1,6 +1,5 @@
 import { Definition, DefinitionMap } from "../Schema/Definition";
 import { SubTypeFormatter } from "../SubTypeFormatter";
-import { AnyType } from "../Type/AnyType";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
 import { UndefinedType } from "../Type/UndefinedType";
@@ -10,10 +9,7 @@ import { getAllOfDefinitionReducer } from "../Utils/allOfDefinition";
 import { StringMap } from "../Utils/StringMap";
 
 export class FunctionTypeFormatter implements SubTypeFormatter {
-    public constructor(
-        private childTypeFormatter: TypeFormatter,
-    ) {
-    }
+    public constructor(private childTypeFormatter: TypeFormatter) {}
 
     public supportsType(type: FunctionType): boolean {
         return type instanceof FunctionType;
@@ -23,8 +19,9 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             return this.getObjectDefinition(type);
         }
 
-        return type.getBaseTypes().reduce(
-            getAllOfDefinitionReducer(this.childTypeFormatter), this.getObjectDefinition(type));
+        return type
+            .getBaseTypes()
+            .reduce(getAllOfDefinitionReducer(this.childTypeFormatter, true), this.getObjectDefinition(type));
     }
     public getChildren(type: FunctionType): BaseType[] {
         const parameters: FunctionParameter[] = type.getParameters();
@@ -34,19 +31,27 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
 
         return [
             ...this.childTypeFormatter.getChildren(returnTypes),
-            ...type.getBaseTypes().reduce((result: BaseType[], baseType) => [
-                ...result,
-                ...this.childTypeFormatter.getChildren(baseType).slice(1),
-            ], []),
+            ...type
+                .getBaseTypes()
+                .reduce(
+                    (result: BaseType[], baseType) => [
+                        ...result,
+                        ...this.childTypeFormatter.getChildren(baseType).slice(1),
+                    ],
+                    []
+                ),
 
-            ...additionalParameters instanceof BaseType ?
-                this.childTypeFormatter.getChildren(additionalParameters) :
-                [],
+            ...(additionalParameters instanceof BaseType
+                ? this.childTypeFormatter.getChildren(additionalParameters)
+                : []),
 
-            ...parameters.reduce((result: BaseType[], parameter) => [
-                ...result,
-                ...this.childTypeFormatter.getChildren(parameter.getType()),
-            ], []),
+            ...parameters.reduce(
+                (result: BaseType[], parameter) => [
+                    ...result,
+                    ...this.childTypeFormatter.getChildren(parameter.getType()),
+                ],
+                []
+            ),
         ];
     }
     public getReturnType(type: FunctionType): BaseType[] {
@@ -54,19 +59,27 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
         const additionalParameters: BaseType | boolean = type.getAdditionalParameters();
 
         return [
-            ...type.getBaseTypes().reduce((result: BaseType[], baseType) => [
-                ...result,
-                ...this.childTypeFormatter.getChildren(baseType).slice(1),
-            ], []),
+            ...type
+                .getBaseTypes()
+                .reduce(
+                    (result: BaseType[], baseType) => [
+                        ...result,
+                        ...this.childTypeFormatter.getChildren(baseType).slice(1),
+                    ],
+                    []
+                ),
 
-            ...additionalParameters instanceof BaseType ?
-                this.childTypeFormatter.getChildren(additionalParameters) :
-                [],
+            ...(additionalParameters instanceof BaseType
+                ? this.childTypeFormatter.getChildren(additionalParameters)
+                : []),
 
-            ...parameters.reduce((result: BaseType[], parameter) => [
-                ...result,
-                ...this.childTypeFormatter.getChildren(parameter.getType()),
-            ], []),
+            ...parameters.reduce(
+                (result: BaseType[], parameter) => [
+                    ...result,
+                    ...this.childTypeFormatter.getChildren(parameter.getType()),
+                ],
+                []
+            ),
         ];
     }
 
@@ -74,26 +87,31 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
         const objectParameters: FunctionParameter[] = type.getParameters();
 
         const required = objectParameters
-            .map((parameter) => this.prepareObjectParameter(parameter))
-            .filter((parameter) => parameter.isRequired())
-            .map((parameter) => parameter.getName());
+            .map(parameter => this.prepareObjectParameter(parameter))
+            .filter(parameter => parameter.isRequired())
+            .map(parameter => parameter.getName());
         const parameters = objectParameters
-            .map((parameter) => this.prepareObjectParameter(parameter))
-            .reduce((result: StringMap<Definition>, parameter) => ({
-                ...result,
-                [parameter.getName()]: this.childTypeFormatter.getDefinition(parameter.getType()),
-            }), {});
+            .map(parameter => this.prepareObjectParameter(parameter))
+            .reduce(
+                (result: StringMap<Definition>, parameter) => ({
+                    ...result,
+                    [parameter.getName()]: this.childTypeFormatter.getDefinition(parameter.getType()),
+                }),
+                {}
+            );
         const def = this.childTypeFormatter.getDefinition(type.getReturnType());
         const anyParam = Object.keys(parameters).length;
         if (anyParam) {
             (parameters as any).__obj__ = true;
         }
         return {
-            typeOf: "function",
-            ...(def.type ? def : {
-                type: "any",
-                properties: def as DefinitionMap,
-            }),
+            // typeOf: "function" ,
+            ...(def.type
+                ? def
+                : {
+                      //   type: "array",
+                      properties: def as DefinitionMap,
+                  }),
             ...(Object.keys(parameters).length > 0 ? { parameters } : {}),
             ...(anyParam ? { required } : {}),
         };
@@ -106,7 +124,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             return parameter;
         }
 
-        const requiredTypes = propType.getTypes().filter((it) => !(it instanceof UndefinedType));
+        const requiredTypes = propType.getTypes().filter(it => !(it instanceof UndefinedType));
         if (propType.getTypes().length === requiredTypes.length) {
             return parameter;
         } else if (requiredTypes.length === 0) {
@@ -116,7 +134,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
         return new FunctionParameter(
             parameter.getName(),
             requiredTypes.length === 1 ? requiredTypes[0] : new UnionType(requiredTypes),
-            false,
+            false
         );
     }
 }

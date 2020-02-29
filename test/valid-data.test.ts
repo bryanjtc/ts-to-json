@@ -39,7 +39,7 @@ function assertSchema(
             createFormatter(config)
         );
 
-        const schema = generator.createSchema(type);
+        const schema = generator.createSchema(type!);
         const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${relativePath}/schema.json`), "utf8"));
         const actual: any = JSON.parse(JSON.stringify(schema));
 

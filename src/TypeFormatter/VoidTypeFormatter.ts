@@ -8,6 +8,7 @@ export class VoidTypeFormatter implements SubTypeFormatter {
         return type instanceof VoidType;
     }
     public getDefinition(type: VoidType): Definition {
+        //   return { type: "void" };
         return { type: "null" };
     }
     public getChildren(type: VoidType): BaseType[] {
