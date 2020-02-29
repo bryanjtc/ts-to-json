@@ -35,16 +35,19 @@ export class SchemaGenerator {
         }
     }
 
-    public createSchema(fullName: string): Schema {
+    public createSchema(fullName: string, useNameForPropKey = false): Schema {
         const rootNode = this.findRootNode(fullName);
         const rootType = this.nodeParser.createType(rootNode, new Context());
         return {
-            definitions: this.getRootChildDefinitions(rootType!),
+            definitions: this.getRootChildDefinitions(rootType!, useNameForPropKey),
             ...this.getRootTypeDefinition(rootType!),
         };
     }
 
-    public createSchemaByNodeKind(nodeKinds: ts.SyntaxKind | ts.SyntaxKind[]): Schema | null {
+    public createSchemaByNodeKind(
+        nodeKinds: ts.SyntaxKind | ts.SyntaxKind[],
+        useNameForPropKey = false
+    ): Schema | null {
         const typeChecker = this.program.getTypeChecker();
         this.setPrioritizedFiles(typeChecker);
         const nodes = this.getRootNodesByKind(Array.isArray(nodeKinds) ? nodeKinds : [nodeKinds]);
@@ -57,7 +60,7 @@ export class SchemaGenerator {
             // hack read more in TopRefNodeParser file
             (this.nodeParser as TopRefNodeParser).setFullName(name);
             const rootType = this.nodeParser.createType(node, new Context());
-            const definitions = this.getRootChildDefinitions(rootType!);
+            const definitions = this.getRootChildDefinitions(rootType!, useNameForPropKey);
             allSchema = {
                 ...allSchema,
                 definitions: {
@@ -159,14 +162,16 @@ export class SchemaGenerator {
     private getRootTypeDefinition(rootType: BaseType): Definition {
         return this.typeFormatter.getDefinition(rootType);
     }
-    private getRootChildDefinitions(rootType: BaseType): StringMap<Definition> {
+    private getRootChildDefinitions(rootType: BaseType, useNameForPropKey = false): StringMap<Definition> {
         return this.typeFormatter
             .getChildren(rootType)
             .filter(child => child instanceof DefinitionType)
             .reduce(
                 (result: StringMap<Definition>, child: DefinitionType) => ({
                     ...result,
-                    [child.getId()]: this.typeFormatter.getDefinition(child.getType()),
+                    [useNameForPropKey ? child.getName() : child.getId()]: this.typeFormatter.getDefinition(
+                        child.getType()
+                    ),
                 }),
                 {}
             );

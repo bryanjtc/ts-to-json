@@ -12,7 +12,7 @@ export class CircularReferenceNodeParser implements SubNodeParser {
 
     public supportsNode(node: ts.Node): boolean {
         // to prevent circular dependencies error
-        if (node.getSourceFile().fileName.includes("/node_modules/typescript/")) {
+        if (node.getSourceFile().fileName.includes("/node_modules/typescript/") && !process.env.__TEST__) {
             return false;
         }
         return this.childNodeParser.supportsNode(node);

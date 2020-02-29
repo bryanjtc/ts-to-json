@@ -1,20 +1,20 @@
 import { resolve } from "path";
-
+import * as ts from "typescript";
+import { createFormatter } from "./factory/formatter";
+import { createParser } from "./factory/parser";
+import { createProgram } from "./factory/program";
 import { Config } from "./src/Config";
 
-import * as tsj from "./index";
+import { SchemaGenerator } from "./src/SchemaGenerator";
 
 const config: Config = {
-    type: "IOption",
-    expose: "all",
+    type: "*",
+    expose: "none",
     topRef: true,
     jsDoc: "extended",
-    path: resolve("test.ts"),
-    skipTypeCheck: true,
-    // tsconfig: resolve("tsconfig2.json")
+    path: resolve(`test.ts`),
 };
+const program: ts.Program = createProgram(config);
+const generator: SchemaGenerator = new SchemaGenerator(program, createParser(program, config), createFormatter(config));
 
-const gen = tsj.createGenerator(config);
-const schema = gen.createSchema(config.type!);
-
-console.log(JSON.stringify(schema, null, "  "));
+console.log(JSON.stringify(generator.createSchemaByNodeKind(ts.SyntaxKind.FunctionDeclaration, true), null, "  "));

@@ -41,14 +41,12 @@ import { TypeOperatorNodeParser } from "../src/NodeParser/TypeOperatorNodeParser
 import { TypeReferenceNodeParser } from "../src/NodeParser/TypeReferenceNodeParser";
 import { UndefinedTypeNodeParser } from "../src/NodeParser/UndefinedTypeNodeParser";
 import { UnionNodeParser } from "../src/NodeParser/UnionNodeParser";
-
 import { VoidKeywordTypeParser } from "../src/NodeParser/VoidKeywordTypeParser";
-
 import { UnknownTypeNodeParser } from "../src/NodeParser/UnknownTypeNodeParser";
 import { VoidTypeNodeParser } from "../src/NodeParser/VoidTypeNodeParser";
-
 import { SubNodeParser } from "../src/SubNodeParser";
 import { TopRefNodeParser } from "../src/TopRefNodeParser";
+import { TypescriptNodeParser } from "../src/NodeParser/TypescriptNodeParser";
 
 export function createParser(program: ts.Program, config: Config): NodeParser {
     const typeChecker = program.getTypeChecker();
@@ -127,7 +125,9 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         )
         .addNodeParser(new VoidKeywordTypeParser())
 
-        .addNodeParser(new ArrayNodeParser(chainNodeParser));
+        .addNodeParser(new ArrayNodeParser(chainNodeParser))
+
+        .addNodeParser(new TypescriptNodeParser());
 
     return withTopRef(chainNodeParser);
 }

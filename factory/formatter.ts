@@ -26,6 +26,7 @@ import { UndefinedTypeFormatter } from "../src/TypeFormatter/UndefinedTypeFormat
 import { UnionTypeFormatter } from "../src/TypeFormatter/UnionTypeFormatter";
 import { UnknownTypeFormatter } from "../src/TypeFormatter/UnknownTypeFormatter";
 import { VoidTypeFormatter } from "../src/TypeFormatter/VoidTypeFormatter";
+import { TypescriptNodeFormatter } from "../src/TypeFormatter/TypescriptNodeFormatter";
 
 export function createFormatter(config: Config): TypeFormatter {
     const chainTypeFormatter = new ChainTypeFormatter([]);
@@ -62,7 +63,8 @@ export function createFormatter(config: Config): TypeFormatter {
         .addTypeFormatter(new TupleTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new UnionTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new IntersectionTypeFormatter(circularReferenceTypeFormatter))
-        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter));
+        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter))
+        .addTypeFormatter(new TypescriptNodeFormatter());
 
     return circularReferenceTypeFormatter;
 }
