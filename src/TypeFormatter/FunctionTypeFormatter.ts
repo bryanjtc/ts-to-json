@@ -1,4 +1,4 @@
-import { Definition, DefinitionMap } from "../Schema/Definition";
+import { Definition } from "../Schema/Definition";
 import { SubTypeFormatter } from "../SubTypeFormatter";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
@@ -106,12 +106,12 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             (parameters as any).__obj__ = true;
         }
         return {
-            typeOf: "function",
+            // typeOf: "function",
             ...(def.type
                 ? def
                 : {
                       //   type: "array",
-                      properties: def as DefinitionMap,
+                      properties: def as any,
                   }),
             ...(Object.keys(parameters).length > 0 ? { parameters } : {}),
             ...(anyParam ? { required } : {}),
