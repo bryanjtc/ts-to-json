@@ -10,6 +10,8 @@ export interface Config {
     skipTypeCheck?: boolean;
     encodeRefs?: boolean;
     extraTags?: string[];
+    useTypescriptTypeName?: boolean;
+    setObjectIdentifier?: boolean;
 }
 
 export const DEFAULT_CONFIG: Config = {

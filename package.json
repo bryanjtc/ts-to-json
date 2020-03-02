@@ -55,6 +55,7 @@
     "jest-junit": "^10.0.0",
     "prettier": "^1.19.1",
     "source-map-support": "~0.5.16",
+    "tippy.js": "^6.0.0",
     "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2"
   },
@@ -66,8 +67,8 @@
     "watch": "tsc -w",
     "lint": "eslint '{src,test,factory}/**/*.ts'",
     "format": "yarn lint --fix",
-    "test": "set __TEST__=1 && jest test/ --verbose",
-    "test:fast": "set FAST_TEST=1 && set __TEST__=1 && jest test/ --verbose",
+    "test": "jest test/ --verbose",
+    "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
     "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
     "run": "ts-node ts-json-schema-generator.ts"
   },

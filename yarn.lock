@@ -334,6 +334,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@popperjs/core@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.0.6.tgz#5a39ac118811ca844155b0ad5190b8c24f35e533"
+  integrity sha512-zj7Gw8QC4jmR92eKUvtrZUEpl2ypRbq+qlE4pwf9n2hnUO9BOAcWUs4/Ht+gNIbFt98xtqhLvccdCfD469MzpQ==
+
 "@sinonjs/commons@^1.7.0":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.7.1.tgz#da5fd19a5f71177a53778073978873964f49acf1"
@@ -3670,6 +3675,13 @@ through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+tippy.js@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.0.0.tgz#6bc4f477ea82ef344db51ae34f106a8b25f2d02c"
+  integrity sha512-2NVc5A8cnO9N/Fk+tTU6KEm6m8ZXT1u3pOY756zZ5BE38rWDl/hVyoWhTfM79HW1nEJSpn/VujqAMMZGHsE9qQ==
+  dependencies:
+    "@popperjs/core" "^2.0.6"
 
 tmp@^0.0.33:
   version "0.0.33"

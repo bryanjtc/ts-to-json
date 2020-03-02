@@ -50,7 +50,7 @@ export function createFormatter(config: Config): TypeFormatter {
 
         .addTypeFormatter(new ReferenceTypeFormatter(circularReferenceTypeFormatter, config.encodeRefs ?? true))
         .addTypeFormatter(new DefinitionTypeFormatter(circularReferenceTypeFormatter, config.encodeRefs ?? true))
-        .addTypeFormatter(new ObjectTypeFormatter(circularReferenceTypeFormatter))
+        .addTypeFormatter(new ObjectTypeFormatter(circularReferenceTypeFormatter, config))
         .addTypeFormatter(new AliasTypeFormatter(circularReferenceTypeFormatter))
 
         .addTypeFormatter(new PrimitiveUnionTypeFormatter())
@@ -63,7 +63,7 @@ export function createFormatter(config: Config): TypeFormatter {
         .addTypeFormatter(new TupleTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new UnionTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new IntersectionTypeFormatter(circularReferenceTypeFormatter))
-        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter))
+        .addTypeFormatter(new FunctionTypeFormatter(circularReferenceTypeFormatter, config))
         .addTypeFormatter(new TypescriptNodeFormatter());
 
     return circularReferenceTypeFormatter;

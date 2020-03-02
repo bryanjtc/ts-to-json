@@ -7,9 +7,10 @@ import { UnionType } from "../Type/UnionType";
 import { TypeFormatter } from "../TypeFormatter";
 import { getAllOfDefinitionReducer } from "../Utils/allOfDefinition";
 import { StringMap } from "../Utils/StringMap";
+import { Config } from "../../src/Config";
 
 export class FunctionTypeFormatter implements SubTypeFormatter {
-    public constructor(private childTypeFormatter: TypeFormatter) {}
+    public constructor(private childTypeFormatter: TypeFormatter, private config: Config) {}
 
     public supportsType(type: FunctionType): boolean {
         return type instanceof FunctionType;
@@ -102,7 +103,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
         const def = this.childTypeFormatter.getDefinition(type.getReturnType());
         const anyParam = Object.keys(parameters).length;
         /* to use in my application, disabled in test to pass original tests */
-        if (anyParam && !process.env.__TEST__) {
+        if (anyParam && this.config.setObjectIdentifier) {
             (parameters as any).__obj__ = true;
         }
         return {

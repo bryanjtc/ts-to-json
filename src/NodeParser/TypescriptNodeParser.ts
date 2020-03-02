@@ -4,6 +4,7 @@ import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { TypescriptType } from "../Type/TypescriptType";
 import { symbolAtNode } from "../Utils/symbolAtNode";
+import { Config } from "../../src/Config";
 
 /*
     To prevent circular errors and UnknownNodeError for types like HTMLElement
@@ -11,8 +12,10 @@ import { symbolAtNode } from "../Utils/symbolAtNode";
 */
 
 export class TypescriptNodeParser implements SubNodeParser {
+    constructor(private config: Config) {}
     public supportsNode(node: ts.Node): boolean {
-        if (process.env.__TEST__) return false;
+        if (!this.config.useTypescriptTypeName) return false;
+        // if ((node as any).name.text === "getComputedStyle") return false;
         const symbol = symbolAtNode(node);
         return symbol ? true : false;
     }

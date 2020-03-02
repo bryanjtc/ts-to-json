@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "MyFunction": {
+            "properties": {
+                "$ref": "#/definitions/MyFunction.ReturnType"
+            },
+            "parameters": {
+                "options": {
+                    "$ref": "#/definitions/MyFunction.Options"
+                },
+                "__obj__": true
+            },
+            "required": [
+                "options"
+            ]
+        },
+        "MyFunction.ReturnType": {
+            "type": "object",
+            "properties": {
+                "width": {
+                    "type": "number"
+                },
+                "__obj__": true
+            },
+            "required": [
+                "width"
+            ],
+            "additionalProperties": false
+        },
+        "MyFunction.Options": {
+            "type": "object",
+            "properties": {
+                "elm": {
+                    "type": [
+                        "HTMLElement",
+                        "string"
+                    ]
+                },
+                "__obj__": true
+            },
+            "required": [
+                "elm"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

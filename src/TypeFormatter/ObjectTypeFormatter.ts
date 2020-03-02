@@ -12,9 +12,10 @@ import { preserveAnnotation } from "../Utils/preserveAnnotation";
 import { removeUndefined } from "../Utils/removeUndefined";
 import { StringMap } from "../Utils/StringMap";
 import { uniqueArray } from "../Utils/uniqueArray";
+import { Config } from "../../src/Config";
 
 export class ObjectTypeFormatter implements SubTypeFormatter {
-    public constructor(private childTypeFormatter: TypeFormatter) {}
+    public constructor(private childTypeFormatter: TypeFormatter, private config: Config) {}
 
     public supportsType(type: ObjectType): boolean {
         return type instanceof ObjectType;
@@ -83,7 +84,7 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
 
         const anyProps = Object.keys(properties).length;
         /* to use in my application, disabled in test to pass original tests */
-        if (anyProps && !process.env.__TEST__) {
+        if (anyProps && this.config.setObjectIdentifier) {
             (properties as any).__obj__ = true;
         }
 

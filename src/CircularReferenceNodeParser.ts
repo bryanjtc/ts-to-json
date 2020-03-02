@@ -4,15 +4,16 @@ import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
 import { getKey } from "./Utils/nodeKey";
+import { Config } from "../src/Config";
 
 export class CircularReferenceNodeParser implements SubNodeParser {
     private circular = new Map<string, BaseType>();
 
-    public constructor(private childNodeParser: SubNodeParser) {}
+    public constructor(private childNodeParser: SubNodeParser, private config: Config) {}
 
     public supportsNode(node: ts.Node): boolean {
         // to prevent circular dependencies error
-        if (node.getSourceFile().fileName.includes("/node_modules/typescript/") && !process.env.__TEST__) {
+        if (this.config.useTypescriptTypeName && node.getSourceFile().fileName.includes("/node_modules/typescript/")) {
             return false;
         }
         return this.childNodeParser.supportsNode(node);
