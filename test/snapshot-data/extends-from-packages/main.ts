@@ -1,13 +1,8 @@
-import { Props } from "tippy.js";
+// import { Props } from "tippy.js";
+import { TestProps } from "./Extends";
 
-// import * as Popper from "@popperjs/core";
+export type Placement = "left" | "right";
 
-// export type Placement = Popper.Placement;
-
-// interface Props {
-//     placment: Placement;
-// }
-
-export interface ExtendedProp extends Props {
-    myProp: string;
+export interface ExtendedProp extends TestProps {
+    myProp: Placement;
 }
