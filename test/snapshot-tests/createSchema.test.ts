@@ -9,25 +9,19 @@ import { SchemaGenerator } from "../../src/SchemaGenerator";
 
 const basePath = "test/snapshot-data";
 
-function assertSchema(
-    relativePath: string,
-    type?: string,
-    jsDoc: Config["jsDoc"] = "none",
-    extraTags?: Config["extraTags"]
-) {
+function assertSchema(relativePath: string, options?: Partial<Config>) {
     return () => {
-        const filePath = resolve(`${basePath}/${relativePath}/main.ts`);
+        const filePath = resolve(`${basePath}/${relativePath}/*.ts`);
 
         const config: Config = {
             path: filePath,
-            type,
             expose: "export",
             topRef: true,
-            jsDoc,
-            extraTags,
+            jsDoc: "none",
             skipTypeCheck: true,
             useTypescriptTypeName: true,
             setObjectIdentifier: true,
+            ...options,
         };
 
         const program: ts.Program = createProgram(config);
@@ -37,7 +31,7 @@ function assertSchema(
             createFormatter(config)
         );
 
-        const schema = generator.createSchema(type!);
+        const schema = generator.createSchema(config.type);
 
         const jsonFilePath = resolve(`${basePath}/${relativePath}/schema.json`);
 
@@ -62,5 +56,6 @@ describe("createSchema", () => {
     it("function-prop-type", assertSchema("function-prop-type"));
     it("module-function-declare", assertSchema("module-function-declare"));
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
-    it("extends-from-packages", assertSchema("extends-from-packages"));
+    it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps", expose: "none" }));
+    // it("max-depth", assertSchema("max-depth"));
 });

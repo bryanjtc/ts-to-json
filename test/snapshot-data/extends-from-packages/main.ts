@@ -1,8 +1,5 @@
-// import { Props } from "tippy.js";
-import { TestProps } from "./Extends";
+import { IOptions } from "glob";
 
-export type Placement = "left" | "right";
-
-export interface ExtendedProp extends TestProps {
-    myProp: Placement;
+export interface MyProps extends IOptions {
+    propA: string;
 }
