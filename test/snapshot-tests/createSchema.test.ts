@@ -59,8 +59,8 @@ function assertSchema(
 }
 
 describe("createSchema", () => {
-    // it("function-prop-type", assertSchema("function-prop-type"));
-    // it("module-function-declare", assertSchema("module-function-declare"));
-    // it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
-    it("extends-from-packages", assertSchema("extends-from-packages"));
+    it("function-prop-type", assertSchema("function-prop-type"));
+    it("module-function-declare", assertSchema("module-function-declare"));
+    it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
+    // it("extends-from-packages", assertSchema("extends-from-packages"));
 });
