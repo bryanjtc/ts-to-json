@@ -19,9 +19,10 @@ export class ExpressionWithTypeArgumentsNodeParser implements SubNodeParser {
             );
         } else if (typeSymbol.flags & ts.SymbolFlags.TypeParameter) {
             return context.getArgument(typeSymbol.name);
-        } else {
+        } else if (typeSymbol.declarations) {
             return this.childNodeParser.createType(typeSymbol.declarations![0], this.createSubContext(node, context));
         }
+        return;
     }
 
     private createSubContext(node: ts.ExpressionWithTypeArguments, parentContext: Context): Context {

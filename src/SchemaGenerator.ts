@@ -136,7 +136,7 @@ export class SchemaGenerator {
             case ts.SyntaxKind.TypeAliasDeclaration:
             case ts.SyntaxKind.FunctionDeclaration:
             case ts.SyntaxKind.ExportAssignment:
-                if (!this.isExportType(node) || this.isGenericType(node as ts.TypeAliasDeclaration)) {
+                if (this.isGenericType(node as ts.TypeAliasDeclaration)) {
                     return;
                 }
                 allTypes.set(this.getFullName(node, typeChecker), node);

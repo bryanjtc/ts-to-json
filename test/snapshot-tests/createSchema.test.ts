@@ -53,18 +53,19 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
 }
 
 describe("createSchema", () => {
-    it("function-prop-type", assertSchema("function-prop-type"));
-    it("module-function-declare", assertSchema("module-function-declare"));
-    it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
-    it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));
-    it("max-depth", assertSchema("max-depth", { maxDepth: 3 }));
-    it("max-depth-ref", assertSchema("max-depth-ref", { maxDepth: 3 }));
-    it(
-        "max-depth-function-param",
-        assertSchema("max-depth-function-param", { maxDepth: 3, type: "MyFunction", expose: "none" })
-    );
-    it(
-        "max-depth-function-param-ref",
-        assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
-    );
+    it("react-class", assertSchema("react-class", { expose: "all" }));
+    // it("function-prop-type", assertSchema("function-prop-type"));
+    // it("module-function-declare", assertSchema("module-function-declare"));
+    // it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
+    // it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));
+    // it("max-depth", assertSchema("max-depth", { maxDepth: 3 }));
+    // it("max-depth-ref", assertSchema("max-depth-ref", { maxDepth: 3 }));
+    // it(
+    //     "max-depth-function-param",
+    //     assertSchema("max-depth-function-param", { maxDepth: 3, type: "MyFunction", expose: "none" })
+    // );
+    // it(
+    //     "max-depth-function-param-ref",
+    //     assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
+    // );
 });
