@@ -1,3 +1,6 @@
+export interface MyProps {
+    deepProps: DeepProps;
+}
 export interface DeepProps {
     propA: string;
     one: {

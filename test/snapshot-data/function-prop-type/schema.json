@@ -10,8 +10,7 @@
                     "parameters": {
                         "ref": {
                             "type": "string"
-                        },
-                        "__obj__": true
+                        }
                     },
                     "required": [
                         "ref"
@@ -22,14 +21,12 @@
                     "parameters": {
                         "ref": {
                             "type": "string"
-                        },
-                        "__obj__": true
+                        }
                     },
                     "required": [
                         "ref"
                     ]
-                },
-                "__obj__": true
+                }
             },
             "required": [
                 "content",

@@ -8,8 +8,7 @@
             "parameters": {
                 "options": {
                     "$ref": "#/definitions/MyFunction.Options"
-                },
-                "__obj__": true
+                }
             },
             "required": [
                 "options"
@@ -20,8 +19,7 @@
             "properties": {
                 "width": {
                     "type": "number"
-                },
-                "__obj__": true
+                }
             },
             "required": [
                 "width"
@@ -36,8 +34,7 @@
                         "HTMLElement",
                         "string"
                     ]
-                },
-                "__obj__": true
+                }
             },
             "required": [
                 "elm"

@@ -1,3 +1,5 @@
+export declare function MyFunction(options: DeepProps, options2?: DeepProps): void;
+
 export interface DeepProps {
     propA: string;
     one: {

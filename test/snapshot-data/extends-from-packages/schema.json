@@ -5,161 +5,323 @@
         "MyProps": {
             "type": "object",
             "properties": {
-                "debug": {
-                    "type": "boolean"
+                "begin": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "nobrace": {
-                    "type": "boolean"
+                "change": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "noglobstar": {
-                    "type": "boolean"
+                "update": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "dot": {
-                    "type": "boolean"
+                "complete": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "noext": {
-                    "type": "boolean"
+                "loopBegin": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "nocase": {
-                    "type": "boolean"
+                "loopComplete": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "nonull": {
-                    "type": "boolean"
+                "changeBegin": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "matchBase": {
-                    "type": "boolean"
+                "changeComplete": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
                 },
-                "nocomment": {
-                    "type": "boolean"
-                },
-                "nonegate": {
-                    "type": "boolean"
-                },
-                "flipNegate": {
-                    "type": "boolean"
-                },
-                "__obj__": true,
-                "cwd": {
-                    "type": "string"
-                },
-                "root": {
-                    "type": "string"
-                },
-                "nomount": {
-                    "type": "boolean"
-                },
-                "mark": {
-                    "type": "boolean"
-                },
-                "nosort": {
-                    "type": "boolean"
-                },
-                "stat": {
-                    "type": "boolean"
-                },
-                "silent": {
-                    "type": "boolean"
-                },
-                "strict": {
-                    "type": "boolean"
-                },
-                "cache": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "anyOf": [
-                            {
-                                "type": "boolean"
-                            },
-                            {
-                                "type": "string",
-                                "enum": [
-                                    "DIR"
-                                ]
-                            },
-                            {
-                                "type": "string",
-                                "enum": [
-                                    "FILE"
-                                ]
-                            },
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            }
-                        ]
-                    }
-                },
-                "statCache": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "anyOf": [
-                            {
-                                "type": "boolean",
-                                "enum": [
-                                    false
-                                ]
-                            },
-                            {
-                                "type": "object",
-                                "additionalProperties": false
-                            },
-                            {
-                                "not": {}
-                            }
-                        ]
-                    }
-                },
-                "symlinks": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "anyOf": [
-                            {
-                                "type": "boolean"
-                            },
-                            {
-                                "not": {}
-                            }
-                        ]
-                    }
-                },
-                "realpathCache": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
-                },
-                "sync": {
-                    "type": "boolean"
-                },
-                "nounique": {
-                    "type": "boolean"
-                },
-                "nodir": {
-                    "type": "boolean"
-                },
-                "ignore": {
+                "targets": {
                     "anyOf": [
                         {
-                            "type": "string"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "HTMLElement"
+                                },
+                                {
+                                    "type": "SVGElement"
+                                },
+                                {
+                                    "type": "NodeList"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         {
                             "type": "array",
                             "items": {
-                                "type": "string"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "type": "HTMLElement"
+                                    },
+                                    {
+                                        "type": "SVGElement"
+                                    },
+                                    {
+                                        "type": "NodeList"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             }
                         }
                     ]
                 },
-                "follow": {
-                    "type": "boolean"
+                "duration": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
                 },
-                "realpath": {
-                    "type": "boolean"
+                "delay": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
                 },
-                "absolute": {
-                    "type": "boolean"
+                "endDelay": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
+                },
+                "elasticity": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
+                },
+                "round": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
+                },
+                "keyframes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/anime.AnimeAnimParams"
+                    }
+                },
+                "easing": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/anime.EasingOptions"
+                        },
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number",
+                            "parameters": {
+                                "el": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "el",
+                                "index",
+                                "length"
+                            ]
+                        },
+                        {
+                            "type": "string",
+                            "parameters": {
+                                "el": {
+                                    "type": "HTMLElement"
+                                }
+                            },
+                            "required": [
+                                "el"
+                            ]
+                        }
+                    ]
                 },
                 "propA": {
                     "type": "string"
@@ -167,8 +329,212 @@
             },
             "required": [
                 "propA"
+            ]
+        },
+        "anime.AnimeInstance": {
+            "type": "object",
+            "properties": {
+                "begin": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "change": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "update": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "complete": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "loopBegin": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "loopComplete": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "changeBegin": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "changeComplete": {
+                    "type": "null",
+                    "parameters": {
+                        "anim": {
+                            "$ref": "#/definitions/anime.AnimeInstance"
+                        }
+                    },
+                    "required": [
+                        "anim"
+                    ]
+                },
+                "began": {
+                    "type": "boolean"
+                },
+                "paused": {
+                    "type": "boolean"
+                },
+                "completed": {
+                    "type": "boolean"
+                },
+                "finished": {
+                    "type": "Promise"
+                },
+                "autoplay": {
+                    "type": "boolean"
+                },
+                "currentTime": {
+                    "type": "number"
+                },
+                "delay": {
+                    "type": "number"
+                },
+                "direction": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "number"
+                },
+                "loop": {
+                    "type": [
+                        "number",
+                        "boolean"
+                    ]
+                },
+                "timelineOffset": {
+                    "type": "number"
+                },
+                "progress": {
+                    "type": "number"
+                },
+                "remaining": {
+                    "type": "number"
+                },
+                "reversed": {
+                    "type": "boolean"
+                },
+                "animatables": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "animations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "required": [
+                "began",
+                "paused",
+                "completed",
+                "finished",
+                "autoplay",
+                "currentTime",
+                "delay",
+                "direction",
+                "duration",
+                "loop",
+                "timelineOffset",
+                "progress",
+                "remaining",
+                "reversed",
+                "animatables",
+                "animations"
             ],
             "additionalProperties": false
+        },
+        "anime.EasingOptions": {
+            "type": "string",
+            "enum": [
+                "linear",
+                "easeInQuad",
+                "easeInCubic",
+                "easeInQuart",
+                "easeInQuint",
+                "easeInSine",
+                "easeInExpo",
+                "easeInCirc",
+                "easeInBack",
+                "easeInElastic",
+                "easeInBounce",
+                "easeOutQuad",
+                "easeOutCubic",
+                "easeOutQuart",
+                "easeOutQuint",
+                "easeOutSine",
+                "easeOutExpo",
+                "easeOutCirc",
+                "easeOutBack",
+                "easeOutElastic",
+                "easeOutBounce",
+                "easeInOutQuad",
+                "easeInOutCubic",
+                "easeInOutQuart",
+                "easeInOutQuint",
+                "easeInOutSine",
+                "easeInOutExpo",
+                "easeInOutCirc",
+                "easeInOutBack",
+                "easeInOutElastic",
+                "easeInOutBounce"
+            ]
         }
     }
 }

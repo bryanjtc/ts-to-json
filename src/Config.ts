@@ -12,6 +12,7 @@ export interface Config {
     extraTags?: string[];
     useTypescriptTypeName?: boolean;
     setObjectIdentifier?: boolean;
+    maxDepth?: number;
 }
 
 export const DEFAULT_CONFIG: Config = {

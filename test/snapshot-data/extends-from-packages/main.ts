@@ -1,5 +1,5 @@
-import { IOptions } from "glob";
+import { AnimeAnimParams } from "animejs";
 
-export interface MyProps extends IOptions {
+export interface MyProps extends AnimeAnimParams {
     propA: string;
 }

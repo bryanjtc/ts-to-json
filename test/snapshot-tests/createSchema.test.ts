@@ -20,7 +20,6 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
             jsDoc: "none",
             skipTypeCheck: true,
             useTypescriptTypeName: true,
-            setObjectIdentifier: true,
             ...options,
         };
 
@@ -28,7 +27,8 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
         const generator: SchemaGenerator = new SchemaGenerator(
             program,
             createParser(program, config),
-            createFormatter(config)
+            createFormatter(config),
+            config
         );
 
         const schema = generator.createSchema(config.type);
@@ -38,7 +38,7 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
         if (!fs.existsSync(jsonFilePath)) {
             fs.writeFileSync(jsonFilePath, JSON.stringify(schema, null, 4) + "\n", "utf8");
         }
-        // console.log(JSON.stringify(schema, null, 4));
+        // console.log(JSON.stringify(schema, null, 2));
 
         const expected: any = JSON.parse(fs.readFileSync(jsonFilePath, "utf8"));
         const actual: any = JSON.parse(JSON.stringify(schema));
@@ -56,6 +56,15 @@ describe("createSchema", () => {
     it("function-prop-type", assertSchema("function-prop-type"));
     it("module-function-declare", assertSchema("module-function-declare"));
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
-    it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps", expose: "none" }));
-    // it("max-depth", assertSchema("max-depth"));
+    it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));
+    it("max-depth", assertSchema("max-depth", { maxDepth: 3 }));
+    it("max-depth-ref", assertSchema("max-depth-ref", { maxDepth: 3 }));
+    it(
+        "max-depth-function-param",
+        assertSchema("max-depth-function-param", { maxDepth: 3, type: "MyFunction", expose: "none" })
+    );
+    it(
+        "max-depth-function-param-ref",
+        assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
+    );
 });
