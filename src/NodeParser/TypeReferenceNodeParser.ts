@@ -18,6 +18,16 @@ export class TypeReferenceNodeParser implements SubNodeParser {
 
     public createType(node: ts.TypeReferenceNode, context: Context): BaseType | undefined {
         const typeSymbol = this.typeChecker.getSymbolAtLocation(node.typeName)!;
+
+        if (!typeSymbol) {
+            console.error(
+                `TypeReferenceNodeParser => Unable to parse node '${node
+                    .getFullText()
+                    .trim()}', are you using global types?`
+            );
+            return;
+        }
+
         if (typeSymbol.flags & ts.SymbolFlags.Alias) {
             const aliasedSymbol = this.typeChecker.getAliasedSymbol(typeSymbol);
             return this.childNodeParser.createType(
