@@ -68,4 +68,5 @@ describe("createSchema", () => {
         "max-depth-function-param-ref",
         assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
     );
+    it("circular-ref", assertSchema("circular-ref", { type: "MyType", expose: "all" }));
 });

@@ -28,11 +28,7 @@
     {
       "label": "Watch test file",
       "type": "shell",
-      "command": "jest --watch ${fileBasename}",
-      "presentation": {
-        "group": "watch",
-        "panel": "shared"
-      }
+      "command": "jest --watch ${fileBasename}"
     }
   ]
 }

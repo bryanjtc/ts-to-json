@@ -25,6 +25,10 @@ export class CircularReferenceNodeParser implements SubNodeParser {
         }
 
         const reference = new ReferenceType();
+
+        // https://github.com/vega/ts-json-schema-generator/issues/357
+        reference.setId("circularRef-" + key);
+
         this.circular.set(key, reference);
         const type = this.childNodeParser.createType(node, context, reference);
         if (type) {
