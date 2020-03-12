@@ -22,7 +22,7 @@ export class IndexedAccessTypeNodeParser implements SubNodeParser {
         const objectType = derefType(this.childNodeParser.createType(node.objectType, context));
         const indexType = derefType(this.childNodeParser.createType(node.indexType, context));
 
-        if (objectType === undefined || indexType === undefined) {
+        if (objectType === undefined || indexType === undefined || indexType.getId() === '"bivarianceHack"') {
             return undefined;
         }
 
