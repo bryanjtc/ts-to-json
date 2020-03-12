@@ -12,7 +12,12 @@ export class TypeofNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.TypeQueryNode): boolean {
-        return node.kind === ts.SyntaxKind.TypeQuery;
+        if (node.kind !== ts.SyntaxKind.TypeQuery) return false;
+        let symbol = this.typeChecker.getSymbolAtLocation(node.exprName)!;
+        if (symbol.flags & ts.SymbolFlags.Alias) {
+            symbol = this.typeChecker.getAliasedSymbol(symbol);
+        }
+        return symbol.valueDeclaration ? true : false;
     }
 
     public createType(node: ts.TypeQueryNode, context: Context, reference?: ReferenceType): BaseType | undefined {
