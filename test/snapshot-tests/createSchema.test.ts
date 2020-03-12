@@ -19,7 +19,7 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
             topRef: true,
             jsDoc: "none",
             skipTypeCheck: true,
-            useTypescriptTypeName: true,
+            skipFiles: ["lib.dom.d.ts"],
             ...options,
         };
 
@@ -68,5 +68,6 @@ describe("createSchema", () => {
         "max-depth-function-param-ref",
         assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
     );
-    it("circular-ref", assertSchema("circular-ref", { type: "MyType", expose: "all" }));
+    it("circular-ref-union", assertSchema("circular-ref-union", { type: "MyType", expose: "all" }));
+    it("skip-type", assertSchema("skip-type", { type: "MyType", skipTypes: ["Promise"] }));
 });

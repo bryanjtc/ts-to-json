@@ -46,7 +46,8 @@ import { UnknownTypeNodeParser } from "../src/NodeParser/UnknownTypeNodeParser";
 import { VoidTypeNodeParser } from "../src/NodeParser/VoidTypeNodeParser";
 import { SubNodeParser } from "../src/SubNodeParser";
 import { TopRefNodeParser } from "../src/TopRefNodeParser";
-import { TypescriptNodeParser } from "../src/NodeParser/TypescriptNodeParser";
+import { SkippedFileTypeParser } from "../src/NodeParser/SkippedFileTypeParser";
+import { SkippedTypeParser } from "../src/NodeParser/SkippedTypeParser";
 
 export function createParser(program: ts.Program, config: Config): NodeParser {
     const typeChecker = program.getTypeChecker();
@@ -73,6 +74,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
     }
 
     chainNodeParser
+        .addNodeParser(new SkippedTypeParser(config))
         .addNodeParser(new HiddenNodeParser(typeChecker))
         .addNodeParser(new StringTypeNodeParser())
         .addNodeParser(new NumberTypeNodeParser())
@@ -130,7 +132,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
 
         .addNodeParser(new ArrayNodeParser(chainNodeParser))
 
-        .addNodeParser(new TypescriptNodeParser(config));
+        .addNodeParser(new SkippedFileTypeParser(config));
 
     return withTopRef(chainNodeParser);
 }

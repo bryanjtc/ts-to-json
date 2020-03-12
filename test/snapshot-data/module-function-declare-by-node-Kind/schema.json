@@ -1,6 +1,7 @@
 {
     "definitions": {
         "MyFunction": {
+            "kind": "function",
             "type": "object",
             "properties": {
                 "width": {

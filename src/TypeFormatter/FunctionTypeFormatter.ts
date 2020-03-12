@@ -107,7 +107,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             (parameters as any).__obj__ = true;
         }
         return {
-            // typeOf: "function",
+            kind: "function",
             ...(def.type
                 ? def
                 : {

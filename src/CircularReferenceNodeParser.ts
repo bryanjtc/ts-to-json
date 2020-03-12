@@ -12,9 +12,9 @@ export class CircularReferenceNodeParser implements SubNodeParser {
     public constructor(private childNodeParser: SubNodeParser, private config: Config) {}
 
     public supportsNode(node: ts.Node): boolean {
-        // to prevent circular dependencies error
-        if (this.config.useTypescriptTypeName && node.getSourceFile().fileName.includes("/node_modules/typescript/")) {
-            return false;
+        if (this.config.skipFiles) {
+            const file = node.getSourceFile().fileName;
+            if (this.config.skipFiles.find(x => file.includes(x))) return false;
         }
         return this.childNodeParser.supportsNode(node);
     }

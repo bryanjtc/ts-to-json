@@ -10,9 +10,18 @@ export interface Config {
     skipTypeCheck?: boolean;
     encodeRefs?: boolean;
     extraTags?: string[];
-    useTypescriptTypeName?: boolean;
     setObjectIdentifier?: boolean;
     maxDepth?: number;
+    /*
+    types within the file wont be processed, instead name of type will be returned.
+    like HTMLElement in lib.dom.d.ts file
+    */
+    skipFiles?: string[];
+    /*
+    types name within the list wont be proceeded instead name of the type will be returned.
+    like HTMLElement will stay  HTMLElement
+    */
+    skipTypes?: string[];
 }
 
 export const DEFAULT_CONFIG: Config = {

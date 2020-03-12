@@ -6,6 +6,7 @@
             "type": "object",
             "properties": {
                 "begin": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -17,6 +18,7 @@
                     ]
                 },
                 "change": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -28,6 +30,7 @@
                     ]
                 },
                 "update": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -39,6 +42,7 @@
                     ]
                 },
                 "complete": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -50,6 +54,7 @@
                     ]
                 },
                 "loopBegin": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -61,6 +66,7 @@
                     ]
                 },
                 "loopComplete": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -72,6 +78,7 @@
                     ]
                 },
                 "changeBegin": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -83,6 +90,7 @@
                     ]
                 },
                 "changeComplete": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -150,6 +158,7 @@
                             "type": "number"
                         },
                         {
+                            "kind": "function",
                             "type": "number",
                             "parameters": {
                                 "element": {
@@ -176,6 +185,7 @@
                             "type": "number"
                         },
                         {
+                            "kind": "function",
                             "type": "number",
                             "parameters": {
                                 "element": {
@@ -202,6 +212,7 @@
                             "type": "number"
                         },
                         {
+                            "kind": "function",
                             "type": "number",
                             "parameters": {
                                 "element": {
@@ -228,6 +239,7 @@
                             "type": "number"
                         },
                         {
+                            "kind": "function",
                             "type": "number",
                             "parameters": {
                                 "element": {
@@ -257,6 +269,7 @@
                             "type": "boolean"
                         },
                         {
+                            "kind": "function",
                             "type": "number",
                             "parameters": {
                                 "element": {
@@ -292,6 +305,7 @@
                             "type": "string"
                         },
                         {
+                            "kind": "function",
                             "type": "number",
                             "parameters": {
                                 "el": {
@@ -311,6 +325,7 @@
                             ]
                         },
                         {
+                            "kind": "function",
                             "type": "string",
                             "parameters": {
                                 "el": {
@@ -335,6 +350,7 @@
             "type": "object",
             "properties": {
                 "begin": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -346,6 +362,7 @@
                     ]
                 },
                 "change": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -357,6 +374,7 @@
                     ]
                 },
                 "update": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -368,6 +386,7 @@
                     ]
                 },
                 "complete": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -379,6 +398,7 @@
                     ]
                 },
                 "loopBegin": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -390,6 +410,7 @@
                     ]
                 },
                 "loopComplete": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -401,6 +422,7 @@
                     ]
                 },
                 "changeBegin": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -412,6 +434,7 @@
                     ]
                 },
                 "changeComplete": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "anim": {
@@ -432,7 +455,8 @@
                     "type": "boolean"
                 },
                 "finished": {
-                    "type": "Promise"
+                    "type": "object",
+                    "additionalProperties": false
                 },
                 "autoplay": {
                     "type": "boolean"

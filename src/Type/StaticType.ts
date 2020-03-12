@@ -1,6 +1,6 @@
 import { PrimitiveType } from "./PrimitiveType";
 
-export class TypescriptType extends PrimitiveType {
+export class StaticType extends PrimitiveType {
     public constructor(private type: string) {
         super();
     }

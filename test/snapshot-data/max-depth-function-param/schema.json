@@ -3,6 +3,7 @@
     "$ref": "#/definitions/MyFunction",
     "definitions": {
         "MyFunction": {
+            "kind": "function",
             "type": "null",
             "parameters": {
                 "options": {

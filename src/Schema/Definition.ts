@@ -5,7 +5,7 @@ export interface Definition extends JSONSchema7 {
     parameters?: JSONSchema7Definition;
     defaultProperties?: string[];
     locale?: string;
-    typeOf?: "function";
+    kind?: "function";
     name?: string;
     label?: string;
 }

@@ -6,6 +6,7 @@
             "type": "object",
             "properties": {
                 "content": {
+                    "kind": "function",
                     "type": "null",
                     "parameters": {
                         "ref": {
@@ -17,6 +18,7 @@
                     ]
                 },
                 "content2": {
+                    "kind": "function",
                     "type": "string",
                     "parameters": {
                         "ref": {

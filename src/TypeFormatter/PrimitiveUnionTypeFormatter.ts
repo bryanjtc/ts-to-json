@@ -10,7 +10,7 @@ import { PrimitiveType } from "../Type/PrimitiveType";
 import { StringType } from "../Type/StringType";
 import { UnionType } from "../Type/UnionType";
 import { uniqueArray } from "../Utils/uniqueArray";
-import { TypescriptType } from "../Type/TypescriptType";
+import { StaticType } from "../Type/StaticType";
 
 export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public supportsType(type: UnionType): boolean {
@@ -37,7 +37,7 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
             return "boolean";
         } else if (item instanceof NullType) {
             return "null";
-        } else if (item instanceof TypescriptType) {
+        } else if (item instanceof StaticType) {
             return item.getId() as RawTypeName;
         }
 
