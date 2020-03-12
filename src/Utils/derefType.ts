@@ -11,6 +11,9 @@ export function derefType(type: BaseType | undefined): BaseType | undefined {
         type instanceof AliasType ||
         type instanceof AnnotatedType
     ) {
+        // https://github.com/vega/ts-json-schema-generator/issues/192#issuecomment-597802304
+        if (!(type as any).type) return type;
+
         return derefType(type.getType());
     }
 
