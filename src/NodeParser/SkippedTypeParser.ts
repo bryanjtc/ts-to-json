@@ -5,6 +5,8 @@ import { BaseType } from "../Type/BaseType";
 import { StaticType } from "../Type/StaticType";
 import { symbolAtNode } from "../Utils/symbolAtNode";
 import { Config } from "../../src/Config";
+import { isInSkipTypes } from "../Utils/isInSkipTypes";
+import { isInProcessTypes } from "../Utils/isInProcessTypes";
 
 /*
     To skip processing types specified in skipTypes options
@@ -14,11 +16,9 @@ import { Config } from "../../src/Config";
 export class SkippedTypeParser implements SubNodeParser {
     constructor(private config: Config) {}
     public supportsNode(node: ts.Node): boolean {
-        if (!this.config.skipTypes || !this.config.skipTypes.length) return false;
-        const symbol = symbolAtNode(node);
-        if (!symbol) return false;
-        if (!this.config.skipTypes.includes(symbol.name)) return false;
-        return true;
+        if (isInProcessTypes(node, this.config)) return false;
+        if (isInSkipTypes(node, this.config)) return true;
+        return false;
     }
     public createType(node: ts.Node, context: Context): BaseType {
         const symbol = symbolAtNode(node)!;

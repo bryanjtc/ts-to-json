@@ -19,10 +19,14 @@ export interface Config {
     */
     skipFiles?: string[];
     /*
-    types name within the list wont be proceeded instead name of the type will be returned.
+    type names within the list wont be proceeded instead name of the type will be returned.
     like HTMLElement will stay  HTMLElement
     */
     skipTypes?: string[];
+    /*
+    type names within the list must be processed even if its in skipFiles or skipTypes list
+    */
+    processTypes?: string[];
 }
 
 export const DEFAULT_CONFIG: Config = {

@@ -5,6 +5,7 @@ import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
 import { getKey } from "./Utils/nodeKey";
 import { Config } from "../src/Config";
+import { isInProcessTypes } from "./Utils/isInProcessTypes";
 
 export class CircularReferenceNodeParser implements SubNodeParser {
     private circular = new Map<string, BaseType>();
@@ -14,7 +15,11 @@ export class CircularReferenceNodeParser implements SubNodeParser {
     public supportsNode(node: ts.Node): boolean {
         if (this.config.skipFiles) {
             const file = node.getSourceFile().fileName;
-            if (this.config.skipFiles.find(x => file.includes(x))) return false;
+            if (this.config.skipFiles.find(x => file.includes(x))) {
+                if (!isInProcessTypes(node, this.config)) {
+                    return false;
+                }
+            }
         }
         return this.childNodeParser.supportsNode(node);
     }

@@ -70,5 +70,22 @@ describe("createSchema", () => {
         assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
     );
     it("circular-ref-union", assertSchema("circular-ref-union", { type: "MyType", expose: "all" }));
-    it("skip-type", assertSchema("skip-type", { type: "MyType", skipTypes: ["Promise"] }));
+    it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipFiles: ["external-props.ts"] }));
+    it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipTypes: ["ExternalProps"] }));
+    it(
+        "should parse type even if type is in skipFiles list",
+        assertSchema("skipFiles-with-processTypes", {
+            type: "MyType",
+            skipFiles: ["external-props.ts"],
+            processTypes: ["ExternalProps"],
+        })
+    );
+    it(
+        "should parse type even if type is in skipTypes list",
+        assertSchema("skipTypes-with-processTypes", {
+            type: "MyType",
+            skipTypes: ["ExternalProps"],
+            processTypes: ["ExternalProps"],
+        })
+    );
 });
