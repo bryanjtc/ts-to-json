@@ -12,7 +12,14 @@ export interface Config {
     extraTags?: string[];
     setObjectIdentifier?: boolean;
     maxDepth?: number;
+    /**
+     *   Use this option when parser can parse specific type and throws error, this option force the parser identified type as unknown type.
+     */
     handleUnknownTypes?: boolean;
+    /**
+     *   When unknown type detected, the node info will be displayed.
+     */
+    showUnknownTypeInfo?: boolean;
     /**
      *   Types located in the file wont be processed, instead name of type will be returned.
      *   e.g. HTMLElement is located in lib.dom.d.ts file, hence the HTMLElement will be the type
@@ -38,4 +45,5 @@ export const DEFAULT_CONFIG: Config = {
     skipTypeCheck: false,
     encodeRefs: true,
     extraTags: [],
+    showUnknownTypeInfo: true,
 };

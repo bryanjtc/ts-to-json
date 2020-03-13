@@ -24,7 +24,12 @@ function assertSchema(name: string, type: string, message: string) {
             createFormatter(config)
         );
 
-        expect(() => generator.createSchema(type)).toThrowError(message);
+        try {
+            generator.createSchema(type);
+            expect(true).toBe(false);
+        } catch (e) {
+            expect((e.message as string).startsWith(message)).toBe(true);
+        }
     };
 }
 

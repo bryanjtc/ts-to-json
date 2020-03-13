@@ -3,24 +3,16 @@ import { Context } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { UnknownType } from "../Type/UnknownType";
-import { symbolAtNode } from "../Utils/symbolAtNode";
+import { getNodeInfo } from "../Error/utils";
 import { Config } from "../Config";
 
 export class NotKnownNodeParser implements SubNodeParser {
     public constructor(private config: Config) {}
-    public supportsNode(node: ts.TypeQueryNode | ts.KeywordTypeNode): boolean {
+    public supportsNode(node: ts.Node): boolean {
         if (!this.config.handleUnknownTypes) return false;
-
-        if (node.kind === ts.SyntaxKind.SymbolKeyword) return true;
-
-        if (!ts.isTypeQueryNode(node)) return false;
-
-        if (node.exprName) return true;
-
-        const symbol = symbolAtNode(node);
-
-        if (!symbol) return false;
-
+        if (this.config.showUnknownTypeInfo) {
+            console.warn("Unknown type detected:" + getNodeInfo(node));
+        }
         return true;
     }
     public createType(node: ts.TypeQueryNode, context: Context): BaseType {

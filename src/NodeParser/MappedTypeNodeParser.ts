@@ -26,7 +26,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
 
     public createType(node: ts.MappedTypeNode, context: Context): BaseType | undefined {
         const constraintType = this.childNodeParser.createType(node.typeParameter.constraint!, context);
-        // if (!constraintType) return;
+        if (!constraintType) return;
         const keyListType = derefType(constraintType);
         const id = `indexed-type-${getKey(node, context)}`;
 

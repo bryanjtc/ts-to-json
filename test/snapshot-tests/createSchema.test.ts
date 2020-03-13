@@ -20,7 +20,6 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
             jsDoc: "none",
             skipTypeCheck: true,
             skipFiles: ["lib.dom.d.ts"],
-            handleUnknownTypes: true,
             ...options,
         };
 
@@ -86,6 +85,14 @@ describe("createSchema", () => {
             type: "MyType",
             skipTypes: ["ExternalProps"],
             processTypes: ["ExternalProps"],
+        })
+    );
+    it(
+        "debug",
+        assertSchema("debug", {
+            type: "MyType",
+            skipFiles: ["lib.dom.d.ts", "@types/react/index.d.ts"],
+            handleUnknownTypes: true,
         })
     );
 });
