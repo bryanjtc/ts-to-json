@@ -1,6 +1,6 @@
 {
   "name": "ts-to-json",
-  "version": "0.61.7",
+  "version": "0.61.8",
   "description": "Generate JSON schema from your Typescript sources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -63,7 +63,7 @@
     "prepublish": "npm run build && yarn run build",
     "preversion": "npm run lint",
     "prepublishOnly": "yarn build",
-    "build": "tsc",
+    "build": "tsc && tsc ./src/Config.ts --declaration --emitDeclarationOnly --declarationDir ./dist/src",
     "watch": "tsc -w",
     "lint": "eslint '{src,test,factory}/**/*.ts'",
     "format": "yarn lint --fix",
