@@ -3,7 +3,7 @@ import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
-import { isHidden } from "../Utils/isHidden";
+import { isHidden, symbolAtNode } from "../Utils";
 
 export class FunctionNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
@@ -35,7 +35,8 @@ export class FunctionNodeParser implements SubNodeParser {
 
     private getParameters(node: ts.FunctionDeclaration, context: Context): FunctionParameter[] {
         return node.parameters.filter(ts.isParameter).reduce((result: FunctionParameter[], parameterNode) => {
-            const parameterSymbol: ts.Symbol = (parameterNode as any).symbol;
+            const parameterSymbol = symbolAtNode(parameterNode);
+            if (!parameterSymbol) return result;
             if (isHidden(parameterSymbol)) {
                 return result;
             }

@@ -3,6 +3,7 @@ import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { ArrayType } from "../Type/ArrayType";
 import { BaseType } from "../Type/BaseType";
+import { UnknownTypeReference } from "../Error/UnknownTypeReference";
 
 const invlidTypes: { [index: number]: boolean } = {
     [ts.SyntaxKind.ModuleDeclaration]: true,
@@ -20,12 +21,7 @@ export class TypeReferenceNodeParser implements SubNodeParser {
         const typeSymbol = this.typeChecker.getSymbolAtLocation(node.typeName)!;
 
         if (!typeSymbol) {
-            console.error(
-                `TypeReferenceNodeParser => Unable to parse node '${node
-                    .getFullText()
-                    .trim()}', are you using global types?`
-            );
-            return;
+            throw new UnknownTypeReference(node, `are you using global types?`);
         }
 
         if (typeSymbol.flags & ts.SymbolFlags.Alias) {
