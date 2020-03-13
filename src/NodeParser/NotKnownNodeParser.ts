@@ -6,7 +6,7 @@ import { UnknownType } from "../Type/UnknownType";
 import { symbolAtNode } from "../Utils/symbolAtNode";
 import { Config } from "../Config";
 
-export class NotKnownTypeParser implements SubNodeParser {
+export class NotKnownNodeParser implements SubNodeParser {
     public constructor(private config: Config) {}
     public supportsNode(node: ts.TypeQueryNode | ts.KeywordTypeNode): boolean {
         if (!this.config.handleUnknownTypes) return false;

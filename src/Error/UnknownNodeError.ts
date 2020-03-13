@@ -8,7 +8,7 @@ export class UnknownNodeError extends BaseError {
                 node.getSourceFile().fileName
             }:${node.getStart()}\nparent=${node.parent.getFullText().trim()}\nparent sourceFile=${
                 node.parent.getSourceFile().fileName
-            }:${node.parent.getStart()}
+            }:${node.parent.getStart()}\n to suppress this error set handleUnknownTypes option to true.
             `
         );
     }
