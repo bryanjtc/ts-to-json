@@ -16,7 +16,8 @@ function assertSchema(name: string, type: string, message: string) {
             expose: "export",
             topRef: true,
             jsDoc: "none",
-            skipTypeCheck: false,
+            skipTypeCheck: true,
+            skipFiles: ["lib.dom.d.ts"],
         };
 
         const program: ts.Program = createProgram(config);
