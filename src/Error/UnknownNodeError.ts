@@ -3,7 +3,14 @@ import { BaseError } from "./BaseError";
 
 export class UnknownNodeError extends BaseError {
     public constructor(private node: ts.Node, private reference?: ts.Node) {
-        super(`Unknown node "${node.getFullText()}`);
+        super(
+            `Unknown node "${node.getFullText()}"\n kind=${node.kind}\nsource file=${
+                node.getSourceFile().fileName
+            }:${node.getStart()}\nparent=${node.parent.getFullText().trim()}\nparent sourceFile=${
+                node.parent.getSourceFile().fileName
+            }:${node.parent.getStart()}
+            `
+        );
     }
 
     public getNode(): ts.Node {
