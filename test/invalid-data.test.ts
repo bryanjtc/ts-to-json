@@ -36,4 +36,12 @@ describe("invalid-data", () => {
     it("literal-array-type", assertSchema("literal-array-type", "MyType", `Unknown node " ["abc", "def"]`));
     it("literal-object-type", assertSchema("literal-object-type", "MyType", `Unknown node " {abc: "def"}`));
     it("duplicates", assertSchema("duplicates", "MyType", `Type "A" has multiple definitions.`));
+    it(
+        "global-types",
+        assertSchema(
+            "global-types",
+            "MyType",
+            `Unknown type reference "GlobalTypes.MyType", are you using global types?`
+        )
+    );
 });

@@ -28,6 +28,7 @@ function assertSchema(
             skipTypeCheck: true,
             skipFiles: ["lib.dom.d.ts"],
             setObjectIdentifier: true,
+            handleUnknownTypes: true,
         };
 
         const program: ts.Program = createProgram(config);

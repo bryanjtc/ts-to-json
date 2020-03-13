@@ -54,7 +54,6 @@
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
-    "jest-mock-console": "^1.0.0",
     "prettier": "^1.19.1",
     "source-map-support": "~0.5.16",
     "ts-jest": "^25.2.1",
@@ -70,6 +69,7 @@
     "format": "yarn lint --fix",
     "test": "jest test/ --verbose",
     "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
+    "test:current": "set FAST_TEST=1 && jest  --verbose",
     "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
     "run": "ts-node ts-json-schema-generator.ts"
   },

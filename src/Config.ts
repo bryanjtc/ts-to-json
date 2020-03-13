@@ -12,6 +12,7 @@ export interface Config {
     extraTags?: string[];
     setObjectIdentifier?: boolean;
     maxDepth?: number;
+    handleUnknownTypes?: boolean;
     /*
     types within the file wont be processed, instead name of type will be returned.
     like HTMLElement in lib.dom.d.ts file

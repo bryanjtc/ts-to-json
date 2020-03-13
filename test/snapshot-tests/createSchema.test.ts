@@ -20,6 +20,7 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
             jsDoc: "none",
             skipTypeCheck: true,
             skipFiles: ["lib.dom.d.ts"],
+            handleUnknownTypes: true,
             ...options,
         };
 

@@ -135,7 +135,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
 
         .addNodeParser(new SkippedFileTypeParser(config))
         // the following parser must always be last
-        .addNodeParser(new NotKnownTypeParser());
+        .addNodeParser(new NotKnownTypeParser(config));
 
     return withTopRef(chainNodeParser);
 }

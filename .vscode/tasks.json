@@ -18,7 +18,7 @@
     {
       "label": "test current file",
       "type": "shell",
-      "command": "jest ${fileBasename}"
+      "command": "npm run test:current ${fileBasename}"
     },
     {
       "label": "test current file no cache",
