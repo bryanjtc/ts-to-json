@@ -15,7 +15,6 @@ import { getKey } from "../Utils/nodeKey";
 import { preserveAnnotation } from "../Utils/preserveAnnotation";
 import { removeUndefined } from "../Utils/removeUndefined";
 import { notUndefined } from "../Utils/notUndefined";
-import { getNodeInfo } from "../Error/utils";
 
 export class MappedTypeNodeParser implements SubNodeParser {
     public constructor(private childNodeParser: NodeParser) {}
@@ -55,7 +54,8 @@ export class MappedTypeNodeParser implements SubNodeParser {
                 // eslint-disable-next-line max-len
                 `Unexpected key type "${
                     constraintType ? constraintType.getId() : constraintType
-                }" for type "${node.getText()}" (expected "UnionType" or "StringType") node ${getNodeInfo(node)}`
+                }" for type "${node.getText()}" (expected "UnionType" or "StringType")`,
+                node
             );
         }
     }

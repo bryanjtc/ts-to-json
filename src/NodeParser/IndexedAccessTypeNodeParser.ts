@@ -30,7 +30,8 @@ export class IndexedAccessTypeNodeParser implements SubNodeParser {
         const propertyTypes = indexTypes.map(type => {
             if (!(type instanceof LiteralType || type instanceof StringType || type instanceof NumberType)) {
                 throw new LogicError(
-                    `Unexpected type "${type.getId()}" (expected "LiteralType" or "StringType" or "NumberType")`
+                    `Unexpected type "${type.getId()}" (expected "LiteralType" or "StringType" or "NumberType")`,
+                    node
                 );
             }
 
@@ -39,9 +40,9 @@ export class IndexedAccessTypeNodeParser implements SubNodeParser {
                 if (type instanceof NumberType && objectType instanceof TupleType) {
                     return new UnionType(objectType.getTypes());
                 } else if (type instanceof LiteralType) {
-                    throw new LogicError(`Invalid index "${type.getValue()}" in type "${objectType.getId()}"`);
+                    throw new LogicError(`Invalid index "${type.getValue()}" in type "${objectType.getId()}"`, node);
                 } else {
-                    throw new LogicError(`No additional properties in type "${objectType.getId()}"`);
+                    throw new LogicError(`No additional properties in type "${objectType.getId()}"`, node);
                 }
             }
 

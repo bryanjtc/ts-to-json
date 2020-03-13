@@ -87,12 +87,12 @@ describe("createSchema", () => {
             processTypes: ["ExternalProps"],
         })
     );
-    it(
-        "debug",
-        assertSchema("debug", {
-            type: "MyType",
-            skipFiles: ["lib.dom.d.ts", "@types/react/index.d.ts"],
-            handleUnknownTypes: true,
-        })
-    );
+    // it(
+    //     "debug",
+    //     assertSchema("debug", {
+    //         type: "MyType",
+    //         skipFiles: ["lib.dom.d.ts", "@types/react/index.d.ts"],
+    //         handleUnknownTypes: true,
+    //     })
+    // );
 });

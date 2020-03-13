@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import { Context } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
+import { UnknownType } from "../Type/UnknownType";
 import { StaticType } from "../Type/StaticType";
 import { symbolAtNode } from "../Utils/symbolAtNode";
 import { Config } from "../../src/Config";
@@ -20,6 +21,7 @@ export class SkippedFileTypeParser implements SubNodeParser {
     }
     public createType(node: ts.Node, context: Context): BaseType {
         const symbol = symbolAtNode(node)!;
-        return new StaticType(symbol.name);
+        if (symbol) return new StaticType(symbol.name);
+        return new UnknownType();
     }
 }

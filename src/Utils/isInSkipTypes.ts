@@ -15,5 +15,8 @@ export const isInSkipTypes = (node: ts.Node, config: Config) => {
         if (config.skipTypes.includes(localSymbol.name)) return true;
     }
 
+    if (config.skipTypes.includes(node.getFullText().trim())) return true;
+    if (config.skipTypes.includes(node.getText().trim())) return true;
+
     return false;
 };

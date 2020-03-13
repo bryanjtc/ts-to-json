@@ -1,8 +1,12 @@
 import * as ts from "typescript";
+import { getNodeName } from "../../Utils";
 
-export const getNodeInfo = (node: ts.Node) => {
+export const getNodeInfo = (node?: ts.Node) => {
+    if (!node) return "";
     const infos: string[] = [];
-    infos.push(`\ntext=${node.getText().trim()}`);
+    const nodeName = getNodeName(node);
+    infos.push(`\nsymbol name=${nodeName}`);
+    infos.push(`text=${node.getText().trim()}`);
     infos.push(`fullText=${node.getFullText().trim()}`);
     infos.push(`kind=${node.kind}`);
     infos.push(`source file=${node.getSourceFile().fileName}:${node.parent.getStart()}`);

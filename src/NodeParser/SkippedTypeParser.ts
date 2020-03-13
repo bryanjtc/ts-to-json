@@ -7,6 +7,7 @@ import { symbolAtNode } from "../Utils/symbolAtNode";
 import { Config } from "../../src/Config";
 import { isInSkipTypes } from "../Utils/isInSkipTypes";
 import { isInProcessTypes } from "../Utils/isInProcessTypes";
+import { UnknownType } from "../Type/UnknownType";
 
 /*
     To skip processing types specified in skipTypes options
@@ -16,12 +17,19 @@ import { isInProcessTypes } from "../Utils/isInProcessTypes";
 export class SkippedTypeParser implements SubNodeParser {
     constructor(private config: Config) {}
     public supportsNode(node: ts.Node): boolean {
+        const text = node.getText().trim();
+        if (text === "infer RefType") {
+            console.log();
+        }
         if (isInProcessTypes(node, this.config)) return false;
-        if (isInSkipTypes(node, this.config)) return true;
+        if (isInSkipTypes(node, this.config)) {
+            return true;
+        }
         return false;
     }
     public createType(node: ts.Node, context: Context): BaseType {
         const symbol = symbolAtNode(node)!;
-        return new StaticType(symbol.name);
+        if (symbol) return new StaticType(symbol.name);
+        return new UnknownType();
     }
 }
