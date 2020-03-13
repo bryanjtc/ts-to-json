@@ -14,7 +14,7 @@
     "suppressImplicitAnyIndexErrors": false,
     "strictNullChecks": true,
     "preserveConstEnums": true,
-    "removeComments": true,
+    "removeComments": false,
     "noLib": false,
     "sourceMap": true,
     "pretty": true,
@@ -25,5 +25,5 @@
   },
   "files": ["ts-json-schema-generator.ts", "index.ts"],
   "include": ["./src/**/*.ts", "./factory/**/*.ts"],
-  "exclude": ["dist"]
+  "exclude": ["./test/**/*"]
 }

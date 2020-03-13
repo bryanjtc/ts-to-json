@@ -13,18 +13,18 @@ export interface Config {
     setObjectIdentifier?: boolean;
     maxDepth?: number;
     handleUnknownTypes?: boolean;
-    /*
-    types within the file wont be processed, instead name of type will be returned.
-    like HTMLElement in lib.dom.d.ts file
+    /**
+        types within the file wont be processed, instead name of type will be returned.
+        like HTMLElement in lib.dom.d.ts file
     */
     skipFiles?: string[];
-    /*
-    type names within the list wont be proceeded instead name of the type will be returned.
-    like HTMLElement will stay  HTMLElement
+    /**
+        type names within the list wont be proceeded instead name of the type will be returned.
+        like HTMLElement will stay  HTMLElement
     */
     skipTypes?: string[];
-    /*
-    type names within the list must be processed even if its in skipFiles or skipTypes list
+    /**
+        type names within the list must be processed even if its in skipFiles or skipTypes list
     */
     processTypes?: string[];
 }
