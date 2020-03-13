@@ -8,11 +8,19 @@ import { Config } from "../Config";
 
 export class NotKnownTypeParser implements SubNodeParser {
     public constructor(private config: Config) {}
-    public supportsNode(node: ts.TypeQueryNode): boolean {
+    public supportsNode(node: ts.TypeQueryNode | ts.KeywordTypeNode): boolean {
         if (!this.config.handleUnknownTypes) return false;
+
+        if (node.kind === ts.SyntaxKind.SymbolKeyword) return true;
+
+        if (!ts.isTypeQueryNode(node)) return false;
+
         if (node.exprName) return true;
+
         const symbol = symbolAtNode(node);
+
         if (!symbol) return false;
+
         return true;
     }
     public createType(node: ts.TypeQueryNode, context: Context): BaseType {
