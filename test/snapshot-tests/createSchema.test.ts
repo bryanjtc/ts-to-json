@@ -19,7 +19,7 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
             topRef: true,
             jsDoc: "none",
             skipTypeCheck: true,
-            skipFiles: ["lib.dom.d.ts"],
+            skipParseTypeInFiles: ["lib.dom.d.ts"],
             ...options,
         };
 
@@ -69,29 +69,29 @@ describe("createSchema", () => {
         assertSchema("max-depth-function-param-ref", { maxDepth: 3, type: "MyFunction" })
     );
     it("circular-ref-union", assertSchema("circular-ref-union", { type: "MyType", expose: "all" }));
-    it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipFiles: ["external-props.ts"] }));
-    it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipTypes: ["ExternalProps"] }));
+    it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipParseTypeInFiles: ["external-props.ts"] }));
+    it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipParseTypes: ["ExternalProps"] }));
     it(
         "should parse type even if type is in skipFiles list",
-        assertSchema("skipFiles-with-processTypes", {
+        assertSchema("skipFiles-with-forceToParseTypes", {
             type: "MyType",
-            skipFiles: ["external-props.ts"],
-            processTypes: ["ExternalProps"],
+            skipParseTypeInFiles: ["external-props.ts"],
+            forceToParseTypes: ["ExternalProps"],
         })
     );
     it(
         "should parse type even if type is in skipTypes list",
-        assertSchema("skipTypes-with-processTypes", {
+        assertSchema("skipTypes-with-forceToParseTypes", {
             type: "MyType",
-            skipTypes: ["ExternalProps"],
-            processTypes: ["ExternalProps"],
+            skipParseTypes: ["ExternalProps"],
+            forceToParseTypes: ["ExternalProps"],
         })
     );
     // it(
     //     "debug",
     //     assertSchema("debug", {
     //         type: "MyType",
-    //         skipFiles: ["lib.dom.d.ts", "@types/react/index.d.ts"],
+    //         skipParseTypeInFiles: ["lib.dom.d.ts", "@types/react/index.d.ts"],
     //         handleUnknownTypes: true,
     //     })
     // );

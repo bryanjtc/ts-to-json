@@ -4,8 +4,8 @@ import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { UnknownType } from "../Type/UnknownType";
 import { StaticType } from "../Type/StaticType";
-import { symbolAtNode } from "../Utils/symbolAtNode";
 import { Config } from "../../src/Config";
+import { getNodeName, isInSkipParseFiles } from "../Utils";
 
 /*
     To skip processing type in a file expansive types like HTMLElement
@@ -15,13 +15,14 @@ import { Config } from "../../src/Config";
 export class SkippedFileTypeParser implements SubNodeParser {
     constructor(private config: Config) {}
     public supportsNode(node: ts.Node): boolean {
-        if (!this.config.skipFiles || !this.config.skipFiles.length) return false;
-        const symbol = symbolAtNode(node);
-        return symbol ? true : false;
+        if (isInSkipParseFiles(node, this.config)) {
+            return true;
+        }
+        return false;
     }
     public createType(node: ts.Node, context: Context): BaseType {
-        const symbol = symbolAtNode(node)!;
-        if (symbol) return new StaticType(symbol.name);
+        const name = getNodeName(node);
+        if (name) return new StaticType(name);
         return new UnknownType();
     }
 }

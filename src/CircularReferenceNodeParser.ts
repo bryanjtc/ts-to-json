@@ -3,9 +3,8 @@ import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { getKey } from "./Utils/nodeKey";
+import { getKey, isInSkipParseFiles, isInForceParseTypes } from "./Utils";
 import { Config } from "../src/Config";
-import { isInProcessTypes } from "./Utils/isInProcessTypes";
 
 export class CircularReferenceNodeParser implements SubNodeParser {
     private circular = new Map<string, BaseType>();
@@ -13,14 +12,12 @@ export class CircularReferenceNodeParser implements SubNodeParser {
     public constructor(private childNodeParser: SubNodeParser, private config: Config) {}
 
     public supportsNode(node: ts.Node): boolean {
-        if (this.config.skipFiles) {
-            const file = node.getSourceFile().fileName;
-            if (this.config.skipFiles.find(x => file.includes(x))) {
-                if (!isInProcessTypes(node, this.config)) {
-                    return false;
-                }
+        if (isInSkipParseFiles(node, this.config)) {
+            if (!isInForceParseTypes(node, this.config)) {
+                return false;
             }
         }
+
         return this.childNodeParser.supportsNode(node);
     }
     public createType(node: ts.Node, context: Context): BaseType | undefined {

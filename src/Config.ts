@@ -24,16 +24,16 @@ export interface Config {
      *   Types located in the file wont be processed, instead name of type will be returned.
      *   e.g. HTMLElement is located in lib.dom.d.ts file, hence the HTMLElement will be the type
      */
-    skipFiles?: string[];
+    skipParseTypeInFiles?: string[];
     /**
      *   Type names within the list wont be proceeded instead the name of the type will be returned.
      *   e.g. HTMLElement will stay HTMLElement
      */
-    skipTypes?: string[];
+    skipParseTypes?: string[];
     /**
      *   Names within the list must be processed even if its in skipFiles or skipTypes list
      */
-    processTypes?: string[];
+    forceToParseTypes?: string[];
 }
 
 export const DEFAULT_CONFIG: Config = {
