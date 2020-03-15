@@ -1,0 +1,151 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "MyType1": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "type": "object",
+                    "properties": {
+                        "propB": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "propB"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "propA"
+            ],
+            "additionalProperties": false
+        },
+        "MyType2": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "type": "string"
+                },
+                "propB": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "propA",
+                "propB"
+            ],
+            "additionalProperties": false
+        },
+        "MyType3": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "type": "object",
+                    "properties": {
+                        "propB": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "propB"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "propA"
+            ],
+            "additionalProperties": false
+        },
+        "MyType4": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "type": "object",
+                    "properties": {
+                        "propB": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "propB"
+                    ],
+                    "additionalProperties": false
+                },
+                "propB": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "propA",
+                "propB"
+            ],
+            "additionalProperties": false
+        },
+        "MyType5": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "propA": {
+                    "type": "string",
+                    "properties": {
+                        "propB": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "propB"
+                    ],
+                    "additionalProperties": false
+                },
+                "propB": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "propA",
+                "propB"
+            ]
+        },
+        "MyType6": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "$ref": "#/definitions/MyType1"
+                }
+            },
+            "required": [
+                "propA"
+            ],
+            "additionalProperties": false
+        },
+        "MyType7": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "type": "object",
+                    "properties": {
+                        "propB": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "propB"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "propA"
+            ],
+            "additionalProperties": false
+        }
+    }
+}
