@@ -133,17 +133,37 @@
                     "properties": {
                         "propB": {
                             "type": "object",
+                            "properties": {
+                                "propD": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "propD"
+                            ],
                             "additionalProperties": false
+                        },
+                        "propE": {
+                            "type": "string"
+                        },
+                        "propC": {
+                            "type": "string"
                         }
                     },
                     "required": [
-                        "propB"
+                        "propB",
+                        "propE",
+                        "propC"
                     ],
                     "additionalProperties": false
+                },
+                "propB": {
+                    "type": "string"
                 }
             },
             "required": [
-                "propA"
+                "propA",
+                "propB"
             ],
             "additionalProperties": false
         }
