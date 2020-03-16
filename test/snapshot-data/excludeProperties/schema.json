@@ -166,6 +166,69 @@
                 "propB"
             ],
             "additionalProperties": false
+        },
+        "MyType8": {
+            "type": "object",
+            "properties": {
+                "propA": {
+                    "type": "object",
+                    "properties": {
+                        "propB": {
+                            "type": "object",
+                            "properties": {
+                                "PropE": {
+                                    "$ref": "#/definitions/MyType8"
+                                }
+                            },
+                            "required": [
+                                "PropE"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "propF": {
+                            "$ref": "#/definitions/MyType8"
+                        },
+                        "propG": {
+                            "type": "string"
+                        },
+                        "propC": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "propB",
+                        "propF",
+                        "propG",
+                        "propC"
+                    ],
+                    "additionalProperties": false
+                },
+                "PropB": {
+                    "$ref": "#/definitions/MyType8"
+                },
+                "PropD": {
+                    "type": "object",
+                    "properties": {
+                        "PropE": {
+                            "$ref": "#/definitions/MyType8"
+                        },
+                        "propC": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "PropE",
+                        "propC"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "propA",
+                "PropB",
+                "PropD"
+            ],
+            "additionalProperties": false
         }
     }
 }
