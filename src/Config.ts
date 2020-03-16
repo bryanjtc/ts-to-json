@@ -34,6 +34,10 @@ export interface Config {
      *   Names within the list must be processed even if its in skipFiles or skipTypes list
      */
     forceToParseTypes?: string[];
+    /**
+     *   The generated schema will not have properties with name specified in the list
+     */
+    excludeProperties?: string[];
 }
 
 export const DEFAULT_CONFIG: Config = {

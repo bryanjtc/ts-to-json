@@ -36,7 +36,7 @@ export class SchemaGenerator {
         const rootTypeDefinition = rootTypes.length === 1 ? this.getRootTypeDefinition(rootTypes[0]) : {};
         const definitions: StringMap<Definition> = {};
         rootTypes.forEach(rootType => this.appendRootChildDefinitions(rootType, definitions));
-
+        delete definitions["*"];
         return { $schema: "http://json-schema.org/draft-07/schema#", ...rootTypeDefinition, definitions };
     }
 

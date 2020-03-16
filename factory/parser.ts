@@ -75,6 +75,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
     }
 
     chainNodeParser
+        // the following parser must stay at top
         .addNodeParser(new SkippedTypeParser(config))
         .addNodeParser(new HiddenNodeParser(typeChecker))
         .addNodeParser(new StringTypeNodeParser())
@@ -118,10 +119,12 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(withExpose(withJsDoc(new EnumNodeParser(typeChecker))))
         .addNodeParser(
             withCircular(
-                withExpose(withJsDoc(new InterfaceAndClassNodeParser(typeChecker, withJsDoc(chainNodeParser))))
+                withExpose(withJsDoc(new InterfaceAndClassNodeParser(typeChecker, withJsDoc(chainNodeParser), config)))
             )
         )
-        .addNodeParser(withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser(withJsDoc(chainNodeParser))))))
+        .addNodeParser(
+            withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser(withJsDoc(chainNodeParser), config))))
+        )
 
         .addNodeParser(
             withCircular(withExpose(withJsDoc(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))))

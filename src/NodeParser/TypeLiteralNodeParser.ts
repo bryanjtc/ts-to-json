@@ -5,10 +5,11 @@ import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { ReferenceType } from "../Type/ReferenceType";
 import { isNodeHidden } from "../Utils/isHidden";
-import { getKey } from "../Utils/nodeKey";
+import { getKey, isExcludedProp } from "../Utils";
+import { Config } from "../Config";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser) {}
+    public constructor(private childNodeParser: NodeParser, private config: Config) {}
 
     public supportsNode(node: ts.TypeLiteralNode): boolean {
         return node.kind === ts.SyntaxKind.TypeLiteral;
@@ -35,6 +36,7 @@ export class TypeLiteralNodeParser implements SubNodeParser {
         const properties = node.members
             .filter(ts.isPropertySignature)
             .filter(propertyNode => !isNodeHidden(propertyNode))
+            .filter(propertyNode => !isExcludedProp(propertyNode, this.config, context))
             .map(propertyNode => {
                 const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
                 const type = this.childNodeParser.createType(propertyNode.type!, context);

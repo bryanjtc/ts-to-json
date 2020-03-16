@@ -1,6 +1,7 @@
 import * as ts from "typescript";
 import { localSymbolAtNode, symbolAtNode } from "./symbolAtNode";
-export const getNodeName = (node: ts.Node): string | undefined => {
+export const getNodeName = (node?: ts.Node): string | undefined => {
+    if (!node) return;
     const symbol = symbolAtNode(node);
     if (symbol) return symbol?.name;
     const symbolLocale = localSymbolAtNode(node);
