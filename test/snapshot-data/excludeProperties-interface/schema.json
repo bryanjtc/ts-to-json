@@ -229,6 +229,98 @@
                 "d"
             ],
             "additionalProperties": false
+        },
+        "MyObject9": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        },
+                        "c": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "value2": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "c": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a",
+                "value2"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject10": {
+            "type": "object",
+            "properties": {
+                "without": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "without"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject11": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "number"
+                },
+                "b": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "a",
+                "b"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject12": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "a"
+            ],
+            "additionalProperties": false
         }
     }
 }
