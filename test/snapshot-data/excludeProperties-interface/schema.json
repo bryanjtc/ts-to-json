@@ -4,86 +4,86 @@
         "MyType1": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "type": "object",
                     "properties": {
-                        "propB": {
+                        "b": {
                             "type": "object",
                             "additionalProperties": false
                         }
                     },
                     "required": [
-                        "propB"
+                        "b"
                     ],
                     "additionalProperties": false
                 }
             },
             "required": [
-                "propA"
+                "a"
             ],
             "additionalProperties": false
         },
         "MyType2": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "type": "string"
                 },
-                "propB": {
+                "b": {
                     "type": "string"
                 }
             },
             "required": [
-                "propA",
-                "propB"
+                "a",
+                "b"
             ],
             "additionalProperties": false
         },
         "MyType3": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "type": "object",
                     "properties": {
-                        "propB": {
+                        "b": {
                             "type": "object",
                             "additionalProperties": false
                         }
                     },
                     "required": [
-                        "propB"
+                        "b"
                     ],
                     "additionalProperties": false
                 }
             },
             "required": [
-                "propA"
+                "a"
             ],
             "additionalProperties": false
         },
         "MyType4": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "type": "object",
                     "properties": {
-                        "propB": {
+                        "b": {
                             "type": "object",
                             "additionalProperties": false
                         }
                     },
                     "required": [
-                        "propB"
+                        "b"
                     ],
                     "additionalProperties": false
                 },
-                "propB": {
+                "b": {
                     "type": "string"
                 }
             },
             "required": [
-                "propA",
-                "propB"
+                "a",
+                "b"
             ],
             "additionalProperties": false
         },
@@ -91,142 +91,142 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "propA": {
+                "a": {
                     "type": "string",
                     "properties": {
-                        "propB": {
+                        "b": {
                             "type": "object",
                             "additionalProperties": false
                         }
                     },
                     "required": [
-                        "propB"
+                        "b"
                     ],
                     "additionalProperties": false
                 },
-                "propB": {
+                "b": {
                     "type": "string"
                 }
             },
             "required": [
-                "propA",
-                "propB"
+                "a",
+                "b"
             ]
         },
         "MyType6": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "$ref": "#/definitions/MyType1"
                 }
             },
             "required": [
-                "propA"
+                "a"
             ],
             "additionalProperties": false
         },
         "MyType7": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "type": "object",
                     "properties": {
-                        "propB": {
+                        "b": {
                             "type": "object",
                             "properties": {
-                                "propD": {
+                                "d": {
                                     "type": "string"
                                 }
                             },
                             "required": [
-                                "propD"
+                                "d"
                             ],
                             "additionalProperties": false
                         },
-                        "propE": {
+                        "e": {
                             "type": "string"
                         },
-                        "propC": {
+                        "c": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "propB",
-                        "propE",
-                        "propC"
+                        "b",
+                        "e",
+                        "c"
                     ],
                     "additionalProperties": false
                 },
-                "propB": {
+                "b": {
                     "type": "string"
                 }
             },
             "required": [
-                "propA",
-                "propB"
+                "a",
+                "b"
             ],
             "additionalProperties": false
         },
         "MyType8": {
             "type": "object",
             "properties": {
-                "propA": {
+                "a": {
                     "type": "object",
                     "properties": {
-                        "propB": {
+                        "b": {
                             "type": "object",
                             "properties": {
-                                "PropE": {
+                                "e": {
                                     "$ref": "#/definitions/MyType8"
                                 }
                             },
                             "required": [
-                                "PropE"
+                                "e"
                             ],
                             "additionalProperties": false
                         },
-                        "propF": {
+                        "f": {
                             "$ref": "#/definitions/MyType8"
                         },
-                        "propG": {
+                        "g": {
                             "type": "string"
                         },
-                        "propC": {
+                        "c": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "propB",
-                        "propF",
-                        "propG",
-                        "propC"
+                        "b",
+                        "f",
+                        "g",
+                        "c"
                     ],
                     "additionalProperties": false
                 },
-                "PropB": {
+                "b": {
                     "$ref": "#/definitions/MyType8"
                 },
-                "PropD": {
+                "d": {
                     "type": "object",
                     "properties": {
-                        "PropE": {
+                        "e": {
                             "$ref": "#/definitions/MyType8"
                         },
-                        "propC": {
+                        "c": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "PropE",
-                        "propC"
+                        "e",
+                        "c"
                     ],
                     "additionalProperties": false
                 }
             },
             "required": [
-                "propA",
-                "PropB",
-                "PropD"
+                "a",
+                "b",
+                "d"
             ],
             "additionalProperties": false
         }
