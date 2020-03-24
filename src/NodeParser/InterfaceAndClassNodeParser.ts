@@ -9,7 +9,6 @@ import { isNodeHidden } from "../Utils/isHidden";
 import { isPublic, isStatic } from "../Utils/modifiers";
 import { getKey } from "../Utils/nodeKey";
 import { notUndefined } from "../Utils/notUndefined";
-import { isExcludedProp } from "../Utils";
 import { Config } from "../Config";
 
 export class InterfaceAndClassNodeParser implements SubNodeParser {
@@ -116,7 +115,6 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         let hasRequiredNever = false;
 
         const properties = (node.members as ts.NodeArray<ts.TypeElement | ts.ClassElement>)
-            .filter(member => !isExcludedProp(member, this.config, context))
             .reduce((members, member) => {
                 if (ts.isConstructorDeclaration(member)) {
                     const params = member.parameters.filter(param =>

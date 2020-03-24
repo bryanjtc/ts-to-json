@@ -5,7 +5,7 @@ import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { ReferenceType } from "../Type/ReferenceType";
 import { isNodeHidden } from "../Utils/isHidden";
-import { getKey, isExcludedProp } from "../Utils";
+import { getKey } from "../Utils";
 import { Config } from "../Config";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
@@ -36,7 +36,6 @@ export class TypeLiteralNodeParser implements SubNodeParser {
         const properties = node.members
             .filter(ts.isPropertySignature)
             .filter(propertyNode => !isNodeHidden(propertyNode))
-            .filter(propertyNode => !isExcludedProp(propertyNode, this.config, context))
             .map(propertyNode => {
                 const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
                 const type = this.childNodeParser.createType(propertyNode.type!, context);

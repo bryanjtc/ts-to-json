@@ -10,11 +10,9 @@ export class Context {
     private parameters: string[] = [];
     private reference?: ts.Node;
     private defaultArgument = new Map<string, BaseType | undefined>();
-    private parentContext?: Context;
 
-    public constructor(reference?: ts.Node, parentContext?: Context) {
+    public constructor(reference?: ts.Node) {
         this.reference = reference;
-        this.parentContext = parentContext;
     }
 
     public pushArgument(argumentType: BaseType | undefined): void {
@@ -60,10 +58,6 @@ export class Context {
 
     public getReference(): ts.Node | undefined {
         return this.reference;
-    }
-
-    public getParentContext() {
-        return this.parentContext;
     }
 }
 
