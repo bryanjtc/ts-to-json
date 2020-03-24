@@ -82,7 +82,7 @@ export class ConditionalTypeNodeParser implements SubNodeParser {
         narrowedCheckType: BaseType,
         parentContext: Context
     ): Context {
-        const subContext = new Context(node);
+        const subContext = new Context(node, parentContext);
 
         // Set new narrowed type for check type parameter
         subContext.pushParameter(checkTypeParameterName);

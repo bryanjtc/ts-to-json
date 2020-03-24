@@ -4,13 +4,18 @@ import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { symbolAtNode } from "./Utils/symbolAtNode";
+import { symbolAtNode, shouldExtendKey, ignoreLimits } from "./Utils";
+import { Config } from "../src/Config";
+
+// const isDirectChildOfTopLevelType  = (node:ts.Node)=>{
+//     if(!isTopLevelDeclarations(node.parent))return trie
+// };
 
 export class ExposeNodeParser implements SubNodeParser {
     public constructor(
         private typeChecker: ts.TypeChecker,
         private subNodeParser: SubNodeParser,
-        private expose: "all" | "none" | "export"
+        private config: Config
     ) {}
 
     public supportsNode(node: ts.Node): boolean {
@@ -23,18 +28,24 @@ export class ExposeNodeParser implements SubNodeParser {
         if (baseType === undefined) {
             return undefined;
         }
+        // const excluded = isExcludedProp(node, context, this.config);
 
         if (!this.isExportNode(node)) {
+            // if (isTopLevelDeclarations(node.parent) || [ts.SyntaxKind.TypeLiteral].includes(node.kind))
+
+            // if (!isChildOfTopLevelType(node, this.config.type))
+            // if ([ts.SyntaxKind.TypeLiteral].includes(node.kind)) {
             return baseType;
+            // }
         }
 
         return new DefinitionType(this.getDefinitionName(node, context), baseType);
     }
 
     private isExportNode(node: ts.Node): boolean {
-        if (this.expose === "all") {
+        if (this.config.expose === "all") {
             return node.kind !== ts.SyntaxKind.TypeLiteral;
-        } else if (this.expose === "none") {
+        } else if (this.config.expose === "none") {
             return false;
         }
 
@@ -43,7 +54,17 @@ export class ExposeNodeParser implements SubNodeParser {
     }
     private getDefinitionName(node: ts.Node, context: Context): string {
         const symbol = symbolAtNode(node)!;
-        const fullName = this.typeChecker.getFullyQualifiedName(symbol).replace(/^".*"\./, "");
+
+        let fullName = this.typeChecker.getFullyQualifiedName(symbol).replace(/^".*"\./, "");
+
+        /*
+            added '___' to identify original type,
+            it should contain all the property regardless of restriction options like excludeProperties.
+        */
+        if (shouldExtendKey(context, this.config)) {
+            fullName = "___" + fullName;
+        }
+
         const argumentIds = context.getArguments().map(arg => arg?.getName());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;

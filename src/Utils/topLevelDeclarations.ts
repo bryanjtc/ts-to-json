@@ -1,4 +1,5 @@
 import * as ts from "typescript";
+import { getNodeName } from ".";
 
 export const isTopLevelDeclarations = (node: ts.Node) => {
     switch (node.kind) {
@@ -14,10 +15,19 @@ export const isTopLevelDeclarations = (node: ts.Node) => {
             return false;
     }
 };
-export const findTopLevelDeclarations = (node: ts.Node): ts.Node | undefined => {
+export const getClosestTopLevelDeclarations = (node: ts.Node): ts.Node | undefined => {
     if (isTopLevelDeclarations(node)) return node;
     if (node.parent) {
-        return findTopLevelDeclarations(node.parent);
+        return getClosestTopLevelDeclarations(node.parent);
     }
     return undefined;
+};
+
+export const getClosestTopLevelDeclarationName = (node?: ts.Node) => {
+    if (!node) return;
+    const topNode = getClosestTopLevelDeclarations(node);
+    if (topNode) {
+        return getNodeName(topNode);
+    }
+    return;
 };

@@ -25,7 +25,7 @@ export class TypeofNodeParser implements SubNodeParser {
         if (symbol.flags & ts.SymbolFlags.Alias) {
             symbol = this.typeChecker.getAliasedSymbol(symbol);
         }
-
+        context.setOperator("typeof");
         const valueDec = symbol.valueDeclaration;
         if (ts.isEnumDeclaration(valueDec)) {
             return this.createObjectFromEnum(valueDec, context, reference);

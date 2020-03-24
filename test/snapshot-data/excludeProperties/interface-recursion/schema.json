@@ -1,0 +1,113 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/MyType",
+    "definitions": {
+        "MyType": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "b": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "d": {
+                    "type": "object",
+                    "properties": {
+                        "e": {
+                            "$ref": "#/definitions/___MyType"
+                        },
+                        "c": {
+                            "type": "string"
+                        },
+                        "f": {
+                            "type": "object",
+                            "properties": {
+                                "e": {
+                                    "$ref": "#/definitions/___MyType"
+                                },
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "e",
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "e",
+                        "c",
+                        "f"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a",
+                "b",
+                "d"
+            ],
+            "additionalProperties": false
+        },
+        "___MyType": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "b": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "c": {
+                    "type": "string"
+                },
+                "d": {
+                    "$ref": "#/definitions/structure-161428024-77-193-161428024-70-194-161428024-0-196-161428024-0-197"
+                }
+            },
+            "required": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "additionalProperties": false
+        },
+        "structure-161428024-77-193-161428024-70-194-161428024-0-196-161428024-0-197": {
+            "type": "object",
+            "properties": {
+                "e": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "c": {
+                    "type": "string"
+                },
+                "f": {
+                    "type": "object",
+                    "properties": {
+                        "e": {
+                            "$ref": "#/definitions/___MyType"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "e",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "e",
+                "c",
+                "f"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

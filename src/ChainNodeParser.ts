@@ -4,11 +4,17 @@ import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
+import { isChildOfTypeReference, ignoreLimits } from "./Utils";
+import { Config } from "./Config";
 
 export class ChainNodeParser implements SubNodeParser {
     private typeCaches = new WeakMap<ts.Node, Map<string, BaseType | undefined>>();
 
-    public constructor(private typeChecker: ts.TypeChecker, private nodeParsers: SubNodeParser[]) {}
+    public constructor(
+        private typeChecker: ts.TypeChecker,
+        private nodeParsers: SubNodeParser[],
+        private config: Config
+    ) {}
 
     public addNodeParser(nodeParser: SubNodeParser): this {
         this.nodeParsers.push(nodeParser);
@@ -25,10 +31,11 @@ export class ChainNodeParser implements SubNodeParser {
             typeCache = new Map<string, BaseType | undefined>();
             this.typeCaches.set(node, typeCache);
         }
-        const contextCacheKey = context.getCacheKey();
+        const contextCacheKey = context.getCacheKey() + (ignoreLimits(context) ? "" : "-1");
         let type = typeCache.get(contextCacheKey);
-        if (!type) {
-            type = this.getNodeParser(node, context).createType(node, context, reference);
+        if (!type || isChildOfTypeReference(context, this.config.type)) {
+            const nodeParser = this.getNodeParser(node, context);
+            type = nodeParser.createType(node, context, reference);
             if (!(type instanceof ReferenceType)) {
                 typeCache.set(contextCacheKey, type);
             }
@@ -38,7 +45,7 @@ export class ChainNodeParser implements SubNodeParser {
 
     private getNodeParser(node: ts.Node, context: Context): SubNodeParser {
         for (const nodeParser of this.nodeParsers) {
-            if (nodeParser.supportsNode(node)) {
+            if (nodeParser.supportsNode(node, context)) {
                 return nodeParser;
             }
         }

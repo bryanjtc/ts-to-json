@@ -4,6 +4,8 @@ import { SubNodeParser } from "../SubNodeParser";
 import { ArrayType } from "../Type/ArrayType";
 import { BaseType } from "../Type/BaseType";
 import { UnknownTypeReference } from "../Error/UnknownTypeReference";
+import { Config } from "../Config";
+import { ignoreLimits } from "../Utils";
 
 const invlidTypes: { [index: number]: boolean } = {
     [ts.SyntaxKind.ModuleDeclaration]: true,
@@ -11,7 +13,11 @@ const invlidTypes: { [index: number]: boolean } = {
 };
 
 export class TypeReferenceNodeParser implements SubNodeParser {
-    public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
+    public constructor(
+        private typeChecker: ts.TypeChecker,
+        private childNodeParser: NodeParser,
+        private config: Config
+    ) {}
 
     public supportsNode(node: ts.TypeReferenceNode): boolean {
         return node.kind === ts.SyntaxKind.TypeReference;
@@ -47,7 +53,12 @@ export class TypeReferenceNodeParser implements SubNodeParser {
     }
 
     private createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
+        // const nodeTopLevelName = getTypeReferenceNodeName(node);
+        // const refTopLevelName = getTypeReferenceNodeName(parentContext.getReference());
+
         const subContext = new Context(node, parentContext);
+        subContext.ignoreLimits = parentContext.ignoreLimits;
+        // subContext.isRecursion = nodeTopLevelName === refTopLevelName;
         if (node.typeArguments && node.typeArguments.length) {
             for (const typeArg of node.typeArguments) {
                 const type = this.childNodeParser.createType(typeArg, parentContext);

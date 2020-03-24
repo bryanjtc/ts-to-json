@@ -1,0 +1,314 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/MyType",
+    "definitions": {
+        "MyType": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "n": {
+                                    "$ref": "#/definitions/___MyType"
+                                },
+                                "o": {
+                                    "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                                },
+                                "d": {
+                                    "type": "object",
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": [
+                                "n",
+                                "o",
+                                "d"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "k": {
+                            "$ref": "#/definitions/___MyType"
+                        },
+                        "l": {
+                            "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                        },
+                        "m": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "k",
+                        "l",
+                        "m",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "b": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "e": {
+                    "type": "object",
+                    "properties": {
+                        "f": {
+                            "$ref": "#/definitions/___MyType"
+                        },
+                        "g": {
+                            "type": "object",
+                            "properties": {
+                                "b": {
+                                    "type": "object",
+                                    "properties": {
+                                        "c": {
+                                            "type": "string"
+                                        },
+                                        "n": {
+                                            "$ref": "#/definitions/___MyType"
+                                        },
+                                        "o": {
+                                            "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                                        },
+                                        "d": {
+                                            "type": "object",
+                                            "properties": {
+                                                "e": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "e"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "c",
+                                        "n",
+                                        "o",
+                                        "d"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "k": {
+                                    "$ref": "#/definitions/___MyType"
+                                },
+                                "l": {
+                                    "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                                },
+                                "m": {
+                                    "type": "string"
+                                },
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "b",
+                                "k",
+                                "l",
+                                "m",
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "h": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "f",
+                        "g",
+                        "h",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "j": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b",
+                "e",
+                "j"
+            ],
+            "additionalProperties": false
+        },
+        "___MyType": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "c": {
+                                    "type": "string"
+                                },
+                                "n": {
+                                    "$ref": "#/definitions/___MyType"
+                                },
+                                "o": {
+                                    "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                                },
+                                "d": {
+                                    "type": "object",
+                                    "properties": {
+                                        "e": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "e"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": [
+                                "c",
+                                "n",
+                                "o",
+                                "d"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "k": {
+                            "$ref": "#/definitions/___MyType"
+                        },
+                        "l": {
+                            "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                        },
+                        "m": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "k",
+                        "l",
+                        "m",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "b": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "e": {
+                    "$ref": "#/definitions/structure-1211033549-63-148-1211033549-56-149-1211033549-0-181-1211033549-0-386"
+                },
+                "j": {
+                    "type": "string"
+                },
+                "c": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b",
+                "e",
+                "j",
+                "c"
+            ],
+            "additionalProperties": false
+        },
+        "interface-1211033549-181-385-1211033549-0-386": {
+            "type": "object",
+            "properties": {
+                "b": {
+                    "type": "object",
+                    "properties": {
+                        "c": {
+                            "type": "string"
+                        },
+                        "n": {
+                            "$ref": "#/definitions/___MyType"
+                        },
+                        "o": {
+                            "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                        },
+                        "d": {
+                            "type": "object",
+                            "properties": {
+                                "e": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "e"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "c",
+                        "n",
+                        "o",
+                        "d"
+                    ],
+                    "additionalProperties": false
+                },
+                "k": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "l": {
+                    "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                },
+                "m": {
+                    "type": "string"
+                },
+                "c": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "b",
+                "k",
+                "l",
+                "m",
+                "c"
+            ],
+            "additionalProperties": false
+        },
+        "structure-1211033549-63-148-1211033549-56-149-1211033549-0-181-1211033549-0-386": {
+            "type": "object",
+            "properties": {
+                "f": {
+                    "$ref": "#/definitions/___MyType"
+                },
+                "g": {
+                    "$ref": "#/definitions/interface-1211033549-181-385-1211033549-0-386"
+                },
+                "h": {
+                    "type": "string"
+                },
+                "c": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "f",
+                "g",
+                "h",
+                "c"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import * as ts from "typescript";
 import { NodeParser } from "./NodeParser";
+import { Context } from "./NodeParser";
 
 export interface SubNodeParser extends NodeParser {
-    supportsNode(node: ts.Node): boolean;
+    supportsNode(node: ts.Node, context?: Context): boolean;
 }

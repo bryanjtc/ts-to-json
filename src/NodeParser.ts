@@ -3,7 +3,7 @@ import * as ts from "typescript";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
 import { getKey } from "./Utils/nodeKey";
-
+type Operators = "typeof";
 export class Context {
     private cacheKey: string | null = null;
     private arguments: (BaseType | undefined)[] = [];
@@ -11,6 +11,9 @@ export class Context {
     private reference?: ts.Node;
     private defaultArgument = new Map<string, BaseType | undefined>();
     private parentContext?: Context;
+    private operator?: Operators;
+    public isRecursion = false;
+    public ignoreLimits = false;
 
     public constructor(reference?: ts.Node, parentContext?: Context) {
         this.reference = reference;
@@ -64,6 +67,22 @@ export class Context {
 
     public getParentContext() {
         return this.parentContext;
+    }
+
+    public hasParentContext() {
+        return this.parentContext !== undefined;
+    }
+
+    public setOperator(val: Operators) {
+        this.cacheKey = `${this.cacheKey}-${val}`;
+        this.operator = val;
+    }
+    public getOperator(): Operators | undefined {
+        return this.operator;
+    }
+    public hasOperator(val: Operators) {
+        if (!this.operator) return false;
+        return this.operator === val;
     }
 }
 
