@@ -49,14 +49,13 @@ import { TopRefNodeParser } from "../src/TopRefNodeParser";
 import { SkippedFileTypeParser } from "../src/NodeParser/SkippedFileTypeParser";
 import { SkippedTypeParser } from "../src/NodeParser/SkippedTypeParser";
 import { NotKnownNodeParser } from "../src/NodeParser/NotKnownNodeParser";
-import { RecursionTypeParser } from "../src/RecursionTypeParser";
 
 export function createParser(program: ts.Program, config: Config): NodeParser {
     const typeChecker = program.getTypeChecker();
-    const chainNodeParser = new ChainNodeParser(typeChecker, [], config);
+    const chainNodeParser = new ChainNodeParser(typeChecker, []);
 
     function withExpose(nodeParser: SubNodeParser): SubNodeParser {
-        return new ExposeNodeParser(typeChecker, nodeParser, config);
+        return new ExposeNodeParser(typeChecker, nodeParser, config.expose);
     }
     function withTopRef(nodeParser: NodeParser): NodeParser {
         return new TopRefNodeParser(chainNodeParser, config.type!, config.topRef);
@@ -72,8 +71,6 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         }
     }
     function withCircular(nodeParser: SubNodeParser): SubNodeParser {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
         return new CircularReferenceNodeParser(nodeParser, config);
     }
 
@@ -81,7 +78,6 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         // the following parser must stay at top
         .addNodeParser(new SkippedTypeParser(config))
         .addNodeParser(new HiddenNodeParser(typeChecker))
-        .addNodeParser(new RecursionTypeParser(typeChecker, chainNodeParser, config))
         .addNodeParser(new StringTypeNodeParser())
         .addNodeParser(new NumberTypeNodeParser())
         .addNodeParser(new BooleanTypeNodeParser())
@@ -102,7 +98,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new LiteralNodeParser(chainNodeParser))
         .addNodeParser(new ParenthesizedNodeParser(chainNodeParser))
 
-        .addNodeParser(new TypeReferenceNodeParser(typeChecker, chainNodeParser, config))
+        .addNodeParser(new TypeReferenceNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new ExpressionWithTypeArgumentsNodeParser(typeChecker, chainNodeParser))
 
         .addNodeParser(new IndexedAccessTypeNodeParser(chainNodeParser))
@@ -111,7 +107,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new ConditionalTypeNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new TypeOperatorNodeParser(chainNodeParser))
 
-        .addNodeParser(new UnionNodeParser(typeChecker, chainNodeParser, config))
+        .addNodeParser(new UnionNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new IntersectionNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new TupleNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new OptionalTypeNodeParser(chainNodeParser))

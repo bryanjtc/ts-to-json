@@ -9,7 +9,7 @@ import { isNodeHidden } from "../Utils/isHidden";
 import { isPublic, isStatic } from "../Utils/modifiers";
 import { getKey } from "../Utils/nodeKey";
 import { notUndefined } from "../Utils/notUndefined";
-import { isExcludedProp, extendKey, getNodeName } from "../Utils";
+import { isExcludedProp } from "../Utils";
 import { Config } from "../Config";
 
 export class InterfaceAndClassNodeParser implements SubNodeParser {
@@ -116,8 +116,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         let hasRequiredNever = false;
 
         const properties = (node.members as ts.NodeArray<ts.TypeElement | ts.ClassElement>)
-            .filter(member => !isExcludedProp(member, context, this.config))
-            // .sort((a,b) => a.)
+            .filter(member => !isExcludedProp(member, this.config, context))
             .reduce((members, member) => {
                 if (ts.isConstructorDeclaration(member)) {
                     const params = member.parameters.filter(param =>
@@ -130,10 +129,14 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
                 return members;
             }, [] as (ts.PropertyDeclaration | ts.PropertySignature | ts.ParameterPropertyDeclaration)[])
             .filter(member => isPublic(member) && !isStatic(member) && member.type && !isNodeHidden(member))
-            .map(member => {
-                const parser = this.childNodeParser.createType(member.type!, context);
-                return new ObjectProperty(member.name.getText(), parser, !member.questionToken);
-            })
+            .map(
+                member =>
+                    new ObjectProperty(
+                        member.name.getText(),
+                        this.childNodeParser.createType(member.type!, context),
+                        !member.questionToken
+                    )
+            )
             .filter(prop => {
                 if (prop.isRequired() && prop.getType() === undefined) {
                     hasRequiredNever = true;
@@ -162,8 +165,6 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
 
     private getTypeId(node: ts.Node, context: Context): string {
         const nodeType = ts.isInterfaceDeclaration(node) ? "interface" : "class";
-        const sameAsConfigType = getNodeName(node) === this.config.type;
-        // return `${nodeType}-${getKey(node, context)}`;
-        return extendKey(`${nodeType}-${getKey(node, context)}`, node, context, this.config, !sameAsConfigType);
+        return `${nodeType}-${getKey(node, context)}`;
     }
 }
