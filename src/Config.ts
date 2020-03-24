@@ -38,6 +38,10 @@ export interface Config {
      *   The generated schema will not have properties with name specified in the list
      */
     excludeProperties?: string[];
+    /**
+     *   Will only generate schema for the property names included in the list
+     */
+    includeProperties?: string[];
 }
 
 export const DEFAULT_CONFIG: Config = {
