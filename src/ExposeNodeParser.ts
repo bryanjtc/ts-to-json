@@ -4,7 +4,7 @@ import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { symbolAtNode, shouldExtendKey, ignoreLimits } from "./Utils";
+import { symbolAtNode, getNodeName, shouldExtendKey } from "./Utils";
 import { Config } from "../src/Config";
 
 // const isDirectChildOfTopLevelType  = (node:ts.Node)=>{
@@ -46,7 +46,10 @@ export class ExposeNodeParser implements SubNodeParser {
         if (this.config.expose === "all") {
             return node.kind !== ts.SyntaxKind.TypeLiteral;
         } else if (this.config.expose === "none") {
-            return false;
+            const nodeName = getNodeName(node);
+            if (!this.config.type || nodeName !== this.config.type) {
+                return false;
+            }
         }
 
         const localSymbol: ts.Symbol = (node as any).localSymbol;
