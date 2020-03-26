@@ -13,6 +13,14 @@
                             "properties": {
                                 "x": {
                                     "type": "object",
+                                    "properties": {
+                                        "c": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "c"
+                                    ],
                                     "additionalProperties": false
                                 }
                             },
@@ -20,19 +28,11 @@
                                 "x"
                             ],
                             "additionalProperties": false
-                        },
-                        "d": {
-                            "type": "string"
                         }
                     },
                     "required": [
-                        "b",
-                        "d"
+                        "b"
                     ],
-                    "additionalProperties": false
-                },
-                "b": {
-                    "type": "object",
                     "additionalProperties": false
                 },
                 "c": {
@@ -41,7 +41,6 @@
             },
             "required": [
                 "a",
-                "b",
                 "c"
             ],
             "additionalProperties": false

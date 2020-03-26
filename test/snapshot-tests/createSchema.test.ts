@@ -45,9 +45,9 @@ function assertSchema(relativePath: string, options?: Options) {
             }schema.json`
         );
 
-        // if (!fs.existsSync(jsonFilePath)) {
-        fs.writeFileSync(jsonFilePath, JSON.stringify(schema, null, 4) + "\n", "utf8");
-        // }
+        if (!fs.existsSync(jsonFilePath)) {
+            fs.writeFileSync(jsonFilePath, JSON.stringify(schema, null, 4) + "\n", "utf8");
+        }
         // console.log(JSON.stringify(schema, null, 2));
 
         const expected: any = JSON.parse(fs.readFileSync(jsonFilePath, "utf8"));
@@ -98,39 +98,39 @@ describe("createSchema", () => {
     //     })
     // // );
 
-    const dirs = getRelativeDirectories(resolve(`${basePath}/excludeProperties`));
-    // dirs.forEach(dir => {
-    //     it(
-    //         "excludeProperties" + dir,
-    //         assertSchema("excludeProperties/" + dir, {
-    //             type: "MyObject",
-    //             handleUnknownTypes: true,
-    //             excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y"],
-    //             expose: "none",
-    //         })
-    //     );
-    // });
+    const dirs = getRelativeDirectories(resolve(`${basePath}/limit-options`));
+    dirs.forEach(dir => {
+        it(
+            "excludeProperties" + dir,
+            assertSchema("limit-options/" + dir, {
+                type: "MyObject",
+                handleUnknownTypes: true,
+                excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
+                expose: "none",
+            })
+        );
+    });
 
     // dirs.forEach(dir => {
     //     it(
     //         "includeProperties" + dir,
-    //         assertSchema("excludeProperties/" + dir, {
+    //         assertSchema("limit-options/" + dir, {
     //             type: "MyObject",
     //             handleUnknownTypes: true,
-    //             includeProperties: ["c", "a.b", "x.y"],
+    //             includeProperties: ["a.b", "c"],
     //             expose: "none",
     //             schemaExtension: "includeProperties",
     //         })
     //     );
     // });
 
-    it(
-        "excludeProperties-interface",
-        assertSchema("excludeProperties", {
-            type: "MyObject",
-            handleUnknownTypes: true,
-            excludeProperties: ["a.b.x.c", "b.c"],
-            expose: "none",
-        })
-    );
+    // it(
+    //     "excludeProperties-interface",
+    //     assertSchema("excludeProperties", {
+    //         type: "MyObject",
+    //         handleUnknownTypes: true,
+    //         includeProperties: ["a.b", "c"],
+    //         expose: "none",
+    //     })
+    // );
 });
