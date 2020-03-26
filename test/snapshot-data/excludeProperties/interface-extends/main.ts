@@ -1,4 +1,4 @@
-export interface MyType extends MyType1 {
+export interface MyObject extends MyType1 {
     b: string;
     c: string;
 }

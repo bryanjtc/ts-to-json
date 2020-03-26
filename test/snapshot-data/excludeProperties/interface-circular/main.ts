@@ -1,26 +1,36 @@
-export interface MyType {
+export interface MyObject {
     a: MyType1;
-    b: MyType;
+    b: MyObject;
     e: {
-        f: MyType;
+        f: MyObject;
         g: MyType1;
         h: string;
         c: string;
+        r: MyType1;
+        t: MyObject;
     };
     j: string;
     c: string;
+    o: MyType1;
+    l: MyObject;
 }
 interface MyType1 {
+    k: MyObject;
+    l: MyType1;
     b: {
-        c: string;
-        n: MyType;
+        n: MyObject;
         o: MyType1;
+        c: string;
         d: {
+            n: MyObject;
+            o: MyType1;
             e: string;
         };
+        j: MyObject;
+        h: MyType1;
     };
-    k: MyType;
-    l: MyType1;
     m: string;
     c: string;
+    w: MyObject;
+    x: MyType1;
 }

@@ -12,4 +12,4 @@ export interface MyType2 {
     };
 }
 
-export type MyType = MyType2 & MyType1;
+export type MyObject = MyType2 & MyType1;

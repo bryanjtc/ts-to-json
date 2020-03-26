@@ -1,4 +1,4 @@
-export interface MyType {
+export interface MyObject {
     a: HelperA;
     d: HelperA;
 }

@@ -1,4 +1,4 @@
-export interface MyType {
+export interface MyObject {
     a: MyType1;
     b: string;
     c: string;
@@ -6,7 +6,9 @@ export interface MyType {
 interface MyType1 {
     b: {
         c: string;
-        d: string;
+        d: {
+            e: string;
+        };
     };
     e: string;
     c: string;

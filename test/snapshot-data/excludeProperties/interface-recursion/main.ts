@@ -1,12 +1,12 @@
-export interface MyType {
-    a: MyType;
-    b: MyType;
+export interface MyObject {
+    a: MyObject;
+    b: MyObject;
     c: string;
     d: {
-        e: MyType;
+        e: MyObject;
         c: string;
         f: {
-            e: MyType;
+            e: MyObject;
             c: string;
         };
     };

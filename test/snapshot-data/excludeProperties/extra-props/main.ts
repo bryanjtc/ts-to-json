@@ -1,5 +1,4 @@
 export interface MyObject {
     a: string;
-    b: string;
-    c: string;
+    [name: string]: string;
 }
