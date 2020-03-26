@@ -99,39 +99,39 @@ describe("createSchema", () => {
     // // );
 
     const dirs = getRelativeDirectories(resolve(`${basePath}/limit-options`));
-    dirs.forEach(dir => {
-        it(
-            "excludeProperties" + dir,
-            assertSchema("limit-options/" + dir, {
-                type: "MyObject",
-                handleUnknownTypes: true,
-                excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
-                expose: "none",
-                schemaExtension: "excludeProperties",
-            })
-        );
-    });
-
     // dirs.forEach(dir => {
     //     it(
-    //         "includeProperties" + dir,
+    //         "excludeProperties" + dir,
     //         assertSchema("limit-options/" + dir, {
     //             type: "MyObject",
     //             handleUnknownTypes: true,
-    //             includeProperties: ["a.b", "c"],
+    //             excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
     //             expose: "none",
-    //             schemaExtension: "includeProperties",
+    //             schemaExtension: "excludeProperties",
     //         })
     //     );
     // });
 
-    // it(
-    //     "excludeProperties-interface",
-    //     assertSchema("excludeProperties", {
-    //         type: "MyObject",
-    //         handleUnknownTypes: true,
-    //         includeProperties: ["a.b", "c"],
-    //         expose: "none",
-    //     })
-    // );
+    dirs.forEach(dir => {
+        it(
+            "includeProperties" + dir,
+            assertSchema("limit-options/" + dir, {
+                type: "MyObject",
+                handleUnknownTypes: true,
+                includeProperties: ["a.b", "c", "with-dash", "x"],
+                expose: "none",
+                schemaExtension: "includeProperties",
+            })
+        );
+    });
+
+    it(
+        "excludeProperties-interface",
+        assertSchema("limit-options", {
+            type: "MyObject",
+            handleUnknownTypes: true,
+            includeProperties: ["a.b", "c", "with-dash", "x"],
+            expose: "none",
+        })
+    );
 });

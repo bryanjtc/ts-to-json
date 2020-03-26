@@ -21,7 +21,8 @@ export const getPropsRecursively = (node: ts.Node | LiteralType, context: Contex
     let props: string[];
     if (
         node instanceof LiteralType ||
-        (ts.isInterfaceDeclaration(node.parent) && !context.hasParentContextRecreance())
+        ((ts.isInterfaceDeclaration(node.parent) || ts.isUnionTypeNode(node.parent)) &&
+            !context.hasParentContextRecreance())
     ) {
         props = getPropsFromTypeLiteralRecursively(context.getReference());
     } else {
