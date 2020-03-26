@@ -5,7 +5,7 @@ import { Config } from "../Config";
 
 export const shouldExtendKey = (context: Context, config: Config) => {
     if (!hasLimitOptions(config)) return false;
-    if (!context.hasParentContext() || !context.getParentContext()?.getReference()) return false;
+    if (!context.hasParentContextRecreance()) return false;
     return true;
 };
 

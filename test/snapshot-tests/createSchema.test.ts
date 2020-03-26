@@ -10,7 +10,11 @@ import { getRelativeDirectories } from "../utils";
 
 const basePath = "test/snapshot-data";
 
-function assertSchema(relativePath: string, options?: Partial<Config>) {
+interface Options extends Partial<Config> {
+    schemaExtension?: string;
+}
+
+function assertSchema(relativePath: string, options?: Options) {
     return () => {
         const filePath = resolve(`${basePath}/${relativePath}/*.ts`);
 
@@ -35,7 +39,11 @@ function assertSchema(relativePath: string, options?: Partial<Config>) {
 
         const schema = generator.createSchema(config.type);
 
-        const jsonFilePath = resolve(`${basePath}/${relativePath}/schema.json`);
+        const jsonFilePath = resolve(
+            `${basePath}/${relativePath}/${
+                options && options.schemaExtension ? options.schemaExtension + "-" : ""
+            }schema.json`
+        );
 
         // if (!fs.existsSync(jsonFilePath)) {
         fs.writeFileSync(jsonFilePath, JSON.stringify(schema, null, 4) + "\n", "utf8");
@@ -88,16 +96,30 @@ describe("createSchema", () => {
     //         skipParseTypes: ["ExternalProps"],
     //         forceToParseTypes: ["ExternalProps"],
     //     })
-    // );
+    // // );
 
-    // const dirs = getRelativeDirectories(resolve(`${basePath}/excludeProperties`));
+    const dirs = getRelativeDirectories(resolve(`${basePath}/excludeProperties`));
     // dirs.forEach(dir => {
     //     it(
     //         "excludeProperties" + dir,
     //         assertSchema("excludeProperties/" + dir, {
-    //             type: "MyType",
+    //             type: "MyObject",
     //             handleUnknownTypes: true,
-    //             excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e"],
+    //             excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y"],
+    //             expose: "none",
+    //         })
+    //     );
+    // });
+
+    // dirs.forEach(dir => {
+    //     it(
+    //         "includeProperties" + dir,
+    //         assertSchema("excludeProperties/" + dir, {
+    //             type: "MyObject",
+    //             handleUnknownTypes: true,
+    //             includeProperties: ["c", "a.b", "x.y"],
+    //             expose: "none",
+    //             schemaExtension: "includeProperties",
     //         })
     //     );
     // });
@@ -105,27 +127,10 @@ describe("createSchema", () => {
     it(
         "excludeProperties-interface",
         assertSchema("excludeProperties", {
-            type: "MyType",
+            type: "MyObject",
             handleUnknownTypes: true,
-            excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e"],
-            expose: "export",
+            excludeProperties: ["a.b.x.c", "b.c"],
+            expose: "none",
         })
     );
-    // it(
-    //     "excludeProperties-interface-type interface",
-    //     assertSchema("excludeProperties-interface-type/interface", {
-    //         type: "*",
-    //         handleUnknownTypes: true,
-    //         excludeProperties: ["c", "a.b.c"],
-    //         // expose: "export",
-    //     })
-    // );
-    // it(
-    //     "excludeProperties-class",
-    //     assertSchema("excludeProperties-class", {
-    //         type: "*",
-    //         handleUnknownTypes: true,
-    //         excludeProperties: ["c", "a.b.c"],
-    //     })
-    // );
 });

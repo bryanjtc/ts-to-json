@@ -30,19 +30,10 @@
                         "d"
                     ],
                     "additionalProperties": false
-                },
-                "b": {
-                    "type": "object",
-                    "additionalProperties": false
-                },
-                "c": {
-                    "type": "string"
                 }
             },
             "required": [
-                "a",
-                "b",
-                "c"
+                "a"
             ],
             "additionalProperties": false
         }

@@ -80,6 +80,10 @@ export class Context {
         return this.parentContext !== undefined;
     }
 
+    public hasParentContextRecreance() {
+        return this.parentContext !== undefined && this.parentContext.reference !== undefined;
+    }
+
     public setOperator(val: Operators) {
         this.cacheKey = `${this.cacheKey}-${val}`;
         this.operator = val;
