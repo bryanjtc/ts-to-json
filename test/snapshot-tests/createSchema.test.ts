@@ -45,9 +45,9 @@ function assertSchema(relativePath: string, options?: Options) {
             }schema.json`
         );
 
-        if (!fs.existsSync(jsonFilePath)) {
-            fs.writeFileSync(jsonFilePath, JSON.stringify(schema, null, 4) + "\n", "utf8");
-        }
+        // if (!fs.existsSync(jsonFilePath)) {
+        fs.writeFileSync(jsonFilePath, JSON.stringify(schema, null, 4) + "\n", "utf8");
+        // }
         // console.log(JSON.stringify(schema, null, 2));
 
         const expected: any = JSON.parse(fs.readFileSync(jsonFilePath, "utf8"));
@@ -107,6 +107,7 @@ describe("createSchema", () => {
                 handleUnknownTypes: true,
                 excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
                 expose: "none",
+                schemaExtension: "excludeProperties",
             })
         );
     });
