@@ -11,38 +11,43 @@
                         "b": {
                             "type": "object",
                             "additionalProperties": false
-                        },
-                        "c": {
-                            "type": "string"
                         }
                     },
                     "required": [
-                        "b",
-                        "c"
+                        "b"
                     ],
                     "additionalProperties": false
                 },
-                "d": {
+                "x": {
                     "type": "object",
                     "properties": {
-                        "b": {
+                        "d": {
                             "type": "object",
                             "properties": {
-                                "c": {
-                                    "type": "string"
+                                "e": {
+                                    "type": "object",
+                                    "additionalProperties": false
                                 }
                             },
                             "required": [
-                                "c"
+                                "e"
                             ],
                             "additionalProperties": false
-                        },
-                        "c": {
-                            "type": "string"
                         }
                     },
                     "required": [
-                        "b",
+                        "d"
+                    ],
+                    "additionalProperties": false
+                },
+                "h": {
+                    "type": "object",
+                    "properties": {
+                        "c": {
+                            "type": "null"
+                        }
+                    },
+                    "required": [
                         "c"
                     ],
                     "additionalProperties": false
@@ -50,7 +55,8 @@
             },
             "required": [
                 "a",
-                "d"
+                "x",
+                "h"
             ],
             "additionalProperties": false
         }

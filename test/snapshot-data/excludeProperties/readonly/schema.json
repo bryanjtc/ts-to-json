@@ -6,10 +6,10 @@
             "type": "object",
             "properties": {
                 "a": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "b": {
-                    "type": "string"
+                    "type": "number"
                 }
             },
             "required": [

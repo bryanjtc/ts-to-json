@@ -1,21 +1,21 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$ref": "#/definitions/MyType",
+    "$ref": "#/definitions/MyObject",
     "definitions": {
-        "MyType": {
+        "MyObject": {
             "type": "object",
             "properties": {
                 "a": {
-                    "$ref": "#/definitions/___MyType"
+                    "$ref": "#/definitions/___MyObject"
                 },
                 "b": {
-                    "$ref": "#/definitions/___MyType"
+                    "$ref": "#/definitions/___MyObject"
                 },
                 "d": {
                     "type": "object",
                     "properties": {
                         "e": {
-                            "$ref": "#/definitions/___MyType"
+                            "$ref": "#/definitions/___MyObject"
                         },
                         "c": {
                             "type": "string"
@@ -24,7 +24,7 @@
                             "type": "object",
                             "properties": {
                                 "e": {
-                                    "$ref": "#/definitions/___MyType"
+                                    "$ref": "#/definitions/___MyObject"
                                 },
                                 "c": {
                                     "type": "string"
@@ -52,20 +52,50 @@
             ],
             "additionalProperties": false
         },
-        "___MyType": {
+        "___MyObject": {
             "type": "object",
             "properties": {
                 "a": {
-                    "$ref": "#/definitions/___MyType"
+                    "$ref": "#/definitions/___MyObject"
                 },
                 "b": {
-                    "$ref": "#/definitions/___MyType"
+                    "$ref": "#/definitions/___MyObject"
                 },
                 "c": {
                     "type": "string"
                 },
                 "d": {
-                    "$ref": "#/definitions/structure-161428024-77-193-161428024-70-194-161428024-0-196-161428024-0-197"
+                    "type": "object",
+                    "properties": {
+                        "e": {
+                            "$ref": "#/definitions/___MyObject"
+                        },
+                        "c": {
+                            "type": "string"
+                        },
+                        "f": {
+                            "type": "object",
+                            "properties": {
+                                "e": {
+                                    "$ref": "#/definitions/___MyObject"
+                                },
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "e",
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "e",
+                        "c",
+                        "f"
+                    ],
+                    "additionalProperties": false
                 }
             },
             "required": [
@@ -73,39 +103,6 @@
                 "b",
                 "c",
                 "d"
-            ],
-            "additionalProperties": false
-        },
-        "structure-161428024-77-193-161428024-70-194-161428024-0-196-161428024-0-197": {
-            "type": "object",
-            "properties": {
-                "e": {
-                    "$ref": "#/definitions/___MyType"
-                },
-                "c": {
-                    "type": "string"
-                },
-                "f": {
-                    "type": "object",
-                    "properties": {
-                        "e": {
-                            "$ref": "#/definitions/___MyType"
-                        },
-                        "c": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "e",
-                        "c"
-                    ],
-                    "additionalProperties": false
-                }
-            },
-            "required": [
-                "e",
-                "c",
-                "f"
             ],
             "additionalProperties": false
         }

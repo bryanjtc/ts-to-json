@@ -7,42 +7,18 @@
             "properties": {
                 "a": {
                     "type": "object",
-                    "properties": {
-                        "b": {
-                            "type": "object",
-                            "additionalProperties": false
-                        },
-                        "c": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "b",
-                        "c"
-                    ],
-                    "additionalProperties": false
+                    "additionalProperties": {
+                        "$ref": "#/definitions/___MyObject"
+                    }
                 },
-                "d": {
+                "b": {
                     "type": "object",
                     "properties": {
-                        "b": {
-                            "type": "object",
-                            "properties": {
-                                "c": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "c"
-                            ],
-                            "additionalProperties": false
-                        },
                         "c": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "b",
                         "c"
                     ],
                     "additionalProperties": false
@@ -50,7 +26,39 @@
             },
             "required": [
                 "a",
-                "d"
+                "b"
+            ],
+            "additionalProperties": false
+        },
+        "___MyObject": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/___MyObject"
+                    }
+                },
+                "b": {
+                    "type": "object",
+                    "properties": {
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "c": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b",
+                "c"
             ],
             "additionalProperties": false
         }

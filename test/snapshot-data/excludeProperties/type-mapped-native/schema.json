@@ -5,17 +5,13 @@
         "MyObject": {
             "type": "object",
             "properties": {
-                "a": {
-                    "type": "string"
-                },
                 "b": {
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 }
             },
-            "required": [
-                "a",
-                "b"
-            ],
             "additionalProperties": false
         }
     }

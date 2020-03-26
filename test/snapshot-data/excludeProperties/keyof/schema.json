@@ -12,10 +12,6 @@
                     "type": "string"
                 }
             },
-            "required": [
-                "a",
-                "b"
-            ],
             "additionalProperties": false
         }
     }

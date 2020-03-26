@@ -4,6 +4,7 @@
     "definitions": {
         "MyObject": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "a": {
                     "type": "object",
@@ -11,38 +12,21 @@
                         "b": {
                             "type": "object",
                             "additionalProperties": false
-                        },
-                        "c": {
-                            "type": "string"
                         }
                     },
                     "required": [
-                        "b",
-                        "c"
+                        "b"
                     ],
                     "additionalProperties": false
                 },
-                "d": {
+                "b": {
                     "type": "object",
                     "properties": {
-                        "b": {
-                            "type": "object",
-                            "properties": {
-                                "c": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "c"
-                            ],
-                            "additionalProperties": false
-                        },
                         "c": {
-                            "type": "string"
+                            "type": "number"
                         }
                     },
                     "required": [
-                        "b",
                         "c"
                     ],
                     "additionalProperties": false
@@ -50,9 +34,8 @@
             },
             "required": [
                 "a",
-                "d"
-            ],
-            "additionalProperties": false
+                "b"
+            ]
         }
     }
 }

@@ -7,16 +7,14 @@
             "properties": {
                 "a": {
                     "type": "string"
-                },
-                "b": {
-                    "type": "string"
                 }
             },
             "required": [
-                "a",
-                "b"
+                "a"
             ],
-            "additionalProperties": false
+            "additionalProperties": {
+                "type": "string"
+            }
         }
     }
 }

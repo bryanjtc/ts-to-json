@@ -6,15 +6,11 @@
             "type": "object",
             "properties": {
                 "a": {
-                    "type": "string"
-                },
-                "b": {
-                    "type": "string"
+                    "type": "number"
                 }
             },
             "required": [
-                "a",
-                "b"
+                "a"
             ],
             "additionalProperties": false
         }

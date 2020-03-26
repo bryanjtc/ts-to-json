@@ -13,7 +13,7 @@
                             "additionalProperties": false
                         },
                         "c": {
-                            "type": "string"
+                            "type": "number"
                         }
                     },
                     "required": [
@@ -29,7 +29,7 @@
                             "type": "object",
                             "properties": {
                                 "c": {
-                                    "type": "string"
+                                    "type": "number"
                                 }
                             },
                             "required": [

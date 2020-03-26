@@ -4,7 +4,6 @@
     "definitions": {
         "MyObject": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "a": {
                     "type": "object",
@@ -18,15 +17,9 @@
                         "b"
                     ],
                     "additionalProperties": false
-                },
-                "b": {
-                    "type": "string"
                 }
             },
-            "required": [
-                "a",
-                "b"
-            ]
+            "additionalProperties": false
         }
     }
 }

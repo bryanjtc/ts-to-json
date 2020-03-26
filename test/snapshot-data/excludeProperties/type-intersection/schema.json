@@ -7,50 +7,32 @@
             "properties": {
                 "a": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
-                        "b": {
-                            "type": "object",
-                            "additionalProperties": false
-                        },
                         "c": {
                             "type": "string"
-                        }
-                    },
-                    "required": [
-                        "b",
-                        "c"
-                    ],
-                    "additionalProperties": false
-                },
-                "d": {
-                    "type": "object",
-                    "properties": {
+                        },
                         "b": {
                             "type": "object",
+                            "additionalProperties": false,
                             "properties": {
-                                "c": {
+                                "f": {
                                     "type": "string"
                                 }
                             },
                             "required": [
-                                "c"
-                            ],
-                            "additionalProperties": false
-                        },
-                        "c": {
-                            "type": "string"
+                                "f"
+                            ]
                         }
                     },
                     "required": [
                         "b",
                         "c"
-                    ],
-                    "additionalProperties": false
+                    ]
                 }
             },
             "required": [
-                "a",
-                "d"
+                "a"
             ],
             "additionalProperties": false
         }
