@@ -8,10 +8,14 @@
                 "a": {
                     "type": "object",
                     "additionalProperties": false
+                },
+                "c": {
+                    "type": "string"
                 }
             },
             "required": [
-                "a"
+                "a",
+                "c"
             ],
             "additionalProperties": false
         }

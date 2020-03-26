@@ -6,13 +6,15 @@
             "type": "object",
             "properties": {
                 "a": {
-                    "type": "object",
-                    "additionalProperties": false
+                    "type": "string"
+                },
+                "b": {
+                    "type": "string"
+                },
+                "c": {
+                    "type": "string"
                 }
             },
-            "required": [
-                "a"
-            ],
             "additionalProperties": false
         }
     }

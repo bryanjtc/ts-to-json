@@ -45,7 +45,7 @@ export class RecursionTypeParser implements SubNodeParser {
         //     return undefined;
         // }
 
-        const parser = new TypeReferenceNodeParser(this.typeChecker, this.chainNodeParser, this.config);
+        const parser = new TypeReferenceNodeParser(this.typeChecker, this.chainNodeParser);
         const type = parser.createType(node, new Context(node, context));
         // const excluded = isExcludedProp(node, context, this.config);
 

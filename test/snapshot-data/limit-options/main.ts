@@ -1,9 +1,6 @@
-enum FromZero {
-    y,
-    b,
-    c,
-}
+type SomeKeys = "l" | "s";
 
 export type MyObject = {
-    a: typeof FromZero;
+    a: { [P in SomeKeys]: string };
+    // b: { [P in SomeKeys]: string };
 };

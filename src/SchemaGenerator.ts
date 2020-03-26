@@ -10,8 +10,8 @@ import { StringMap } from "./Utils/StringMap";
 import { localSymbolAtNode, symbolAtNode } from "./Utils/symbolAtNode";
 import { notUndefined } from "./Utils/notUndefined";
 import { TopRefNodeParser } from "./TopRefNodeParser";
-import { ObjectType } from "./Type/ObjectType";
-import { FunctionType } from "./Type/FunctionType";
+// import { ObjectType } from "./Type/ObjectType";
+// import { FunctionType } from "./Type/FunctionType";
 import { Config } from "./Config";
 
 export class SchemaGenerator {
@@ -100,10 +100,10 @@ export class SchemaGenerator {
         }
 
         children.reduce((definitions, child) => {
-            const newChild = this.applyMaxDepth(child);
-            const name = newChild!.getName();
+            // const newChild = this.applyMaxDepth(child);
+            const name = child.getName();
             if (!(name in definitions)) {
-                definitions[name] = this.typeFormatter.getDefinition(newChild!.getType());
+                definitions[name] = this.typeFormatter.getDefinition(child.getType());
             }
             return definitions;
         }, childDefinitions);
@@ -162,36 +162,36 @@ export class SchemaGenerator {
         My Implementations
     */
 
-    private applyMaxDepth(node: DefinitionType, dept = 0) {
-        if (!this.config || this.config.maxDepth === undefined) return node;
+    // private applyMaxDepth(node: DefinitionType, dept = 0) {
+    //     if (!this.config || this.config.maxDepth === undefined) return node;
 
-        const nodeType = node.getType();
+    //     const nodeType = node.getType();
 
-        let props;
+    //     let props;
 
-        if (nodeType instanceof ObjectType) {
-            props = (nodeType as ObjectType).getProperties();
-        } else if (nodeType instanceof FunctionType) {
-            dept = dept - 1;
-            props = (nodeType as FunctionType).getParameters();
-        }
+    //     if (nodeType instanceof ObjectType) {
+    //         props = (nodeType as ObjectType).getProperties();
+    //     } else if (nodeType instanceof FunctionType) {
+    //         dept = dept - 1;
+    //         props = (nodeType as FunctionType).getParameters();
+    //     }
 
-        if (!props) return node;
+    //     if (!props) return node;
 
-        (node as any).type.properties = [];
+    //     (node as any).type.properties = [];
 
-        if (dept > this.config.maxDepth - 1) {
-            return node;
-        } else {
-            props.forEach((prop: any) => {
-                const newNode = this.applyMaxDepth(prop, dept + 1);
-                if (newNode) {
-                    (node as any).type.properties.push(newNode);
-                }
-            });
-        }
-        return node;
-    }
+    //     if (dept > this.config.maxDepth - 1) {
+    //         return node;
+    //     } else {
+    //         props.forEach((prop: any) => {
+    //             const newNode = this.applyMaxDepth(prop, dept + 1);
+    //             if (newNode) {
+    //                 (node as any).type.properties.push(newNode);
+    //             }
+    //         });
+    //     }
+    //     return node;
+    // }
     public createSchemaByNodeKind(nodeKinds: ts.SyntaxKind | ts.SyntaxKind[]): Schema | null {
         const typeChecker = this.program.getTypeChecker();
 

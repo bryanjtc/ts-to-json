@@ -6,12 +6,19 @@
             "type": "object",
             "properties": {
                 "a": {
-                    "type": "object",
-                    "additionalProperties": false
+                    "type": "number"
+                },
+                "b": {
+                    "type": "number"
+                },
+                "c": {
+                    "type": "string"
                 }
             },
             "required": [
-                "a"
+                "a",
+                "b",
+                "c"
             ],
             "additionalProperties": false
         }

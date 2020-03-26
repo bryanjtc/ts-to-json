@@ -7,7 +7,8 @@
             "properties": {
                 "a": {
                     "type": "object",
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "properties": {}
                 }
             },
             "required": [

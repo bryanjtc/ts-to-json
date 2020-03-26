@@ -10,9 +10,3 @@ export interface MyObject {
         c: string;
     };
 }
-
-// const ob: MyObject = {
-//     a: {b:{c}},
-// };
-
-// a.b.d.e;

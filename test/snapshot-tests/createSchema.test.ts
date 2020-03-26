@@ -112,26 +112,39 @@ describe("createSchema", () => {
     //     );
     // });
 
+    // dirs.forEach(dir => {
+    //     it(
+    //         "includeProperties" + dir,
+    //         assertSchema("limit-options/" + dir, {
+    //             type: "MyObject",
+    //             handleUnknownTypes: true,
+    //             includeProperties: ["a.b", "c", "with-dash", "x"],
+    //             expose: "none",
+    //             schemaExtension: "includeProperties",
+    //         })
+    //     );
+    // });
+
     dirs.forEach(dir => {
         it(
-            "includeProperties" + dir,
+            "maxDepth-1" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
-                includeProperties: ["a.b", "c", "with-dash", "x"],
+                maxDepth: 1,
                 expose: "none",
-                schemaExtension: "includeProperties",
+                schemaExtension: "maxDepth-1",
             })
         );
     });
 
-    it(
-        "excludeProperties-interface",
-        assertSchema("limit-options", {
-            type: "MyObject",
-            handleUnknownTypes: true,
-            includeProperties: ["a.b", "c", "with-dash", "x"],
-            expose: "none",
-        })
-    );
+    // it(
+    //     "excludeProperties-interface",
+    //     assertSchema("limit-options", {
+    //         type: "MyObject",
+    //         handleUnknownTypes: true,
+    //         maxDepth: 1,
+    //         expose: "none",
+    //     })
+    // );
 });

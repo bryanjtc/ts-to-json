@@ -8,10 +8,15 @@
                 "a": {
                     "type": "object",
                     "additionalProperties": false
+                },
+                "d": {
+                    "type": "object",
+                    "additionalProperties": false
                 }
             },
             "required": [
-                "a"
+                "a",
+                "d"
             ],
             "additionalProperties": false
         }
