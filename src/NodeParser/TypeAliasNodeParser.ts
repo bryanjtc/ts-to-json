@@ -4,10 +4,15 @@ import { SubNodeParser } from "../SubNodeParser";
 import { AliasType } from "../Type/AliasType";
 import { BaseType } from "../Type/BaseType";
 import { ReferenceType } from "../Type/ReferenceType";
-import { getKey } from "../Utils/nodeKey";
+import { getKey, extendKey } from "../Utils";
+import { Config } from "../Config";
 
 export class TypeAliasNodeParser implements SubNodeParser {
-    public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
+    public constructor(
+        private typeChecker: ts.TypeChecker,
+        private childNodeParser: NodeParser,
+        private config: Config
+    ) {}
 
     public supportsNode(node: ts.TypeAliasDeclaration): boolean {
         return node.kind === ts.SyntaxKind.TypeAliasDeclaration;
@@ -44,6 +49,6 @@ export class TypeAliasNodeParser implements SubNodeParser {
     }
 
     private getTypeId(node: ts.Node, context: Context): string {
-        return `alias-${getKey(node, context)}`;
+        return extendKey(`alias-${getKey(node, context)}`, node, context, this.config);
     }
 }

@@ -9,7 +9,7 @@ import { isNodeHidden } from "../Utils/isHidden";
 import { isPublic, isStatic } from "../Utils/modifiers";
 import { getKey } from "../Utils/nodeKey";
 import { notUndefined } from "../Utils/notUndefined";
-import { isExcludedProp, extendKey, getNodeName } from "../Utils";
+import { isExcludedProp, extendKey } from "../Utils";
 import { Config } from "../Config";
 
 export class InterfaceAndClassNodeParser implements SubNodeParser {
@@ -162,8 +162,6 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
 
     private getTypeId(node: ts.Node, context: Context): string {
         const nodeType = ts.isInterfaceDeclaration(node) ? "interface" : "class";
-        const sameAsConfigType = getNodeName(node) === this.config.type;
-        // return `${nodeType}-${getKey(node, context)}`;
-        return extendKey(`${nodeType}-${getKey(node, context)}`, node, context, this.config, !sameAsConfigType);
+        return extendKey(`${nodeType}-${getKey(node, context)}`, node, context, this.config, true);
     }
 }

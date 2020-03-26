@@ -1,6 +1,6 @@
 import { Context } from "../NodeParser";
 import * as ts from "typescript";
-import { hasLimitOptions, getTypeReferenceNodeName } from ".";
+import { hasLimitOptions, getTypeReferenceNodeName, getNodeName } from ".";
 import { Config } from "../Config";
 
 export const shouldExtendKey = (context: Context, config: Config) => {
@@ -9,8 +9,15 @@ export const shouldExtendKey = (context: Context, config: Config) => {
     return true;
 };
 
-export const extendKey = (key: string, _node: ts.Node, context: Context, config: Config, ignored?: boolean) => {
-    if (!shouldExtendKey(context, config) || ignored) return key;
+export const extendKey = (
+    key: string,
+    node: ts.Node,
+    context: Context,
+    config: Config,
+    ignoredIfSameAsConfigTypeName?: boolean
+) => {
+    const sameAsConfigType = ignoredIfSameAsConfigTypeName && getNodeName(node) !== config.type ? false : true;
+    if (!shouldExtendKey(context, config) || !sameAsConfigType) return key;
     const ref = context.getReference();
     if (!ref) return key;
     const refTypeName = getTypeReferenceNodeName(ref);

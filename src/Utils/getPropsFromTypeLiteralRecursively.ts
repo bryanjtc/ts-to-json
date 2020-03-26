@@ -1,7 +1,8 @@
 import { getPropName, isTopLevelDeclarations } from ".";
 import * as ts from "typescript";
 
-export function getPropsFromTypeLiteralRecursively(node: ts.Node, props: string[] = []): string[] {
+export function getPropsFromTypeLiteralRecursively(node?: ts.Node, props: string[] = []): string[] {
+    if (!node) return props;
     if (node.parent) {
         getPropsFromTypeLiteralRecursively(node.parent, props);
     }

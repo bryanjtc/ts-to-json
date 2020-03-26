@@ -2,8 +2,11 @@ import * as stringify from "json-stable-stringify";
 import * as ts from "typescript";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { getKey } from "./Utils/nodeKey";
+import { getKey, ignoreLimits, hasLimitOptions } from "./Utils";
+import { Config } from "./Config";
+
 type Operators = "typeof";
+
 export class Context {
     private cacheKey: string | null = null;
     private arguments: (BaseType | undefined)[] = [];
@@ -12,8 +15,7 @@ export class Context {
     private defaultArgument = new Map<string, BaseType | undefined>();
     private parentContext?: Context;
     private operator?: Operators;
-    public isRecursion = false;
-    public ignoreLimits = false;
+    public ignoreLimits? = false;
 
     public constructor(reference?: ts.Node, parentContext?: Context) {
         this.reference = reference;
@@ -33,11 +35,16 @@ export class Context {
         this.defaultArgument.set(parameterName, argumentType);
     }
 
-    public getCacheKey() {
+    public getCacheKey(config?: Config) {
         if (this.cacheKey == null) {
             this.cacheKey = stringify([
                 this.reference ? getKey(this.reference, this) : "",
                 this.arguments.map(argument => argument?.getId()),
+                this.parentContext?.reference &&
+                this.parentContext.reference.kind === ts.SyntaxKind.ExpressionWithTypeArguments
+                    ? ts.SyntaxKind.ExpressionWithTypeArguments
+                    : "",
+                hasLimitOptions(config) && ignoreLimits(this) ? "recursion" : "",
             ]);
         }
         return this.cacheKey;

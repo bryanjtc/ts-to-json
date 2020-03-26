@@ -1,10 +1,10 @@
 import { Context } from "../NodeParser";
 import { getPropName } from ".";
 
-export function getPropsFromContextRecursively(context: Context, props: string[] = []): string[] {
+export function getPropsFromParentContextRecursively(context: Context, props: string[] = []): string[] {
     const parentContext = context.getParentContext();
     if (parentContext) {
-        getPropsFromContextRecursively(parentContext, props);
+        getPropsFromParentContextRecursively(parentContext, props);
     }
     const reference = context.getReference();
     if (reference) {

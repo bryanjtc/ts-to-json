@@ -1,20 +1,64 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$ref": "#/definitions/MyType",
+    "$ref": "#/definitions/MyObject",
     "definitions": {
-        "MyType": {
+        "MyObject": {
             "type": "object",
             "properties": {
                 "a": {
-                    "$ref": "#/definitions/HelperA"
-                },
-                "d": {
-                    "$ref": "#/definitions/HelperA"
+                    "type": "object",
+                    "properties": {
+                        "k": {
+                            "$ref": "#/definitions/___MyObject"
+                        },
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "k",
+                        "b"
+                    ],
+                    "additionalProperties": false
                 }
             },
             "required": [
-                "a",
-                "d"
+                "a"
+            ],
+            "additionalProperties": false
+        },
+        "___MyObject": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "k": {
+                            "$ref": "#/definitions/___MyObject"
+                        },
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "k",
+                        "b"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a"
             ],
             "additionalProperties": false
         }

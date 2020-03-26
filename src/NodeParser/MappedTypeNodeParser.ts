@@ -14,10 +14,11 @@ import { derefAnnotatedType, derefType } from "../Utils/derefType";
 import { getKey } from "../Utils/nodeKey";
 import { preserveAnnotation } from "../Utils/preserveAnnotation";
 import { removeUndefined } from "../Utils/removeUndefined";
-import { notUndefined } from "../Utils/notUndefined";
+import { notUndefined, isExcludedProp } from "../Utils";
+import { Config } from "../Config";
 
 export class MappedTypeNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser) {}
+    public constructor(private childNodeParser: NodeParser, private config: Config) {}
 
     public supportsNode(node: ts.MappedTypeNode): boolean {
         return node.kind === ts.SyntaxKind.MappedType;
@@ -64,6 +65,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
         return keyListType
             .getTypes()
             .filter(type => type instanceof LiteralType)
+            .filter((type: LiteralType) => !isExcludedProp(type, new Context(node), this.config))
             .reduce((result: ObjectProperty[], key: LiteralType) => {
                 const propertyType = this.childNodeParser.createType(
                     node.type!,
@@ -126,7 +128,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
     }
 
     private createSubContext(node: ts.MappedTypeNode, key: LiteralType | StringType, parentContext: Context): Context {
-        const subContext = new Context(node);
+        const subContext = new Context(node, parentContext);
 
         parentContext.getParameters().forEach(parentParameter => {
             subContext.pushParameter(parentParameter);

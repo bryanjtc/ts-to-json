@@ -1,23 +1,40 @@
 import { Context } from "../NodeParser";
-import { getPropsFromContextRecursively, getPropName, getPropsFromTypeLiteralRecursively } from ".";
+import { getPropsFromParentContextRecursively, getPropName, getPropsFromTypeLiteralRecursively, getNodeName } from ".";
 import * as ts from "typescript";
+import { LiteralType } from "../Type/LiteralType";
 
-export const getPropsRecursively = (node: ts.Node, context: Context) => {
+export const getPropsRecursively = (node: ts.Node | LiteralType, context: Context) => {
     let propName: string | undefined = undefined;
-    if (ts.isLiteralTypeNode(node)) {
+
+    if (node instanceof LiteralType) {
+        propName = node
+            .getName()
+            .split('"')
+            .join("");
+    } else if (ts.isLiteralTypeNode(node)) {
         propName = (node.literal as any).text;
+    } else if (ts.isEnumMember(node)) {
+        propName = getNodeName(node);
     } else {
         propName = getPropName(node);
     }
-    // if (!propName) return;
+    let props: string[];
+    if (node instanceof LiteralType) {
+        props = getPropsFromTypeLiteralRecursively(context.getReference());
+    } else {
+        props = ts.isEnumMember(node) ? [] : getPropsFromParentContextRecursively(context);
 
-    let props: string[] = [];
-    const props2 = getPropsFromContextRecursively(context);
-
-    if (!context.hasOperator("typeof") && [ts.SyntaxKind.TypeLiteral].includes(node.parent.kind)) {
-        props = getPropsFromTypeLiteralRecursively(node.parent);
+        if (
+            !context.hasOperator("typeof") &&
+            [ts.SyntaxKind.TypeLiteral, ts.SyntaxKind.EnumDeclaration].includes(node.parent.kind)
+        ) {
+            const parentNode = ts.isEnumMember(node) ? context.getReference() : node.parent;
+            if (parentNode) {
+                const nodeParentProps = getPropsFromTypeLiteralRecursively(parentNode);
+                props = [...props, ...nodeParentProps];
+            }
+        }
     }
-    props = [...props2, ...props];
     if (propName) props?.push(propName);
     return props;
 };

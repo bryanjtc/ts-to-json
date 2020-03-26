@@ -102,12 +102,12 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new LiteralNodeParser(chainNodeParser))
         .addNodeParser(new ParenthesizedNodeParser(chainNodeParser))
 
-        .addNodeParser(new TypeReferenceNodeParser(typeChecker, chainNodeParser, config))
+        .addNodeParser(new TypeReferenceNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new ExpressionWithTypeArgumentsNodeParser(typeChecker, chainNodeParser))
 
         .addNodeParser(new IndexedAccessTypeNodeParser(chainNodeParser))
-        .addNodeParser(new TypeofNodeParser(typeChecker, chainNodeParser))
-        .addNodeParser(new MappedTypeNodeParser(chainNodeParser))
+        .addNodeParser(new TypeofNodeParser(typeChecker, chainNodeParser, config))
+        .addNodeParser(new MappedTypeNodeParser(chainNodeParser, config))
         .addNodeParser(new ConditionalTypeNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new TypeOperatorNodeParser(chainNodeParser))
 
@@ -119,8 +119,10 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
 
         .addNodeParser(new CallExpressionParser(typeChecker, chainNodeParser))
 
-        .addNodeParser(withCircular(withExpose(withJsDoc(new TypeAliasNodeParser(typeChecker, chainNodeParser)))))
-        .addNodeParser(withExpose(withJsDoc(new EnumNodeParser(typeChecker))))
+        .addNodeParser(
+            withCircular(withExpose(withJsDoc(new TypeAliasNodeParser(typeChecker, chainNodeParser, config))))
+        )
+        .addNodeParser(withExpose(withJsDoc(new EnumNodeParser(typeChecker, config))))
         .addNodeParser(
             withCircular(
                 withExpose(withJsDoc(new InterfaceAndClassNodeParser(typeChecker, withJsDoc(chainNodeParser), config)))

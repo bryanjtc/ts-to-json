@@ -22,7 +22,7 @@ export * from './isHidden';
 export * from './isInForceParseTypes';
 export * from './isInSkipParseFiles';
 export * from './isInSkipTypes';
-export * from './isRecursionType';
+export * from './isRecursionToType';
 export * from './modifiers';
 export * from './narrowType';
 export * from './node-name';
