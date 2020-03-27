@@ -13,7 +13,8 @@ export interface Config {
     setObjectIdentifier?: boolean;
     maxDepth?: number;
     /**
-     *   Use this option when parser can parse specific type and throws error, this option force the parser identified type as unknown type.
+     *  Use this option when parser unable to parse specific type and throws error.
+     *  This option force the parser identified type as unknown type.
      */
     handleUnknownTypes?: boolean;
     /**
@@ -35,11 +36,12 @@ export interface Config {
      */
     forceToParseTypes?: string[];
     /**
-     *   The generated schema will not have properties with name specified in the list
+     *   Will exclude type names specified in the list.
      */
     excludeProperties?: string[];
     /**
-     *   Will only generate schema for the property names included in the list
+     *  Will only generate schema for the property names included in the list.
+     *  excludeProperties option has no effect when using this option.
      */
     includeProperties?: string[];
 }
