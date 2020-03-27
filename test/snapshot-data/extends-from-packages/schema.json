@@ -346,7 +346,7 @@
                 "propA"
             ]
         },
-        "anime.AnimeInstance": {
+        "anime.AnimeAnimParams": {
             "type": "object",
             "properties": {
                 "begin": {
@@ -445,84 +445,244 @@
                         "anim"
                     ]
                 },
-                "began": {
-                    "type": "boolean"
-                },
-                "paused": {
-                    "type": "boolean"
-                },
-                "completed": {
-                    "type": "boolean"
-                },
-                "finished": {
-                    "type": "object",
-                    "additionalProperties": false
-                },
-                "autoplay": {
-                    "type": "boolean"
-                },
-                "currentTime": {
-                    "type": "number"
-                },
-                "delay": {
-                    "type": "number"
-                },
-                "direction": {
-                    "type": "string"
-                },
-                "duration": {
-                    "type": "number"
-                },
-                "loop": {
-                    "type": [
-                        "number",
-                        "boolean"
+                "targets": {
+                    "anyOf": [
+                        {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "HTMLElement"
+                                },
+                                {
+                                    "type": "SVGElement"
+                                },
+                                {
+                                    "type": "NodeList"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "type": "HTMLElement"
+                                    },
+                                    {
+                                        "type": "SVGElement"
+                                    },
+                                    {
+                                        "type": "NodeList"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            }
+                        }
                     ]
                 },
-                "timelineOffset": {
-                    "type": "number"
+                "duration": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "kind": "function",
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
                 },
-                "progress": {
-                    "type": "number"
+                "delay": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "kind": "function",
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
                 },
-                "remaining": {
-                    "type": "number"
+                "endDelay": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "kind": "function",
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
                 },
-                "reversed": {
-                    "type": "boolean"
+                "elasticity": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "kind": "function",
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
                 },
-                "animatables": {
+                "round": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "kind": "function",
+                            "type": "number",
+                            "parameters": {
+                                "element": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "element",
+                                "index",
+                                "length"
+                            ]
+                        }
+                    ]
+                },
+                "keyframes": {
                     "type": "array",
                     "items": {
-                        "type": "object"
+                        "$ref": "#/definitions/anime.AnimeAnimParams"
                     }
                 },
-                "animations": {
-                    "type": "array",
-                    "items": {
-                        "type": "object"
-                    }
+                "easing": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/anime.EasingOptions"
+                        },
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "kind": "function",
+                            "type": "number",
+                            "parameters": {
+                                "el": {
+                                    "type": "HTMLElement"
+                                },
+                                "index": {
+                                    "type": "number"
+                                },
+                                "length": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "el",
+                                "index",
+                                "length"
+                            ]
+                        },
+                        {
+                            "kind": "function",
+                            "type": "string",
+                            "parameters": {
+                                "el": {
+                                    "type": "HTMLElement"
+                                }
+                            },
+                            "required": [
+                                "el"
+                            ]
+                        }
+                    ]
                 }
-            },
-            "required": [
-                "began",
-                "paused",
-                "completed",
-                "finished",
-                "autoplay",
-                "currentTime",
-                "delay",
-                "direction",
-                "duration",
-                "loop",
-                "timelineOffset",
-                "progress",
-                "remaining",
-                "reversed",
-                "animatables",
-                "animations"
-            ],
-            "additionalProperties": false
+            }
         },
         "anime.EasingOptions": {
             "type": "string",

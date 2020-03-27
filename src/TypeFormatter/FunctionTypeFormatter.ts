@@ -22,7 +22,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
 
         return type
             .getBaseTypes()
-            .reduce(getAllOfDefinitionReducer(this.childTypeFormatter, true), this.getObjectDefinition(type));
+            .reduce(getAllOfDefinitionReducer(this.childTypeFormatter), this.getObjectDefinition(type));
     }
     public getChildren(type: FunctionType): BaseType[] {
         const parameters: FunctionParameter[] = type.getParameters();
@@ -88,11 +88,11 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
         const objectParameters: FunctionParameter[] = type.getParameters();
 
         const required = objectParameters
-            .map(parameter => this.prepareObjectParameter(parameter))
-            .filter(parameter => parameter.isRequired())
-            .map(parameter => parameter.getName());
+            .map((parameter) => this.prepareObjectParameter(parameter))
+            .filter((parameter) => parameter.isRequired())
+            .map((parameter) => parameter.getName());
         const parameters = objectParameters
-            .map(parameter => this.prepareObjectParameter(parameter))
+            .map((parameter) => this.prepareObjectParameter(parameter))
             .reduce(
                 (result: StringMap<Definition>, parameter) => ({
                     ...result,
@@ -126,7 +126,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             return parameter;
         }
 
-        const requiredTypes = propType.getTypes().filter(it => !(it instanceof UndefinedType));
+        const requiredTypes = propType.getTypes().filter((it) => !(it instanceof UndefinedType));
         if (propType.getTypes().length === requiredTypes.length) {
             return parameter;
         } else if (requiredTypes.length === 0) {

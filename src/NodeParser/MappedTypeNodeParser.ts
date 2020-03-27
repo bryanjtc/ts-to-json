@@ -69,7 +69,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
     private getProperties(node: ts.MappedTypeNode, keyListType: UnionType, context: Context): ObjectProperty[] {
         return keyListType
             .getTypes()
-            .filter(type => type instanceof LiteralType)
+            .filter((type) => type instanceof LiteralType)
             .filter((type: LiteralType) => !isExcludedProp(type, new Context(node), this.config))
             .reduce((result: ObjectProperty[], key: LiteralType) => {
                 const propertyType = this.childNodeParser.createType(
@@ -124,7 +124,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
         keyListType: UnionType,
         context: Context
     ): BaseType | false {
-        const key = keyListType.getTypes().filter(type => !(type instanceof LiteralType))[0];
+        const key = keyListType.getTypes().filter((type) => !(type instanceof LiteralType))[0];
         if (key) {
             return this.childNodeParser.createType(node.type!, this.createSubContext(node, key, context)) ?? false;
         } else {
@@ -135,7 +135,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
     private createSubContext(node: ts.MappedTypeNode, key: LiteralType | StringType, parentContext: Context): Context {
         const subContext = new Context(node, parentContext);
 
-        parentContext.getParameters().forEach(parentParameter => {
+        parentContext.getParameters().forEach((parentParameter) => {
             subContext.pushParameter(parentParameter);
             subContext.pushArgument(parentContext.getArgument(parentParameter));
         });

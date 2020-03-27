@@ -13,7 +13,7 @@ export class FunctionNodeParser implements SubNodeParser {
     }
     public createType(node: ts.FunctionDeclaration, context: Context): BaseType {
         if (node.typeParameters && node.typeParameters.length) {
-            node.typeParameters.forEach(typeParam => {
+            node.typeParameters.forEach((typeParam) => {
                 const nameSymbol = this.typeChecker.getSymbolAtLocation(typeParam.name)!;
                 context.pushParameter(nameSymbol.name);
 
@@ -62,7 +62,7 @@ export class FunctionNodeParser implements SubNodeParser {
     private getTypeId(node: ts.Node, context: Context): string {
         const fullName = `function-${node.getFullStart()}`;
 
-        const argumentIds = context.getArguments().map(arg => arg!.getId());
+        const argumentIds = context.getArguments().map((arg) => arg!.getId());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
     }

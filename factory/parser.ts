@@ -72,8 +72,6 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         }
     }
     function withCircular(nodeParser: SubNodeParser): SubNodeParser {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
         return new CircularReferenceNodeParser(nodeParser, config);
     }
 
@@ -96,6 +94,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new NumberLiteralNodeParser())
         .addNodeParser(new BooleanLiteralNodeParser())
         .addNodeParser(new NullLiteralNodeParser())
+        .addNodeParser(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))
 
         .addNodeParser(new PrefixUnaryExpressionNodeParser(chainNodeParser))
 
@@ -135,8 +134,6 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(
             withCircular(withExpose(withJsDoc(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))))
         )
-
-        .addNodeParser(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))
 
         .addNodeParser(new VoidKeywordTypeParser())
 

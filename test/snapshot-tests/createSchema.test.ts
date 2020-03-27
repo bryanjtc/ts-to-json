@@ -6,7 +6,7 @@ import { createParser } from "../../factory/parser";
 import { createProgram } from "../../factory/program";
 import { Config } from "../../src/Config";
 import { SchemaGenerator } from "../../src/SchemaGenerator";
-import { getRelativeDirectories } from "../utils";
+import { getRelativeDirectories } from "../utils/get-directories";
 
 const basePath = "test/snapshot-data";
 
@@ -88,7 +88,7 @@ describe("createSchema", () => {
     );
 
     const dirs = getRelativeDirectories(resolve(`${basePath}/limit-options`));
-    dirs.forEach(dir => {
+    dirs.forEach((dir) => {
         it(
             "excludeProperties" + dir,
             assertSchema("limit-options/" + dir, {
@@ -101,7 +101,7 @@ describe("createSchema", () => {
         );
     });
 
-    dirs.forEach(dir => {
+    dirs.forEach((dir) => {
         it(
             "includeProperties" + dir,
             assertSchema("limit-options/" + dir, {
@@ -114,7 +114,7 @@ describe("createSchema", () => {
         );
     });
 
-    dirs.forEach(dir => {
+    dirs.forEach((dir) => {
         it(
             "maxDepth-1" + dir,
             assertSchema("limit-options/" + dir, {
@@ -127,7 +127,7 @@ describe("createSchema", () => {
         );
     });
 
-    dirs.forEach(dir => {
+    dirs.forEach((dir) => {
         it(
             "includeProperties-maxDepth" + dir,
             assertSchema("limit-options/" + dir, {
@@ -141,7 +141,7 @@ describe("createSchema", () => {
         );
     });
 
-    dirs.forEach(dir => {
+    dirs.forEach((dir) => {
         it(
             "excludeProperties-maxDepth" + dir,
             assertSchema("limit-options/" + dir, {

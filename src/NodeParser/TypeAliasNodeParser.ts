@@ -24,7 +24,7 @@ export class TypeAliasNodeParser implements SubNodeParser {
         reference?: ReferenceType
     ): BaseType | undefined {
         if (node.typeParameters?.length) {
-            node.typeParameters.forEach(typeParam => {
+            for (const typeParam of node.typeParameters) {
                 const nameSymbol = this.typeChecker.getSymbolAtLocation(typeParam.name)!;
                 context.pushParameter(nameSymbol.name);
 
@@ -32,13 +32,14 @@ export class TypeAliasNodeParser implements SubNodeParser {
                     const type = this.childNodeParser.createType(typeParam.default, context);
                     context.setDefault(nameSymbol.name, type);
                 }
-            });
+            }
         }
 
         const id = this.getTypeId(node, context);
+        const name = this.getTypeName(node, context);
         if (reference) {
             reference.setId(id);
-            reference.setName(id);
+            reference.setName(name);
         }
 
         const type = this.childNodeParser.createType(node.type, context);
@@ -48,7 +49,14 @@ export class TypeAliasNodeParser implements SubNodeParser {
         return new AliasType(id, type);
     }
 
-    private getTypeId(node: ts.Node, context: Context): string {
+    private getTypeId(node: ts.TypeAliasDeclaration, context: Context): string {
         return extendKey(`alias-${getKey(node, context)}`, node, context, this.config);
+    }
+
+    private getTypeName(node: ts.TypeAliasDeclaration, context: Context): string {
+        const argumentIds = context.getArguments().map((arg) => arg?.getName());
+        const fullName = node.name.getText();
+
+        return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
     }
 }

@@ -20,44 +20,40 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
     public supportsType(type: ObjectType): boolean {
         return type instanceof ObjectType;
     }
+
     public getDefinition(type: ObjectType): Definition {
         const types = type.getBaseTypes();
         if (types.length === 0) {
             return this.getObjectDefinition(type);
         }
 
-        return types.reduce(getAllOfDefinitionReducer(this.childTypeFormatter, false), this.getObjectDefinition(type));
+        return types.reduce(getAllOfDefinitionReducer(this.childTypeFormatter), this.getObjectDefinition(type));
     }
+
     public getChildren(type: ObjectType): BaseType[] {
         const properties = type.getProperties();
         const additionalProperties: BaseType | boolean = type.getAdditionalProperties();
 
-        const children = [
-            ...type
-                .getBaseTypes()
-                .reduce(
-                    (result: BaseType[], baseType) => [
-                        ...result,
-                        ...this.childTypeFormatter
-                            .getChildren(baseType)
-                            .filter(childType => childType.getName() !== baseType.getName()),
-                    ],
-                    []
-                ),
+        const childrenOfBase = type
+            .getBaseTypes()
+            .reduce(
+                (result: BaseType[], baseType) => [...result, ...this.childTypeFormatter.getChildren(baseType)],
+                []
+            );
 
-            ...(additionalProperties instanceof BaseType
-                ? this.childTypeFormatter.getChildren(additionalProperties)
-                : []),
+        const childrenOfAdditionalProps =
+            additionalProperties instanceof BaseType ? this.childTypeFormatter.getChildren(additionalProperties) : [];
 
-            ...properties.reduce((result: BaseType[], property) => {
-                const propertyType = property.getType();
-                if (propertyType === undefined) {
-                    return result;
-                }
+        const childrenOfProps = properties.reduce((result: BaseType[], property) => {
+            const propertyType = property.getType();
+            if (propertyType === undefined) {
+                return result;
+            }
 
-                return [...result, ...this.childTypeFormatter.getChildren(propertyType)];
-            }, []),
-        ];
+            return [...result, ...this.childTypeFormatter.getChildren(propertyType)];
+        }, []);
+
+        const children = [...childrenOfBase, ...childrenOfAdditionalProps, ...childrenOfProps];
 
         return uniqueArray(children);
     }
@@ -66,11 +62,11 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
         const objectProperties = type.getProperties();
         const additionalProperties: BaseType | boolean = type.getAdditionalProperties();
 
-        const preparedProperties = objectProperties.map(property => this.prepareObjectProperty(property));
+        const preparedProperties = objectProperties.map((property) => this.prepareObjectProperty(property));
 
         const required = preparedProperties
-            .filter(property => property.isRequired())
-            .map(property => property.getName());
+            .filter((property) => property.isRequired())
+            .map((property) => property.getName());
 
         const properties = preparedProperties.reduce((result: StringMap<Definition>, property) => {
             const propertyType = property.getType();

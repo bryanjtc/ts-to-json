@@ -1,2 +1,2 @@
-export * from './get-directories';
-export * from './get-files';
+export * from "./get-directories";
+export * from "./get-files";

@@ -7,8 +7,8 @@ export const getFiles = (root: string) => {
     const files = dirs.reduce((arr, dir) => {
         const allFiles = fs
             .readdirSync(dir, { withFileTypes: true })
-            .filter(x => x.isFile())
-            .map(x => path.join(root, x.name));
+            .filter((x) => x.isFile())
+            .map((x) => path.join(root, x.name));
         arr = arr.concat(allFiles);
         return arr;
     }, [] as string[]);
@@ -17,5 +17,5 @@ export const getFiles = (root: string) => {
 
 export const getFilesWithRelativePath = (root: string) => {
     const results = getFiles(root);
-    return results.map(x => x.replace(root, ""));
+    return results.map((x) => x.replace(root, ""));
 };

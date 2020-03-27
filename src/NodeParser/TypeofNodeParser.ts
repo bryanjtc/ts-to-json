@@ -64,8 +64,8 @@ export class TypeofNodeParser implements SubNodeParser {
 
         let type: BaseType | null | undefined = null;
         const properties = node.members
-            .filter(member => !isExcludedProp(member, new Context(parentNode), this.config))
-            .map(member => {
+            .filter((member) => !isExcludedProp(member, new Context(parentNode), this.config))
+            .map((member) => {
                 const name = member.name.getText();
                 if (member.initializer) {
                     type = this.childNodeParser.createType(member.initializer, context);

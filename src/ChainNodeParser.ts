@@ -21,7 +21,7 @@ export class ChainNodeParser implements SubNodeParser {
     }
 
     public supportsNode(node: ts.Node): boolean {
-        return this.nodeParsers.some(nodeParser => nodeParser.supportsNode(node));
+        return this.nodeParsers.some((nodeParser) => nodeParser.supportsNode(node));
     }
 
     public createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType | undefined {
@@ -33,7 +33,8 @@ export class ChainNodeParser implements SubNodeParser {
         const contextCacheKey = context.getCacheKey(this.config);
         let type = typeCache.get(contextCacheKey);
         if (!type) {
-            type = this.getNodeParser(node, context).createType(node, context, reference);
+            const parser = this.getNodeParser(node, context);
+            type = parser.createType(node, context, reference);
             if (!(type instanceof ReferenceType)) {
                 typeCache.set(contextCacheKey, type);
             }
