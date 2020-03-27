@@ -25,6 +25,9 @@
             "additionalProperties": false
         },
         "MyFunction": {
+            "$ref": "#/definitions/__type"
+        },
+        "__type": {
             "kind": "function",
             "properties": {
                 "anyOf": [
