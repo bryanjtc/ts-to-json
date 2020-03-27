@@ -130,10 +130,14 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
                 return members;
             }, [] as (ts.PropertyDeclaration | ts.PropertySignature | ts.ParameterPropertyDeclaration)[])
             .filter(member => isPublic(member) && !isStatic(member) && member.type && !isNodeHidden(member))
-            .map(member => {
-                const parser = this.childNodeParser.createType(member.type!, context);
-                return new ObjectProperty(member.name.getText(), parser, !member.questionToken);
-            })
+            .map(
+                member =>
+                    new ObjectProperty(
+                        member.name.getText(),
+                        this.childNodeParser.createType(member.type!, context),
+                        !member.questionToken
+                    )
+            )
             .filter(prop => {
                 if (prop.isRequired() && prop.getType() === undefined) {
                     hasRequiredNever = true;
