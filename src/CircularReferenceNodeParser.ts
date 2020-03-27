@@ -29,9 +29,9 @@ export class CircularReferenceNodeParser implements SubNodeParser {
     }
 
     public createType(node: ts.Node, context: Context): BaseType | undefined {
+        const key = extendKey(getKey(node, context), node, context, this.config);
         context.ignoreLimits = hasLimitOptions(this.config) && isRecursionToType(node, context, this.config.type);
 
-        const key = extendKey(getKey(node, context), node, context, this.config);
         if (this.circular.has(key)) {
             context.ignoreLimits = false;
             return this.circular.get(key)!;

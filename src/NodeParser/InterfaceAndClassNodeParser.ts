@@ -117,7 +117,6 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
 
         const properties = (node.members as ts.NodeArray<ts.TypeElement | ts.ClassElement>)
             .filter(member => !isExcludedProp(member, context, this.config))
-            // .sort((a,b) => a.)
             .reduce((members, member) => {
                 if (ts.isConstructorDeclaration(member)) {
                     const params = member.parameters.filter(param =>

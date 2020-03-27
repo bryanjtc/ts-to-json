@@ -7,10 +7,6 @@ import { ReferenceType } from "./Type/ReferenceType";
 import { symbolAtNode, getNodeName, shouldExtendKey } from "./Utils";
 import { Config } from "../src/Config";
 
-// const isDirectChildOfTopLevelType  = (node:ts.Node)=>{
-//     if(!isTopLevelDeclarations(node.parent))return trie
-// };
-
 export class ExposeNodeParser implements SubNodeParser {
     public constructor(
         private typeChecker: ts.TypeChecker,
@@ -28,15 +24,9 @@ export class ExposeNodeParser implements SubNodeParser {
         if (baseType === undefined) {
             return undefined;
         }
-        // const excluded = isExcludedProp(node, context, this.config);
 
         if (!this.isExportNode(node)) {
-            // if (isTopLevelDeclarations(node.parent) || [ts.SyntaxKind.TypeLiteral].includes(node.kind))
-
-            // if (!isChildOfTopLevelType(node, this.config.type))
-            // if ([ts.SyntaxKind.TypeLiteral].includes(node.kind)) {
             return baseType;
-            // }
         }
 
         return new DefinitionType(this.getDefinitionName(node, context), baseType);

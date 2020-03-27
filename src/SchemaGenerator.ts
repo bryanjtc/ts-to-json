@@ -100,7 +100,6 @@ export class SchemaGenerator {
         }
 
         children.reduce((definitions, child) => {
-            // const newChild = this.applyMaxDepth(child);
             const name = child.getName();
             if (!(name in definitions)) {
                 definitions[name] = this.typeFormatter.getDefinition(child.getType());
@@ -162,36 +161,6 @@ export class SchemaGenerator {
         My Implementations
     */
 
-    // private applyMaxDepth(node: DefinitionType, dept = 0) {
-    //     if (!this.config || this.config.maxDepth === undefined) return node;
-
-    //     const nodeType = node.getType();
-
-    //     let props;
-
-    //     if (nodeType instanceof ObjectType) {
-    //         props = (nodeType as ObjectType).getProperties();
-    //     } else if (nodeType instanceof FunctionType) {
-    //         dept = dept - 1;
-    //         props = (nodeType as FunctionType).getParameters();
-    //     }
-
-    //     if (!props) return node;
-
-    //     (node as any).type.properties = [];
-
-    //     if (dept > this.config.maxDepth - 1) {
-    //         return node;
-    //     } else {
-    //         props.forEach((prop: any) => {
-    //             const newNode = this.applyMaxDepth(prop, dept + 1);
-    //             if (newNode) {
-    //                 (node as any).type.properties.push(newNode);
-    //             }
-    //         });
-    //     }
-    //     return node;
-    // }
     public createSchemaByNodeKind(nodeKinds: ts.SyntaxKind | ts.SyntaxKind[]): Schema | null {
         const typeChecker = this.program.getTypeChecker();
 
