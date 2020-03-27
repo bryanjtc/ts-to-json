@@ -35,11 +35,12 @@ export interface Config {
      */
     forceToParseTypes?: string[];
     /**
-     *   The generated schema will not have properties with name specified in the list
+     *   Will exclude property names included in the list.
      */
     excludeProperties?: string[];
     /**
-     *   Will only generate schema for the property names included in the list
+     *  Will generate schema for the property names included in the list.
+     *  excludeProperties option will be ignored when using this option
      */
     includeProperties?: string[];
 }
