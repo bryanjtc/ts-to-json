@@ -6,10 +6,21 @@
             "type": "object",
             "properties": {
                 "a": {
+                    "$ref": "#/definitions/___MyObject"
+                },
+                "d": {
                     "type": "object",
                     "additionalProperties": false
                 }
             },
+            "required": [
+                "a",
+                "d"
+            ],
+            "additionalProperties": false
+        },
+        "___MyObject": {
+            "type": "object",
             "additionalProperties": false
         }
     }

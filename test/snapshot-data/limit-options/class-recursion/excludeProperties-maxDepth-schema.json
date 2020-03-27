@@ -6,10 +6,12 @@
             "type": "object",
             "properties": {
                 "a": {
-                    "type": "object",
-                    "additionalProperties": false
+                    "type": "number"
                 }
             },
+            "required": [
+                "a"
+            ],
             "additionalProperties": false
         }
     }

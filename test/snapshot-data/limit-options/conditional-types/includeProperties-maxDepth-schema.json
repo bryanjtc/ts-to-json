@@ -7,9 +7,21 @@
             "properties": {
                 "a": {
                     "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "b"
+                    ],
                     "additionalProperties": false
                 }
             },
+            "required": [
+                "a"
+            ],
             "additionalProperties": false
         }
     }

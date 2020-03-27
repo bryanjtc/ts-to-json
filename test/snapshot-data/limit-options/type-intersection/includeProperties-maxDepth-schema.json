@@ -7,26 +7,26 @@
             "properties": {
                 "a": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
+                        "c": {
+                            "type": "string"
+                        },
                         "b": {
                             "type": "object",
-                            "properties": {
-                                "c": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "c"
-                            ],
-                            "additionalProperties": false
+                            "additionalProperties": false,
+                            "properties": {}
                         }
                     },
                     "required": [
-                        "b"
-                    ],
-                    "additionalProperties": false
+                        "b",
+                        "c"
+                    ]
                 }
             },
+            "required": [
+                "a"
+            ],
             "additionalProperties": false
         }
     }

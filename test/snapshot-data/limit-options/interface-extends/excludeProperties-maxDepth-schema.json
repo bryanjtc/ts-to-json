@@ -4,13 +4,16 @@
     "definitions": {
         "MyObject": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "a": {
                     "type": "object",
                     "additionalProperties": false
                 }
             },
-            "additionalProperties": false
+            "required": [
+                "a"
+            ]
         }
     }
 }

@@ -13,26 +13,21 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
 
     const chained = props?.join(".");
 
-    if (config.maxDepth) {
-        if (!(node instanceof LiteralType) && ts.isUnionTypeNode(node)) return false;
-        if (props.length <= config.maxDepth) return false;
-    }
+    const isMaxDepth = config.maxDepth && props.length > config.maxDepth;
 
     if (config.includeProperties && config.includeProperties.length) {
         for (let i = 0; i < config.includeProperties.length; i++) {
             const includeProps = config.includeProperties[i];
-            if (includeProps.startsWith(chained)) {
-                return false;
-            }
-            if (chained.startsWith(includeProps)) {
+            if (!isMaxDepth && (includeProps.startsWith(chained) || chained.startsWith(includeProps))) {
                 return false;
             }
         }
-        return true;
     } else if (config.excludeProperties && config.excludeProperties.length) {
-        if (!config.excludeProperties.includes(chained)) {
+        if (!isMaxDepth && !config.excludeProperties.includes(chained)) {
             return false;
         }
+    } else {
+        if (!isMaxDepth) return false;
     }
 
     return true;

@@ -5,8 +5,6 @@ import { ReferenceType } from "./Type/ReferenceType";
 import { getKey, ignoreLimits, hasLimitOptions } from "./Utils";
 import { Config } from "./Config";
 
-type Operators = "typeof";
-
 export class Context {
     private cacheKey: string | null = null;
     private arguments: (BaseType | undefined)[] = [];
@@ -14,8 +12,8 @@ export class Context {
     private reference?: ts.Node;
     private defaultArgument = new Map<string, BaseType | undefined>();
     private parentContext?: Context;
-    private operator?: Operators;
     public ignoreLimits? = false;
+    private skipNode: ts.Node;
 
     public constructor(reference?: ts.Node, parentContext?: Context) {
         this.reference = reference;
@@ -84,16 +82,12 @@ export class Context {
         return this.parentContext !== undefined && this.parentContext.reference !== undefined;
     }
 
-    public setOperator(val: Operators) {
-        this.cacheKey = `${this.cacheKey}-${val}`;
-        this.operator = val;
+    public setSkipNode(node: ts.Node) {
+        this.skipNode = node;
+        return this;
     }
-    public getOperator(): Operators | undefined {
-        return this.operator;
-    }
-    public hasOperator(val: Operators) {
-        if (!this.operator) return false;
-        return this.operator === val;
+    public getSkipNode() {
+        return this.skipNode;
     }
 }
 

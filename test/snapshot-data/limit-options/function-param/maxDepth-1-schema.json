@@ -1,0 +1,57 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/MyObject",
+    "definitions": {
+        "MyObject": {
+            "kind": "function",
+            "type": "null",
+            "parameters": {
+                "options": {
+                    "type": "object",
+                    "properties": {
+                        "c": {
+                            "type": "string"
+                        },
+                        "d": {
+                            "type": "string"
+                        },
+                        "a": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "c",
+                        "d",
+                        "a"
+                    ],
+                    "additionalProperties": false
+                },
+                "options2": {
+                    "type": "object",
+                    "properties": {
+                        "c": {
+                            "type": "string"
+                        },
+                        "d": {
+                            "type": "string"
+                        },
+                        "a": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "c",
+                        "d",
+                        "a"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "options"
+            ]
+        }
+    }
+}

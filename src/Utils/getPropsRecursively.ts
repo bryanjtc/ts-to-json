@@ -29,12 +29,12 @@ export const getPropsRecursively = (node: ts.Node | LiteralType, context: Contex
         props = ts.isEnumMember(node) ? [] : getPropsFromParentContextRecursively(context);
 
         if (
-            !context.hasOperator("typeof") &&
+            // !context.hasOperator("typeof") &&
             [ts.SyntaxKind.TypeLiteral, ts.SyntaxKind.EnumDeclaration].includes(node.parent.kind)
         ) {
             const parentNode = ts.isEnumMember(node) ? context.getReference() : node.parent;
             if (parentNode) {
-                const nodeParentProps = getPropsFromTypeLiteralRecursively(parentNode);
+                const nodeParentProps = getPropsFromTypeLiteralRecursively(parentNode, context.getSkipNode());
                 props = [...props, ...nodeParentProps];
             }
         }

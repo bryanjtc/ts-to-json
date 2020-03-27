@@ -30,7 +30,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
         const id = `indexed-type-${getKey(node, context)}`;
 
         if (!constraintType) {
-            return;
+            return new ObjectType(id, [], [], false);
         }
 
         const keyListType = derefType(constraintType);

@@ -9,16 +9,25 @@
                     "type": "object",
                     "additionalProperties": false
                 },
-                "b": {
+                "l": {
+                    "$ref": "#/definitions/___MyObject"
+                },
+                "d": {
                     "type": "object",
                     "additionalProperties": false
                 }
             },
             "required": [
                 "a",
-                "b"
+                "l",
+                "d"
             ],
             "additionalProperties": false
+        },
+        "___MyObject": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
         }
     }
 }

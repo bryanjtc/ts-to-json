@@ -8,25 +8,24 @@
                 "a": {
                     "type": "object",
                     "properties": {
+                        "c": {
+                            "type": "number"
+                        },
                         "b": {
                             "type": "object",
-                            "properties": {
-                                "c": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "c"
-                            ],
                             "additionalProperties": false
                         }
                     },
                     "required": [
+                        "c",
                         "b"
                     ],
                     "additionalProperties": false
                 }
             },
+            "required": [
+                "a"
+            ],
             "additionalProperties": false
         }
     }

@@ -9,15 +9,32 @@
                     "type": "object",
                     "additionalProperties": false
                 },
-                "b": {
+                "e": {
                     "type": "object",
                     "additionalProperties": false
+                },
+                "j": {
+                    "type": "string"
+                },
+                "o": {
+                    "type": "object",
+                    "additionalProperties": false
+                },
+                "l": {
+                    "$ref": "#/definitions/___MyObject"
                 }
             },
             "required": [
                 "a",
-                "b"
+                "e",
+                "j",
+                "o",
+                "l"
             ],
+            "additionalProperties": false
+        },
+        "___MyObject": {
+            "type": "object",
             "additionalProperties": false
         }
     }

@@ -10,23 +10,22 @@
                     "properties": {
                         "b": {
                             "type": "object",
-                            "properties": {
-                                "c": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "c"
-                            ],
                             "additionalProperties": false
+                        },
+                        "c": {
+                            "type": "string"
                         }
                     },
                     "required": [
-                        "b"
+                        "b",
+                        "c"
                     ],
                     "additionalProperties": false
                 }
             },
+            "required": [
+                "a"
+            ],
             "additionalProperties": false
         }
     }

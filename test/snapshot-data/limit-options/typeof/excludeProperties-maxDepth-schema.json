@@ -8,6 +8,10 @@
                 "a": {
                     "type": "object",
                     "additionalProperties": false
+                },
+                "e": {
+                    "type": "object",
+                    "additionalProperties": false
                 }
             },
             "additionalProperties": false

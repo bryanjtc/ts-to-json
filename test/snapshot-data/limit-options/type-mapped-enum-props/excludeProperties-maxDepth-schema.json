@@ -10,6 +10,9 @@
                     "additionalProperties": false
                 }
             },
+            "required": [
+                "a"
+            ],
             "additionalProperties": false
         }
     }
