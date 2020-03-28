@@ -15,15 +15,15 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
 
     const isMaxDepth = config.maxDepth && props.length > config.maxDepth;
 
-    if (config.includeProperties && config.includeProperties.length) {
-        for (let i = 0; i < config.includeProperties.length; i++) {
-            const includeProps = config.includeProperties[i];
+    if (config.includeProps && config.includeProps.length) {
+        for (let i = 0; i < config.includeProps.length; i++) {
+            const includeProps = config.includeProps[i];
             if (!isMaxDepth && (includeProps.startsWith(chained) || chained.startsWith(includeProps))) {
                 return false;
             }
         }
-    } else if (config.excludeProperties && config.excludeProperties.length) {
-        if (!isMaxDepth && !config.excludeProperties.includes(chained)) {
+    } else if (config.excludeProps && config.excludeProps.length) {
+        if (!isMaxDepth && !config.excludeProps.includes(chained)) {
             return false;
         }
     } else {

@@ -37,12 +37,12 @@ export interface Config {
     /**
      *   Will exclude type names specified in the list.
      */
-    excludeProperties?: string[];
+    excludeProps?: string[];
     /**
      *  Will only generate schema for the property names included in the list.
      *  excludeProperties option has no effect when using this option.
      */
-    includeProperties?: string[];
+    includeProps?: string[];
 
     /**
      *  This option has priority over includeProperties and excludeProperties options.
