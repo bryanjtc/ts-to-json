@@ -94,7 +94,7 @@ describe("createSchema", () => {
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
-                excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
+                excludeProps: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
                 expose: "none",
                 schemaExtension: "excludeProperties",
             })
@@ -107,7 +107,7 @@ describe("createSchema", () => {
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
-                includeProperties: ["a.b", "c", "with-dash", "x"],
+                includeProps: ["a.b", "c", "with-dash", "x"],
                 expose: "none",
                 schemaExtension: "includeProperties",
             })
@@ -136,7 +136,7 @@ describe("createSchema", () => {
                 maxDepth: 2,
                 expose: "none",
                 schemaExtension: "includeProperties-maxDepth",
-                includeProperties: ["a"],
+                includeProps: ["a"],
             })
         );
     });
@@ -150,7 +150,7 @@ describe("createSchema", () => {
                 maxDepth: 1,
                 expose: "none",
                 schemaExtension: "excludeProperties-maxDepth",
-                excludeProperties: ["c", "b"],
+                excludeProps: ["c", "b"],
             })
         );
     });
