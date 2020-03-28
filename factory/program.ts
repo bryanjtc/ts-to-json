@@ -56,7 +56,7 @@ function getTsConfig(config: Config) {
     };
 }
 
-export function createProgram(config: Config): ts.Program {
+export function createProgram(config: Config, oldProgram?: ts.Program): ts.Program {
     const rootNamesFromPath = config.path ? glob.sync(path.resolve(config.path)) : [];
     const tsconfig = getTsConfig(config);
     const rootNames = rootNamesFromPath.length ? rootNamesFromPath : tsconfig.fileNames;
@@ -65,7 +65,7 @@ export function createProgram(config: Config): ts.Program {
         throw new NoRootNamesError();
     }
 
-    const program: ts.Program = ts.createProgram(rootNames, tsconfig.options);
+    const program: ts.Program = ts.createProgram(rootNames, tsconfig.options, undefined, oldProgram);
 
     if (!config.skipTypeCheck) {
         const diagnostics = ts.getPreEmitDiagnostics(program);
