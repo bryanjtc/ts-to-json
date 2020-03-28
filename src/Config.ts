@@ -11,7 +11,6 @@ export interface Config {
     encodeRefs?: boolean;
     extraTags?: string[];
     setObjectIdentifier?: boolean;
-    maxDepth?: number;
     /**
      *  Use this option when parser unable to parse specific type and throws error.
      *  This option force the parser identified type as unknown type.
@@ -44,6 +43,11 @@ export interface Config {
      *  excludeProperties option has no effect when using this option.
      */
     includeProperties?: string[];
+
+    /**
+     *  This option has priority over includeProperties and excludeProperties options.
+     */
+    maxDepth?: number;
 }
 
 export const DEFAULT_CONFIG: Config = {

@@ -38,14 +38,14 @@ const config = {
     type: "*", // Or <type-name> if you want to generate schema for that one type only
     expose: "export",
     jsDoc: "extended",
-    topRef: true
+    topRef: true,
 };
 
 const output_path = "path/to/output/file";
 
 const schema = tsj.createGenerator(config).createSchema(config.type);
 const schemaString = JSON.stringify(schema, null, 2);
-fs.writeFile(output_path, schemaString, err => {
+fs.writeFile(output_path, schemaString, (err) => {
     if (err) throw err;
 });
 ```
@@ -131,3 +131,59 @@ Run the schema generator via `node main.js`.
 And connect via the debugger protocol.
 
 [AST Explorer](https://astexplorer.net/) is amazing for developers of this tool!
+
+## Other options
+
+```
+
+    /**
+     *  Use this option when parser unable to parse specific type and throws error.
+     *  This option force the parser identified type as unknown type.
+     */
+    handleUnknownTypes?: boolean;
+
+    /**
+     *   When unknown type detected, the node info will be displayed.
+     */
+    showUnknownTypeInfo?: boolean;
+
+    /**
+     *   Types located in the file wont be processed, instead name of type will be returned.
+     *   e.g. HTMLElement is located in lib.dom.d.ts file, hence the HTMLElement will be the type
+     */
+    skipParseTypeInFiles?: string[];
+
+    /**
+     *   Type names within the list wont be proceeded instead the name of the type will be returned.
+     *   e.g. HTMLElement will stay HTMLElement
+     */
+    skipParseTypes?: string[];
+
+    /**
+     *   Names within the list must be processed even if its in skipFiles or skipTypes list
+     */
+    forceToParseTypes?: string[]
+
+```
+
+> The following option can only be used when `expose` set to `none` and `type` option has been set.
+
+```
+
+    /**
+     *   Will exclude type names specified in the list.
+     */
+    excludeProperties?: string[];
+
+    /**
+     *  Will only generate schema for the property names included in the list.
+     *  excludeProperties option has no effect when using this option.
+     */
+    includeProperties?: string[];
+
+    /**
+     *  This option has priority over includeProperties and excludeProperties options.
+     */
+    maxDepth?: number;
+
+```
