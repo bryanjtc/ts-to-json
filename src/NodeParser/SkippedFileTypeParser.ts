@@ -5,7 +5,7 @@ import { BaseType } from "../Type/BaseType";
 import { UnknownType } from "../Type/UnknownType";
 import { StaticType } from "../Type/StaticType";
 import { Config } from "../../src/Config";
-import { getNodeName, isInSkipParseFiles } from "../Utils";
+import { getNodeName, isInSkippedFile } from "../Utils";
 
 /*
     To skip processing type in a file expansive types like HTMLElement
@@ -15,7 +15,7 @@ import { getNodeName, isInSkipParseFiles } from "../Utils";
 export class SkippedFileTypeParser implements SubNodeParser {
     constructor(private config: Config) {}
     public supportsNode(node: ts.Node): boolean {
-        if (isInSkipParseFiles(node, this.config)) {
+        if (isInSkippedFile(node, this.config)) {
             return true;
         }
         return false;

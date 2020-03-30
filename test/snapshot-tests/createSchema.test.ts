@@ -87,6 +87,14 @@ describe("createSchema", () => {
         })
     );
 
+    it(
+        "should not parse when shouldSkipFileTypes return true",
+        assertSchema("shouldSkipFileTypes-option", {
+            type: "MyType",
+            shouldSkipFileTypes: (path: string) => path.endsWith("external-props.ts"),
+        })
+    );
+
     const dirs = getRelativeDirectories(resolve(`${basePath}/limit-options`));
     dirs.forEach((dir) => {
         it(

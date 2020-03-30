@@ -135,6 +135,11 @@ And connect via the debugger protocol.
 ## Other options
 
 ```
+    /**
+     *   If returns true the type name will be used instead of processing type and it children.
+     *   e.g. HTMLElement will stay HTMLElement
+     */
+    shouldSkipFileTypes?: (path: string) => boolean;
 
     /**
      *  Use this option when parser unable to parse specific type and throws error.
