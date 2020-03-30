@@ -8,7 +8,7 @@ export const isInSkipParseFiles = (node: ts.Node, config: Config) => {
 
     const file = node.getSourceFile().fileName;
 
-    if (config.skipParseTypeInFiles.find(x => file.includes(x))) {
+    if (config.skipParseTypeInFiles.find((x) => file.includes(x))) {
         return true;
     }
 
