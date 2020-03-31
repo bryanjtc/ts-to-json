@@ -18,7 +18,7 @@ export * from "./isChildOfTypeReference";
 export * from "./isExcludedProp";
 export * from "./isHidden";
 export * from "./isInForceParseTypes";
-export * from "./isInSkippedFile";
+export * from "./isNodeSkipped";
 export * from "./isInSkipTypes";
 export * from "./isRecursionToType";
 export * from "./modifiers";

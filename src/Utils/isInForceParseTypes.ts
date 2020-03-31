@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import { Config } from "../../src/Config";
-import { symbolAtNode, localSymbolAtNode } from "./symbolAtNode";
+import { symbolAtNode, localSymbolAtNode } from ".";
 
 export const isInForceParseTypes = (node: ts.Node, config: Config) => {
     if (!config.forceToParseTypes || !config.forceToParseTypes.length) return false;

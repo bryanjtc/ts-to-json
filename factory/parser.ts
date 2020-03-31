@@ -46,7 +46,7 @@ import { UnknownTypeNodeParser } from "../src/NodeParser/UnknownTypeNodeParser";
 import { VoidTypeNodeParser } from "../src/NodeParser/VoidTypeNodeParser";
 import { SubNodeParser } from "../src/SubNodeParser";
 import { TopRefNodeParser } from "../src/TopRefNodeParser";
-import { SkippedFileTypeParser } from "../src/NodeParser/SkippedFileTypeParser";
+import { SkippedNodeParser } from "../src/NodeParser/SkippedNodeParser";
 import { SkippedTypeParser } from "../src/NodeParser/SkippedTypeParser";
 import { NotKnownNodeParser } from "../src/NodeParser/NotKnownNodeParser";
 import { RecursionTypeParser } from "../src/RecursionTypeParser";
@@ -78,6 +78,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
     chainNodeParser
         // the following parser must stay at top
         .addNodeParser(new SkippedTypeParser(config))
+        .addNodeParser(new SkippedNodeParser(config))
         .addNodeParser(new HiddenNodeParser(typeChecker))
         .addNodeParser(new RecursionTypeParser(typeChecker, chainNodeParser, config))
         .addNodeParser(new StringTypeNodeParser())
@@ -139,8 +140,6 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new VoidKeywordTypeParser())
 
         .addNodeParser(new ArrayNodeParser(chainNodeParser))
-
-        .addNodeParser(new SkippedFileTypeParser(config))
         // the following parser must always be last
         .addNodeParser(new NotKnownNodeParser(config));
 

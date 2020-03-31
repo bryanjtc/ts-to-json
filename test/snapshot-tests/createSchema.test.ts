@@ -71,7 +71,7 @@ describe("createSchema", () => {
     it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipParseTypeInFiles: ["external-props.ts"] }));
     it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipParseTypes: ["ExternalProps"] }));
     it(
-        "should parse type even if type is in skipFiles list",
+        "should parse type even if type is in skipParseTypeInFiles list",
         assertSchema("skipFiles-with-forceToParseTypes", {
             type: "MyType",
             skipParseTypeInFiles: ["external-props.ts"],
@@ -88,10 +88,33 @@ describe("createSchema", () => {
     );
 
     it(
-        "should not parse when shouldSkipFileTypes return true",
-        assertSchema("shouldSkipFileTypes-option", {
+        "should not parse node when shouldParseNode return false",
+        assertSchema("shouldParseNode-option", {
+            expose: "none",
             type: "MyType",
-            shouldSkipFileTypes: (path: string) => path.endsWith("external-props.ts"),
+            shouldParseNode: (node) => {
+                const file = node.getSourceFile().fileName;
+                if (file.endsWith("external-props.ts")) {
+                    return false;
+                }
+                return true;
+            },
+        })
+    );
+
+    it(
+        "should parse node even if shouldParseNode return false",
+        assertSchema("shouldParseNode-option-force", {
+            type: "MyType",
+            forceToParseTypes: ["ExternalProps"],
+            expose: "none",
+            shouldParseNode: (node) => {
+                const file = node.getSourceFile().fileName;
+                if (file.endsWith("external-props.ts")) {
+                    return false;
+                }
+                return true;
+            },
         })
     );
 
