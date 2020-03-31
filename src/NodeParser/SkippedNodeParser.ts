@@ -5,7 +5,7 @@ import { BaseType } from "../Type/BaseType";
 import { UnknownType } from "../Type/UnknownType";
 import { StaticType } from "../Type/StaticType";
 import { Config } from "../../src/Config";
-import { getNodeName, isNodeSkipped } from "../Utils";
+import { getNodeName, shouldParseNode } from "../Utils";
 
 /*
     Instead will return node type name e.g. HTMLElement
@@ -14,7 +14,7 @@ import { getNodeName, isNodeSkipped } from "../Utils";
 export class SkippedNodeParser implements SubNodeParser {
     constructor(private config: Config) {}
     public supportsNode(node: ts.Node): boolean {
-        if (isNodeSkipped(node, this.config)) {
+        if (!shouldParseNode(node, this.config)) {
             return true;
         }
         return false;

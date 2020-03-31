@@ -3,7 +3,7 @@ import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { getKey, isNodeSkipped, isInForceParseTypes, extendKey, isRecursionToType, hasLimitOptions } from "./Utils";
+import { getKey, shouldParseNode, isInForceParseTypes, extendKey, isRecursionToType, hasLimitOptions } from "./Utils";
 import { Config } from "../src/Config";
 
 export class CircularReferenceNodeParser implements SubNodeParser {
@@ -12,7 +12,7 @@ export class CircularReferenceNodeParser implements SubNodeParser {
     public constructor(private childNodeParser: SubNodeParser, private config: Config) {}
 
     public supportsNode(node: ts.Node): boolean {
-        if (isNodeSkipped(node, this.config)) {
+        if (!shouldParseNode(node, this.config)) {
             if (!isInForceParseTypes(node, this.config)) {
                 return false;
             }

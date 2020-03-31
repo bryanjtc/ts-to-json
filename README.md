@@ -138,6 +138,7 @@ And connect via the debugger protocol.
     /**
      *   If returns false the node type name will be used instead of parsing node and its children.
      *   e.g. HTMLElement will stay HTMLElement
+     *   This option has priority over other limit options.
      */
     shouldParseNode?: (node: Node) => boolean;
 
