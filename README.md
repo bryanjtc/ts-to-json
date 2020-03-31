@@ -141,51 +141,45 @@ And connect via the debugger protocol.
      *   This option has priority over other limit options.
      */
     shouldParseNode?: (node: Node) => boolean;
-
     /**
      *  Use this option when parser unable to parse specific type and throws error.
      *  This option force the parser identified type as unknown type.
      */
     handleUnknownTypes?: boolean;
-
     /**
      *   When unknown type detected, the node info will be displayed.
      */
     showUnknownTypeInfo?: boolean;
-
     /**
      *   Types located in the file wont be processed, instead name of type will be returned.
      *   e.g. HTMLElement is located in lib.dom.d.ts file, hence the HTMLElement will be the type
      */
     skipParseTypeInFiles?: string[];
-
     /**
      *   Type names within the list wont be proceeded instead the name of the type will be returned.
      *   e.g. HTMLElement will stay HTMLElement
      */
     skipParseTypes?: string[];
-
     /**
      *   Names within the list must be processed even if its in skipFiles or skipTypes list
      */
-    forceToParseTypes?: string[]
+    forceToParseTypes?: string[];
 
 ```
 
-> The following option can only be used when `expose` set to `none` and `type` option has been set.
+> The following option can only be used when `expose` set to `none` and `type` option provided.
 
 ```
 
     /**
      *   Will exclude type names specified in the list.
      */
-    excludeProperties?: string[];
-
+    excludeProps?: string[];
     /**
      *  Will only generate schema for the property names included in the list.
      *  excludeProperties option has no effect when using this option.
      */
-    includeProperties?: string[];
+    includeProps?: string[];
 
     /**
      *  This option has priority over includeProperties and excludeProperties options.
