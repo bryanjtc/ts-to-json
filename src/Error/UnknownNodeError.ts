@@ -4,7 +4,7 @@ import { getNodeInfo } from "./utils";
 
 export class UnknownNodeError extends BaseError {
     public constructor(private node: ts.Node, private reference?: ts.Node) {
-        super(`Unknown node: ${getNodeInfo(node)}`);
+        super(`\nUnknown node: ${getNodeInfo(node)}`);
     }
 
     public getNode(): ts.Node {
