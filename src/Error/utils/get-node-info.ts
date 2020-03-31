@@ -8,7 +8,7 @@ export const getNodeInfo = (node?: ts.Node) => {
     infos.push(`\nsymbol name=${nodeName}`);
     infos.push(`kind=${node.kind}`);
     infos.push(`source file=${node.getSourceFile().fileName}:${node.parent.getStart()}`);
-    infos.push(`parent=${node.parent.getFullText().trim()}`);
+    infos.push(`parent=${getNodeName(node.parent)}`);
     infos.push(`parent sourceFile=${node.parent.getSourceFile().fileName}:${node.parent.getStart()}`);
     return infos.join("\n");
 };
