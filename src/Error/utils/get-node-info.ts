@@ -5,6 +5,7 @@ export const getNodeInfo = (node?: ts.Node) => {
     if (!node) return "";
     const infos: string[] = [];
     const nodeName = getNodeName(node);
+    infos.push(`\n------------ Node Info ------------`);
     infos.push(`\nsymbol name=${nodeName}`);
     infos.push(`kind=${node.kind}`);
     infos.push(`source file=${node.getSourceFile().fileName}:${node.parent.getStart()}`);

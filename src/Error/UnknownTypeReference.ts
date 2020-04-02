@@ -5,7 +5,7 @@ import { getNodeInfo } from "./utils";
 export class UnknownTypeReference extends BaseError {
     public constructor(private type: ts.TypeReferenceNode | undefined, message = "") {
         super(
-            `\nUnknown type reference "${type ? type.getFullText().trim() : undefined}"${
+            `Unknown type reference "${type ? type.getFullText().trim() : undefined}"${
                 message && message && ", " + message
             }${getNodeInfo(type)}`
         );
