@@ -15,6 +15,10 @@
     {
       "name": "Dominik Moritz",
       "email": "domoritz@gmail.com"
+    },
+    {
+      "name": "Mo doaie",
+      "email": "mdoaie@yahoo.co.uk"
     }
   ],
   "repository": {
@@ -71,7 +75,7 @@
     "test": "jest test/ --verbose",
     "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
     "test:current": "set FAST_TEST=1 && jest  --verbose",
-    "debug": "node -r ts-node/register --inspect-brk tts-to-json.ts",
+    "debug": "node -r ts-node/register --inspect-brk ts-to-json.ts",
     "run": "ts-node ts-to-json.ts"
   },
   "jest": {
