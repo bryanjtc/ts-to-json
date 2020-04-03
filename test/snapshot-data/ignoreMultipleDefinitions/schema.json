@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/Props",
+    "definitions": {
+        "Props": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "prop": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "prop"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

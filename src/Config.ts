@@ -14,6 +14,14 @@ export interface Config {
     extraTags?: string[];
     setObjectIdentifier?: boolean;
     /**
+     *   Node that enabling this option can have side effects!
+     *   If two file using same interface name and linking them together, the following error will be thrown:
+     *   'Type "Props" has multiple definitions.'
+     *   It is good practice to not have same name for the type in target file, so changing the type name will solve the problem.
+     *   however if like to suppress the error you can use this options.
+     */
+    ignoreMultipleDefinitions?: boolean;
+    /**
      *   If returns false the node type name will be used instead of parsing node and its children.
      *   e.g. HTMLElement will stay HTMLElement
      *   This option has priority over other limit options.

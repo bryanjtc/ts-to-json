@@ -99,8 +99,10 @@ export class SchemaGenerator {
         for (const child of children) {
             const name = child.getName();
             const previousId = ids.get(name);
-            if (previousId && child.getId() !== previousId) {
-                throw new Error(`Type "${name}" has multiple definitions.`);
+            if (!this.config?.ignoreMultipleDefinitions && previousId && child.getId() !== previousId) {
+                throw new Error(
+                    `Type "${name}" has multiple definitions. To suppress this error you can use 'ignoreMultipleDefinitions'. Note that using this option can introduce new problems.`
+                );
             }
             ids.set(name, child.getId());
         }

@@ -63,6 +63,10 @@ function assertSchema(relativePath: string, options?: Options) {
 
 describe("createSchema", () => {
     it("react-class", assertSchema("react-class", { expose: "all" }));
+    it(
+        "ignoreMultipleDefinitions",
+        assertSchema("ignoreMultipleDefinitions", { type: "Props", ignoreMultipleDefinitions: true })
+    );
     it("function-prop-type", assertSchema("function-prop-type"));
     it("module-function-declare", assertSchema("module-function-declare"));
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
