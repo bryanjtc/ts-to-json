@@ -1,11 +1,11 @@
 {
   "name": "ts-to-json",
-  "version": "0.64.1",
+  "version": "0.64.2",
   "description": "Generate JSON schema from your Typescript sources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "ts-json-schema-generator": "./bin/ts-json-schema-generator"
+    "ts-to-json": "./bin/ts-to-json"
   },
   "author": {
     "name": "Alexander Evtushenko",
@@ -71,8 +71,8 @@
     "test": "jest test/ --verbose",
     "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
     "test:current": "set FAST_TEST=1 && jest  --verbose",
-    "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
-    "run": "ts-node ts-json-schema-generator.ts"
+    "debug": "node -r ts-node/register --inspect-brk tts-to-json.ts",
+    "run": "ts-node ts-to-json.ts"
   },
   "jest": {
     "transform": {

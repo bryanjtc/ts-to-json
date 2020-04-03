@@ -8,7 +8,7 @@ index.ts
 node_modules/
 src/
 test/
-ts-json-schema-generator.ts
+ts-to-json.ts
 tsconfig.json
 azure-pipelines.yml
 .eslintignore

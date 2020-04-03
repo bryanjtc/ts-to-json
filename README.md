@@ -1,9 +1,4 @@
-# ts-json-schema-generator
-
-[![CircleCI](https://circleci.com/gh/vega/ts-json-schema-generator.svg?style=shield)](https://circleci.com/gh/vega/ts-json-schema-generator)
-[![codecov](https://codecov.io/gh/vega/ts-json-schema-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/ts-json-schema-generator)
-[![npm dependencies](https://david-dm.org/vega/ts-json-schema-generator.svg)](https://www.npmjs.com/package/ts-json-schema-generator)
-[![npm version](https://img.shields.io/npm/v/ts-json-schema-generator.svg)](https://www.npmjs.com/package/ts-json-schema-generator)
+# ts-to-json
 
 Extended version of [https://github.com/xiag-ag/typescript-to-json-schema](https://github.com/xiag-ag/typescript-to-json-schema).
 
@@ -20,8 +15,8 @@ This project is made possible by a [community of contributors](https://github.co
 ## CLI Usage
 
 ```bash
-npm install --save ts-json-schema-generator
-./node_modules/.bin/ts-json-schema-generator --path 'my/project/**.*.ts' --type 'My.Type.Full.Name'
+npm install --save ts-to-json
+./node_modules/.bin/ts-to-json --path 'my/project/**.*.ts' --type 'My.Type.Full.Name'
 ```
 
 ## Programmatic Usage
@@ -29,7 +24,7 @@ npm install --save ts-json-schema-generator
 ```js
 // main.js
 
-const tsj = require("ts-json-schema-generator");
+const tsj = require("ts-to-json");
 const fs = require("fs");
 
 const config = {
@@ -133,6 +128,8 @@ And connect via the debugger protocol.
 [AST Explorer](https://astexplorer.net/) is amazing for developers of this tool!
 
 ## Other options
+
+> Currently this options are only available when using this package programmatically.
 
 ```
     /**
