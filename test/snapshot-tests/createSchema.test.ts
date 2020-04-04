@@ -189,4 +189,17 @@ describe("createSchema", () => {
             })
         );
     });
+
+    dirs.forEach((dir) => {
+        it(
+            "excludePropsAnyLevel" + dir,
+            assertSchema("limit-options/" + dir, {
+                type: "MyObject",
+                handleUnknownTypes: true,
+                expose: "none",
+                schemaExtension: "excludePropsAnyLevel",
+                excludePropsAnyLevel: ["a", "b"],
+            })
+        );
+    });
 });
