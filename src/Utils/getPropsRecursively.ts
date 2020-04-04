@@ -1,23 +1,11 @@
 import { Context } from "../NodeParser";
-import { getPropsFromParentContextRecursively, getPropName, getPropsFromTypeLiteralRecursively, getNodeName } from ".";
+import { getPropsFromParentContextRecursively, getAnyNodeName, getPropsFromTypeLiteralRecursively } from ".";
 import * as ts from "typescript";
 import { LiteralType } from "../Type/LiteralType";
 
 export const getPropsRecursively = (node: ts.Node | LiteralType, context: Context) => {
-    let propName: string | undefined = undefined;
+    const propName = getAnyNodeName(node);
 
-    if (node instanceof LiteralType) {
-        propName = node
-            .getName()
-            .split('"')
-            .join("");
-    } else if (ts.isLiteralTypeNode(node)) {
-        propName = (node.literal as any).text;
-    } else if (ts.isEnumMember(node)) {
-        propName = getNodeName(node);
-    } else {
-        propName = getPropName(node);
-    }
     let props: string[];
     if (
         node instanceof LiteralType ||

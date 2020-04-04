@@ -51,9 +51,13 @@ export interface Config {
      */
     forceToParseTypes?: string[];
     /**
-     *   Will exclude type names specified in the list.
+     *   Will exclude type names specified in the list from root. accepts path eg. a.b
      */
     excludeProps?: string[];
+    /**
+     *   Will exclude type names specified in the list regardless of root and childrens.
+     */
+    excludePropsAnyLevel?: string[];
     /**
      *  Will only generate schema for the property names included in the list.
      *  excludeProperties option has no effect when using this option.
