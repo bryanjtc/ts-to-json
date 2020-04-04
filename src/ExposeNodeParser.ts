@@ -52,13 +52,13 @@ export class ExposeNodeParser implements SubNodeParser {
 
         /*
             added '___' to identify original type,
-            it should contain all the property regardless of restriction options like excludeProperties.
+            it should contain all the property regardless of restriction options like skipParseRootPropTypes and skipParsePropTypes.
         */
         if (shouldExtendKey(context, this.config)) {
             fullName = "___" + fullName;
         }
 
-        const argumentIds = context.getArguments().map(arg => arg?.getName());
+        const argumentIds = context.getArguments().map((arg) => arg?.getName());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
     }

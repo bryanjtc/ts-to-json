@@ -8,9 +8,9 @@ import { LiteralType } from "../Type/LiteralType";
 export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, config: Config) => {
     if (!hasLimitOptions(config)) return false;
 
-    if (config.excludePropsAnyLevel && config.excludePropsAnyLevel.length) {
+    if (config.skipParsePropTypes && config.skipParsePropTypes.length) {
         const name = getAnyNodeName(node);
-        if (name && config.excludePropsAnyLevel.includes(name)) {
+        if (name && config.skipParsePropTypes.includes(name)) {
             return true;
         }
     }
@@ -29,8 +29,8 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
                 return false;
             }
         }
-    } else if (config.excludeProps && config.excludeProps.length) {
-        if (!isMaxDepth && !config.excludeProps.includes(chained)) {
+    } else if (config.skipParseRootPropTypes && config.skipParseRootPropTypes.length) {
+        if (!isMaxDepth && !config.skipParseRootPropTypes.includes(chained)) {
             return false;
         }
     } else {
