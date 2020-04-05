@@ -188,6 +188,7 @@ And connect via the debugger protocol.
     excludeRootProps?: string[];
 
     /**
+<<<<<<< HEAD
      *   Will exclude prop names specified in the list regardless of root and childrens.
      */
     excludeProps?: string[];
@@ -209,15 +210,33 @@ And connect via the debugger protocol.
      *  Will only generate schema for the property names included in the list.
      *  skipParseRootPropTypes option has no effect when using this option.
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+     *   Will exclude props names specified in the list from root. accepts path eg. a.b
+     */
+    excludeRootProps?: string[];
+
+    /**
+     *   Will exclude prop names specified in the list regardless of root and childrens.
+     */
+    excludeProps?: string[];
+
+    /**
+     *  Will only generate schema for the property names included in the list.
+     *  excludeRootProps option has no effect when using this option.
+>>>>>>> renaming
      */
     includeProps?: string[];
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      *  This option has priority over includeProps and excludeRootProps options.
 =======
      *  This option has priority over includeProperties and skipParseRootPropTypes options.
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+     *  This option has priority over includeProps and excludeRootProps options.
+>>>>>>> renaming
      */
     maxDepth?: number;
 

@@ -9,6 +9,7 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
     if (!hasLimitOptions(config)) return false;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (config.excludeProps && config.excludeProps.length) {
         const name = getAnyNodeName(node);
         if (name && config.excludeProps.includes(name)) {
@@ -17,6 +18,11 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
         const name = getAnyNodeName(node);
         if (name && config.skipParsePropTypes.includes(name)) {
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+    if (config.excludeProps && config.excludeProps.length) {
+        const name = getAnyNodeName(node);
+        if (name && config.excludeProps.includes(name)) {
+>>>>>>> renaming
             return true;
         }
     }
@@ -36,12 +42,17 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
     } else if (config.excludeRootProps && config.excludeRootProps.length) {
         if (!isMaxDepth && !config.excludeRootProps.includes(chained)) {
 =======
     } else if (config.skipParseRootPropTypes && config.skipParseRootPropTypes.length) {
         if (!isMaxDepth && !config.skipParseRootPropTypes.includes(chained)) {
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+    } else if (config.excludeRootProps && config.excludeRootProps.length) {
+        if (!isMaxDepth && !config.excludeRootProps.includes(chained)) {
+>>>>>>> renaming
             return false;
         }
     } else {

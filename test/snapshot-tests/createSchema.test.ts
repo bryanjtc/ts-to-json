@@ -126,6 +126,9 @@ describe("createSchema", () => {
     dirs.forEach((dir) => {
         it(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> renaming
             "excludeRootProps" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
@@ -133,6 +136,7 @@ describe("createSchema", () => {
                 excludeRootProps: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
                 expose: "none",
                 schemaExtension: "excludeRootProps",
+<<<<<<< HEAD
 =======
             "skipParseRootPropTypes" + dir,
             assertSchema("limit-options/" + dir, {
@@ -142,6 +146,8 @@ describe("createSchema", () => {
                 expose: "none",
                 schemaExtension: "skipParseRootPropTypes",
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+>>>>>>> renaming
             })
         );
     });
@@ -189,15 +195,20 @@ describe("createSchema", () => {
     dirs.forEach((dir) => {
         it(
 <<<<<<< HEAD
+<<<<<<< HEAD
             "excludeRootProps-maxDepth" + dir,
 =======
             "skipParseRootPropTypes-maxDepth" + dir,
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+            "excludeRootProps-maxDepth" + dir,
+>>>>>>> renaming
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 maxDepth: 1,
                 expose: "none",
+<<<<<<< HEAD
 <<<<<<< HEAD
                 schemaExtension: "excludeRootProps-maxDepth",
                 excludeRootProps: ["c", "b"],
@@ -205,6 +216,10 @@ describe("createSchema", () => {
                 schemaExtension: "skipParseRootPropTypes-maxDepth",
                 skipParseRootPropTypes: ["c", "b"],
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+                schemaExtension: "excludeRootProps-maxDepth",
+                excludeRootProps: ["c", "b"],
+>>>>>>> renaming
             })
         );
     });
@@ -212,14 +227,19 @@ describe("createSchema", () => {
     dirs.forEach((dir) => {
         it(
 <<<<<<< HEAD
+<<<<<<< HEAD
             "excludeProps" + dir,
 =======
             "skipParsePropTypes" + dir,
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+            "excludeProps" + dir,
+>>>>>>> renaming
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 expose: "none",
+<<<<<<< HEAD
 <<<<<<< HEAD
                 schemaExtension: "excludeProps",
                 excludeProps: ["a", "b"],
@@ -227,6 +247,10 @@ describe("createSchema", () => {
                 schemaExtension: "skipParsePropTypes",
                 skipParsePropTypes: ["a", "b"],
 >>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
+=======
+                schemaExtension: "excludeProps",
+                excludeProps: ["a", "b"],
+>>>>>>> renaming
             })
         );
     });
