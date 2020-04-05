@@ -58,7 +58,7 @@ export class ExposeNodeParser implements SubNodeParser {
             fullName = "___" + fullName;
         }
 
-        const argumentIds = context.getArguments().map(arg => arg?.getName());
+        const argumentIds = context.getArguments().map((arg) => arg?.getName());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
     }

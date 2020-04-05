@@ -13,6 +13,7 @@ export interface Config {
     encodeRefs?: boolean;
     extraTags?: string[];
     setObjectIdentifier?: boolean;
+
     /**
      *   Node that enabling this option can have side effects!
      *   If two file using same interface name and linking them together, the following error will be thrown:
@@ -21,43 +22,52 @@ export interface Config {
      *   however if like to suppress the error you can use this options.
      */
     ignoreMultipleDefinitions?: boolean;
+
     /**
      *   If returns false the node type name will be used instead of parsing node and its children.
      *   e.g. HTMLElement will stay HTMLElement
      *   This option has priority over other limit options.
      */
     shouldParseNode?: (node: Node) => boolean;
+
     /**
      *  Use this option when parser unable to parse specific type and throws error.
      *  This option force the parser identified type as unknown type.
      */
     handleUnknownTypes?: boolean;
+
     /**
      *   When unknown type detected, the node info will be displayed.
      */
     showUnknownTypeInfo?: boolean;
+
     /**
      *   Types located in the file wont be processed, instead name of type will be returned.
      *   e.g. HTMLElement is located in lib.dom.d.ts file, hence the HTMLElement will be the type
      */
     skipParseTypeInFiles?: string[];
+
     /**
      *   Type names within the list wont be proceeded instead the name of the type will be returned.
      *   e.g. HTMLElement will stay HTMLElement
      */
     skipParseTypes?: string[];
+
     /**
      *   Names within the list must be processed even if its in skipFiles or skipTypes list
      */
     forceToParseTypes?: string[];
+
     /**
      *   Will exclude type names specified in the list from root. accepts path eg. a.b
      */
     excludeProps?: string[];
+
     /**
      *   Will exclude type names specified in the list regardless of root and childrens.
      */
     excludePropsAnyLevel?: string[];
+
     /**
      *  Will only generate schema for the property names included in the list.
      *  excludeProperties option has no effect when using this option.
