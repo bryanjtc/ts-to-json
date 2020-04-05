@@ -16,10 +16,10 @@ export interface Config {
 
     /**
      *   Node that enabling this option can have side effects!
-     *   If two file using same interface name and linking them together, the following error will be thrown:
+     *   If two file using same interface/type name and linking them together, the following error will be thrown:
      *   'Type "Props" has multiple definitions.'
-     *   It is good practice to not have same name for the type in target file, so changing the type name will solve the problem.
-     *   however if like to suppress the error you can use this options.
+     *   It is good practice to not have same name for the type in the working file, so changing the type name will solve the problem.
+     *   however if you like to suppress the error you can use this options.
      */
     ignoreMultipleDefinitions?: boolean;
 
@@ -45,7 +45,7 @@ export interface Config {
      *   Types located in the file wont be processed, instead name of type will be returned.
      *   e.g. HTMLElement is located in lib.dom.d.ts file, hence the HTMLElement will be the type
      */
-    skipParseTypeInFiles?: string[];
+    skipParseFiles?: string[];
 
     /**
      *   Type names within the list wont be proceeded instead the name of the type will be returned.
@@ -54,28 +54,28 @@ export interface Config {
     skipParseTypes?: string[];
 
     /**
-     *   Names within the list must be processed even if its in skipFiles or skipTypes list
+     *   Names within the list must be processed even if its in skipParseFiles or skipParseTypes list
      */
     forceToParseTypes?: string[];
 
     /**
-     *   Will exclude type names specified in the list from root. accepts path eg. a.b
+     *   Will exclude props names specified in the list from root. accepts path eg. a.b
+     */
+    excludeRootProps?: string[];
+
+    /**
+     *   Will exclude prop names specified in the list regardless of root and childrens.
      */
     excludeProps?: string[];
 
     /**
-     *   Will exclude type names specified in the list regardless of root and childrens.
-     */
-    excludePropsAnyLevel?: string[];
-
-    /**
      *  Will only generate schema for the property names included in the list.
-     *  excludeProperties option has no effect when using this option.
+     *  excludeRootProps option has no effect when using this option.
      */
     includeProps?: string[];
 
     /**
-     *  This option has priority over includeProperties and excludeProperties options.
+     *  This option has priority over includeProps and excludeRootProps options.
      */
     maxDepth?: number;
 }

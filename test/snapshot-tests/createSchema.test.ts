@@ -24,7 +24,7 @@ function assertSchema(relativePath: string, options?: Options) {
             topRef: true,
             jsDoc: "none",
             skipTypeCheck: true,
-            skipParseTypeInFiles: ["lib.dom.d.ts"],
+            skipParseFiles: ["lib.dom.d.ts"],
             encodeRefs: false,
             ...options,
         };
@@ -72,13 +72,13 @@ describe("createSchema", () => {
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
     it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));
     it("circular-ref-union", assertSchema("circular-ref-union", { type: "MyType", expose: "all" }));
-    it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipParseTypeInFiles: ["external-props.ts"] }));
+    it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipParseFiles: ["external-props.ts"] }));
     it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipParseTypes: ["ExternalProps"] }));
     it(
-        "should parse type even if type is in skipParseTypeInFiles list",
+        "should parse type even if type is in skipParseFiles list",
         assertSchema("skipFiles-with-forceToParseTypes", {
             type: "MyType",
-            skipParseTypeInFiles: ["external-props.ts"],
+            skipParseFiles: ["external-props.ts"],
             forceToParseTypes: ["ExternalProps"],
         })
     );
@@ -125,26 +125,26 @@ describe("createSchema", () => {
     const dirs = getRelativeDirectories(resolve(`${basePath}/limit-options`));
     dirs.forEach((dir) => {
         it(
-            "excludeProperties" + dir,
+            "excludeRootProps" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
-                excludeProps: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
+                excludeRootProps: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
                 expose: "none",
-                schemaExtension: "excludeProperties",
+                schemaExtension: "excludeRootProps",
             })
         );
     });
 
     dirs.forEach((dir) => {
         it(
-            "includeProperties" + dir,
+            "includeProps" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 includeProps: ["a.b", "c", "with-dash", "x"],
                 expose: "none",
-                schemaExtension: "includeProperties",
+                schemaExtension: "includeProps",
             })
         );
     });
@@ -164,13 +164,13 @@ describe("createSchema", () => {
 
     dirs.forEach((dir) => {
         it(
-            "includeProperties-maxDepth" + dir,
+            "includeProps-maxDepth" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 maxDepth: 2,
                 expose: "none",
-                schemaExtension: "includeProperties-maxDepth",
+                schemaExtension: "includeProps-maxDepth",
                 includeProps: ["a"],
             })
         );
@@ -178,27 +178,27 @@ describe("createSchema", () => {
 
     dirs.forEach((dir) => {
         it(
-            "excludeProperties-maxDepth" + dir,
+            "excludeRootProps-maxDepth" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 maxDepth: 1,
                 expose: "none",
-                schemaExtension: "excludeProperties-maxDepth",
-                excludeProps: ["c", "b"],
+                schemaExtension: "excludeRootProps-maxDepth",
+                excludeRootProps: ["c", "b"],
             })
         );
     });
 
     dirs.forEach((dir) => {
         it(
-            "excludePropsAnyLevel" + dir,
+            "excludeProps" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 expose: "none",
-                schemaExtension: "excludePropsAnyLevel",
-                excludePropsAnyLevel: ["a", "b"],
+                schemaExtension: "excludeProps",
+                excludeProps: ["a", "b"],
             })
         );
     });

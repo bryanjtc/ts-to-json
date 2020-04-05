@@ -26,7 +26,7 @@ function assertSchema(
             path: filePath,
             extraTags,
             skipTypeCheck: true,
-            skipParseTypeInFiles: ["lib.dom.d.ts"],
+            skipParseFiles: ["lib.dom.d.ts"],
             setObjectIdentifier: true,
             handleUnknownTypes: true,
         };

@@ -3,7 +3,7 @@ import { Config } from "../../src/Config";
 import { isInForceParseTypes } from ".";
 
 export const shouldParseNode = (node: ts.Node, config: Config) => {
-    const { shouldParseNode: shouldParseNodeProp, skipParseTypeInFiles } = config;
+    const { shouldParseNode: shouldParseNodeProp, skipParseFiles } = config;
 
     if (isInForceParseTypes(node, config)) return true;
 
@@ -11,8 +11,8 @@ export const shouldParseNode = (node: ts.Node, config: Config) => {
         if (!shouldParseNodeProp(node)) return false;
     }
 
-    if (skipParseTypeInFiles) {
-        if (skipParseTypeInFiles.find((x) => node.getSourceFile().fileName.includes(x))) {
+    if (skipParseFiles) {
+        if (skipParseFiles.find((x) => node.getSourceFile().fileName.includes(x))) {
             return false;
         }
     }
