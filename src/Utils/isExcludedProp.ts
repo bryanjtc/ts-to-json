@@ -8,9 +8,15 @@ import { LiteralType } from "../Type/LiteralType";
 export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, config: Config) => {
     if (!hasLimitOptions(config)) return false;
 
+<<<<<<< HEAD
     if (config.excludeProps && config.excludeProps.length) {
         const name = getAnyNodeName(node);
         if (name && config.excludeProps.includes(name)) {
+=======
+    if (config.skipParsePropTypes && config.skipParsePropTypes.length) {
+        const name = getAnyNodeName(node);
+        if (name && config.skipParsePropTypes.includes(name)) {
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             return true;
         }
     }
@@ -29,8 +35,13 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
                 return false;
             }
         }
+<<<<<<< HEAD
     } else if (config.excludeRootProps && config.excludeRootProps.length) {
         if (!isMaxDepth && !config.excludeRootProps.includes(chained)) {
+=======
+    } else if (config.skipParseRootPropTypes && config.skipParseRootPropTypes.length) {
+        if (!isMaxDepth && !config.skipParseRootPropTypes.includes(chained)) {
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             return false;
         }
     } else {

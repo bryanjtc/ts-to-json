@@ -52,7 +52,11 @@ export class ExposeNodeParser implements SubNodeParser {
 
         /*
             added '___' to identify original type,
+<<<<<<< HEAD
             it should contain all the property regardless of restriction options like excludeRootProps.
+=======
+            it should contain all the property regardless of restriction options like skipParseRootPropTypes and skipParsePropTypes.
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
         */
         if (shouldExtendKey(context, this.config)) {
             fullName = "___" + fullName;

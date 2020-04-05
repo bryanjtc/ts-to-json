@@ -125,6 +125,7 @@ describe("createSchema", () => {
     const dirs = getRelativeDirectories(resolve(`${basePath}/limit-options`));
     dirs.forEach((dir) => {
         it(
+<<<<<<< HEAD
             "excludeRootProps" + dir,
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
@@ -132,6 +133,15 @@ describe("createSchema", () => {
                 excludeRootProps: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
                 expose: "none",
                 schemaExtension: "excludeRootProps",
+=======
+            "skipParseRootPropTypes" + dir,
+            assertSchema("limit-options/" + dir, {
+                type: "MyObject",
+                handleUnknownTypes: true,
+                skipParseRootPropTypes: ["c", "a.b.c", "with-dash", "a.b.d.e", "x.d.e.f", "x.y", "a.b.x.c"],
+                expose: "none",
+                schemaExtension: "skipParseRootPropTypes",
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             })
         );
     });
@@ -178,27 +188,45 @@ describe("createSchema", () => {
 
     dirs.forEach((dir) => {
         it(
+<<<<<<< HEAD
             "excludeRootProps-maxDepth" + dir,
+=======
+            "skipParseRootPropTypes-maxDepth" + dir,
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 maxDepth: 1,
                 expose: "none",
+<<<<<<< HEAD
                 schemaExtension: "excludeRootProps-maxDepth",
                 excludeRootProps: ["c", "b"],
+=======
+                schemaExtension: "skipParseRootPropTypes-maxDepth",
+                skipParseRootPropTypes: ["c", "b"],
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             })
         );
     });
 
     dirs.forEach((dir) => {
         it(
+<<<<<<< HEAD
             "excludeProps" + dir,
+=======
+            "skipParsePropTypes" + dir,
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             assertSchema("limit-options/" + dir, {
                 type: "MyObject",
                 handleUnknownTypes: true,
                 expose: "none",
+<<<<<<< HEAD
                 schemaExtension: "excludeProps",
                 excludeProps: ["a", "b"],
+=======
+                schemaExtension: "skipParsePropTypes",
+                skipParsePropTypes: ["a", "b"],
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
             })
         );
     });

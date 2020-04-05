@@ -59,6 +59,7 @@ export interface Config {
     forceToParseTypes?: string[];
 
     /**
+<<<<<<< HEAD
      *   Will exclude props names specified in the list from root. accepts path eg. a.b
      */
     excludeRootProps?: string[];
@@ -71,11 +72,29 @@ export interface Config {
     /**
      *  Will only generate schema for the property names included in the list.
      *  excludeRootProps option has no effect when using this option.
+=======
+     *   Will exclude type names specified in the list regardless of root and childrens.
+     */
+    skipParsePropTypes?: string[];
+
+    /**
+     *   Will exclude type names specified in the list from root. accepts path eg. a.b
+     */
+    skipParseRootPropTypes?: string[];
+
+    /**
+     *  Will only generate schema for the property names included in the list.
+     *  skipParseRootPropTypes option has no effect when using this option.
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
      */
     includeProps?: string[];
 
     /**
+<<<<<<< HEAD
      *  This option has priority over includeProps and excludeRootProps options.
+=======
+     *  This option has priority over includeProperties and skipParseRootPropTypes options.
+>>>>>>> 28974e24f7ccdf4e1df67d2a47c27e227c44b4a3
      */
     maxDepth?: number;
 }
