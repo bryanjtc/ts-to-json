@@ -36,3 +36,4 @@ export * from "./typeKeys";
 export * from "./typeName";
 export * from "./uniqueArray";
 export * from "./uniqueTypeArray";
+export * from "./sortProps";

@@ -12,6 +12,7 @@ import { notUndefined } from "./Utils/notUndefined";
 import { removeUnreachable } from "./Utils/removeUnreachable";
 import { TopRefNodeParser } from "./TopRefNodeParser";
 import { Config } from "./Config";
+import { sortProps } from "./Utils";
 
 export class SchemaGenerator {
     public constructor(
@@ -23,7 +24,9 @@ export class SchemaGenerator {
 
     public createSchema(fullName: string | undefined): Schema {
         const rootNodes = this.getRootNodes(fullName);
-        return this.createSchemaFromNodes(rootNodes);
+        const schema = this.createSchemaFromNodes(rootNodes);
+        if (this.config?.sortProps) return sortProps(schema);
+        return schema;
     }
 
     public createSchemaFromNodes(rootNodes: ts.Node[]): Schema {

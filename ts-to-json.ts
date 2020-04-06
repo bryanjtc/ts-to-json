@@ -1,6 +1,6 @@
 import * as commander from "commander";
 import { writeFile } from "fs";
-import * as stringify from "json-stable-stringify";
+// import * as stringify from "json-stable-stringify";
 import { createGenerator } from "./factory/generator";
 import { Config, DEFAULT_CONFIG } from "./src/Config";
 import { BaseError } from "./src/Error/BaseError";
@@ -44,7 +44,7 @@ const config: Config = {
 
 try {
     const schema = createGenerator(config).createSchema(args.type);
-    const schemaString = config.sortProps ? stringify(schema, { space: 2 }) : JSON.stringify(schema, null, 2);
+    const schemaString = JSON.stringify(schema, null, 2);
 
     if (args.out) {
         // write to file

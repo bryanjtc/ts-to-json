@@ -62,6 +62,15 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
+    it(
+        "sort",
+        assertSchema("sort", {
+            sortProps: true,
+            skipParseFiles: ["@types/react/index.d.ts", "lib.dom.d.ts"],
+            skipParseTypes: ["Placement", "Instance"],
+            expose: "none",
+        })
+    );
     it("react-class", assertSchema("react-class", { expose: "all" }));
     it(
         "ignoreMultipleDefinitions",

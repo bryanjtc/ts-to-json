@@ -1,0 +1,179 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "def-interface-2119475284-0-147-2119475284-0-240": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "string"
+                },
+                "b": {
+                    "type": "string"
+                },
+                "c": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "object",
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        },
+                        "b": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "c",
+                        "b",
+                        "a"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "c",
+                "b",
+                "a",
+                "h"
+            ],
+            "additionalProperties": false
+        },
+        "def-interface-2119475284-147-239-2119475284-0-240": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        },
+                        "b": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        },
+                        "h": {
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                },
+                                "b": {
+                                    "type": "string"
+                                },
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "c",
+                                "b",
+                                "a"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "c",
+                        "b",
+                        "a",
+                        "h"
+                    ],
+                    "additionalProperties": false
+                },
+                "func": {
+                    "kind": "function",
+                    "type": "object",
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        },
+                        "b": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        },
+                        "h": {
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                },
+                                "b": {
+                                    "type": "string"
+                                },
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "c",
+                                "b",
+                                "a"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "options"
+                    ],
+                    "additionalProperties": false,
+                    "parameters": {
+                        "options": {
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                },
+                                "b": {
+                                    "type": "string"
+                                },
+                                "c": {
+                                    "type": "string"
+                                },
+                                "h": {
+                                    "type": "object",
+                                    "properties": {
+                                        "a": {
+                                            "type": "string"
+                                        },
+                                        "b": {
+                                            "type": "string"
+                                        },
+                                        "c": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "c",
+                                        "b",
+                                        "a"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": [
+                                "c",
+                                "b",
+                                "a",
+                                "h"
+                            ],
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            },
+            "required": [
+                "a",
+                "func"
+            ],
+            "additionalProperties": false
+        }
+    }
+}
