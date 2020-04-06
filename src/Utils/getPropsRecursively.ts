@@ -12,7 +12,13 @@ export const getPropsRecursively = (node: ts.Node | LiteralType, context: Contex
         ((ts.isInterfaceDeclaration(node.parent) || ts.isUnionTypeNode(node.parent)) &&
             !context.hasParentContextRecreance())
     ) {
-        props = getPropsFromTypeLiteralRecursively(context.getReference());
+        const contextRef = context.getReference();
+
+        if (!(node instanceof LiteralType) && !contextRef && ts.isUnionTypeNode(node.parent)) {
+            return getPropsFromTypeLiteralRecursively(node.parent);
+        }
+        // const parentNode = node instanceof LiteralType || contextRef ? contextRef : node.parent;
+        props = getPropsFromTypeLiteralRecursively(contextRef);
     } else {
         props = ts.isEnumMember(node) ? [] : getPropsFromParentContextRecursively(context);
 
