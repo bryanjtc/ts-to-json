@@ -70,10 +70,10 @@
     "prepublishOnly": "yarn build",
     "build": "tsc && tsc ./src/Config.ts --declaration --emitDeclarationOnly --declarationDir ./dist/src",
     "watch": "tsc -w",
-    "lint": "eslint '{src,test,factory}/**/*.ts'",
+    "lint": "eslint ./src --ext .tsx,.ts",
     "format": "yarn lint --fix",
-    "test": "jest test/ --verbose",
-    "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
+    "test": "jest test/ --verbose && npm run lint",
+    "test:fast": "set FAST_TEST=1 && jest test/ --verbose && npm run lint",
     "test:current": "set FAST_TEST=1 && jest  --verbose",
     "debug": "node -r ts-node/register --inspect-brk ts-to-json.ts",
     "run": "ts-node ts-to-json.ts"

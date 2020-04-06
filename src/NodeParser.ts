@@ -37,7 +37,7 @@ export class Context {
         if (this.cacheKey == null) {
             this.cacheKey = stringify([
                 this.reference ? getKey(this.reference, this) : "",
-                this.arguments.map(argument => argument?.getId()),
+                this.arguments.map((argument) => argument?.getId()),
                 this.parentContext?.reference &&
                 this.parentContext.reference.kind === ts.SyntaxKind.ExpressionWithTypeArguments
                     ? ts.SyntaxKind.ExpressionWithTypeArguments

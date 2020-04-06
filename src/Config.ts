@@ -18,7 +18,8 @@ export interface Config {
      *   Node that enabling this option can have side effects!
      *   If two file using same interface/type name and linking them together, the following error will be thrown:
      *   'Type "Props" has multiple definitions.'
-     *   It is good practice to not have same name for the type in the working file, so changing the type name will solve the problem.
+     *   It is good practice to not have same name for the type in the working file,
+     *   so changing the type name will solve the problem.
      *   however if you like to suppress the error you can use this options.
      */
     ignoreMultipleDefinitions?: boolean;
