@@ -77,6 +77,8 @@ describe("createSchema", () => {
         assertSchema("ignoreMultipleDefinitions", { type: "Props", ignoreMultipleDefinitions: true })
     );
     it("function-prop-type", assertSchema("function-prop-type"));
+    it("function-prop-type2", assertSchema("function-prop-type-2"));
+    it("function-prop-type-alias", assertSchema("function-prop-type-alias", { expose: "none" }));
     it("module-function-declare", assertSchema("module-function-declare"));
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
     it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));

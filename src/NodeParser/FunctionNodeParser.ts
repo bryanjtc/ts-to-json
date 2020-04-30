@@ -4,12 +4,17 @@ import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
 import { isHidden, symbolAtNode } from "../Utils";
+import { UnknownType } from "../Type/UnknownType";
 
 export class FunctionNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
 
-    public supportsNode(node: ts.FunctionTypeNode | ts.FunctionDeclaration): boolean {
-        return node.kind === ts.SyntaxKind.FunctionDeclaration || node.kind === ts.SyntaxKind.FunctionType;
+    public supportsNode(node: ts.FunctionTypeNode | ts.FunctionDeclaration | ts.MethodSignature): boolean {
+        return (
+            node.kind === ts.SyntaxKind.FunctionDeclaration ||
+            node.kind === ts.SyntaxKind.FunctionType ||
+            node.kind === ts.SyntaxKind.MethodSignature
+        );
     }
     public createType(node: ts.FunctionDeclaration, context: Context): BaseType {
         if (node.typeParameters && node.typeParameters.length) {
@@ -17,10 +22,16 @@ export class FunctionNodeParser implements SubNodeParser {
                 const nameSymbol = this.typeChecker.getSymbolAtLocation(typeParam.name)!;
                 context.pushParameter(nameSymbol.name);
 
+                let type;
+
                 if (typeParam.default) {
-                    const type = this.childNodeParser.createType(typeParam.default, context);
-                    context.setDefault(nameSymbol.name, type);
+                    type = this.childNodeParser.createType(typeParam.default, context);
                 }
+
+                if (!type) {
+                    type = new UnknownType();
+                }
+                context.setDefault(nameSymbol.name, type);
             });
         }
 

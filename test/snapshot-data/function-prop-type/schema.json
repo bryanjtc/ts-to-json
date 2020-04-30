@@ -5,7 +5,7 @@
         "MyObject": {
             "type": "object",
             "properties": {
-                "content": {
+                "a": {
                     "kind": "function",
                     "type": "null",
                     "parameters": {
@@ -17,7 +17,7 @@
                         "ref"
                     ]
                 },
-                "content2": {
+                "b": {
                     "kind": "function",
                     "type": "string",
                     "parameters": {
@@ -28,11 +28,58 @@
                     "required": [
                         "ref"
                     ]
+                },
+                "c": {
+                    "kind": "function",
+                    "properties": {
+                        "anyOf": [
+                            {},
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "parameters": {
+                        "arg": {}
+                    },
+                    "required": [
+                        "arg"
+                    ]
+                },
+                "e": {
+                    "kind": "function",
+                    "properties": {
+                        "anyOf": [
+                            {},
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "parameters": {
+                        "arg": {}
+                    },
+                    "required": [
+                        "arg"
+                    ]
+                },
+                "F": {
+                    "kind": "function",
+                    "properties": {},
+                    "parameters": {
+                        "arg": {}
+                    },
+                    "required": [
+                        "arg"
+                    ]
                 }
             },
             "required": [
-                "content",
-                "content2"
+                "a",
+                "b",
+                "c",
+                "e",
+                "F"
             ],
             "additionalProperties": false
         }

@@ -123,8 +123,12 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
                         ts.isParameterPropertyDeclaration(param, param.parent)
                     ) as ts.ParameterPropertyDeclaration[];
                     members.push(...params);
-                } else if (ts.isPropertySignature(member) || ts.isPropertyDeclaration(member)) {
-                    members.push(member);
+                } else if (
+                    ts.isPropertySignature(member) ||
+                    ts.isPropertyDeclaration(member) ||
+                    ts.isMethodSignature(member)
+                ) {
+                    members.push(member as any);
                 }
                 return members;
             }, [] as (ts.PropertyDeclaration | ts.PropertySignature | ts.ParameterPropertyDeclaration)[])
@@ -133,7 +137,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
                 (member) =>
                     new ObjectProperty(
                         member.name.getText(),
-                        this.childNodeParser.createType(member.type!, context),
+                        this.childNodeParser.createType(ts.isMethodSignature(member) ? member : member.type!, context),
                         !member.questionToken
                     )
             )
