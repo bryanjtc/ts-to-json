@@ -5,6 +5,16 @@ import { getPropsRecursively, hasLimitOptions, getAnyNodeName } from "../Utils";
 import { Context } from "../NodeParser";
 import { LiteralType } from "../Type/LiteralType";
 
+const arrayStartWith = (src: string[], des: string[]) => {
+    for (let i = 0; i < src.length; i++) {
+        const item = src[i];
+        const desItem = des[i];
+        if (!desItem) break;
+        if (item !== desItem) return false;
+    }
+    return true;
+};
+
 export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, config: Config) => {
     if (!hasLimitOptions(config)) return false;
 
@@ -24,8 +34,9 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
 
     if (config.includeProps && config.includeProps.length) {
         for (let i = 0; i < config.includeProps.length; i++) {
-            const includeProps = config.includeProps[i];
-            if (!isMaxDepth && (includeProps.startsWith(chained) || chained.startsWith(includeProps))) {
+            const includeProp = config.includeProps[i];
+            const includePropArr = includeProp.split(".");
+            if (!isMaxDepth && (arrayStartWith(includePropArr, props) || arrayStartWith(props, includePropArr))) {
                 return false;
             }
         }
