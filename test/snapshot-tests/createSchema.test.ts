@@ -19,13 +19,15 @@ function assertSchema(relativePath: string, options?: Options) {
         const filePath = resolve(`${basePath}/${relativePath}/*.ts`);
 
         const config: Config = {
-            path: filePath,
-            expose: "export",
-            topRef: true,
-            jsDoc: "none",
-            skipTypeCheck: true,
-            skipParseFiles: ["lib.dom.d.ts"],
             encodeRefs: false,
+            expose: "export",
+            // handleUnknownTypes: true,
+            jsDoc: "none",
+            path: filePath,
+            skipParseFiles: ["lib.dom.d.ts"],
+            skipTypeCheck: true,
+            topRef: true,
+
             ...options,
         };
 
@@ -62,6 +64,7 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
+    it("function-with-tag", assertSchema("function-with-tag", { jsDoc: "extended" }));
     it(
         "sort",
         assertSchema("sort", {
