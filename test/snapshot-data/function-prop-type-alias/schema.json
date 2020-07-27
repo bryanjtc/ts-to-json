@@ -1,26 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/MyObject",
     "definitions": {
-        "def-interface-1706613184-0-46-1706613184-0-77": {
-            "type": "object",
-            "properties": {
-                "a": {
-                    "kind": "function",
-                    "properties": {},
-                    "parameters": {
-                        "arg": {}
-                    },
-                    "required": [
-                        "arg"
-                    ]
-                }
-            },
-            "required": [
-                "a"
-            ],
-            "additionalProperties": false
-        },
-        "def-alias-1706613184-46-76-1706613184-0-77": {
+        "MyObject": {
             "type": "object",
             "properties": {
                 "a": {

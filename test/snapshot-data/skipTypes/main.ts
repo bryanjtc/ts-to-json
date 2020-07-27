@@ -1,4 +1,4 @@
 import { ExternalProps } from "../typings";
-interface MyType {
+export interface MyType {
     prop: ExternalProps;
 }

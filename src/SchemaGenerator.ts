@@ -148,12 +148,15 @@ export class SchemaGenerator {
             case ts.SyntaxKind.TypeAliasDeclaration:
             case ts.SyntaxKind.FunctionDeclaration:
             case ts.SyntaxKind.ExportAssignment:
-                if (this.isGenericType(node as ts.TypeAliasDeclaration)) {
+                if (
+                    this.config?.expose === "all" ||
+                    (this.isExportType(node) && !this.isGenericType(node as ts.TypeAliasDeclaration))
+                ) {
+                    allTypes.set(this.getFullName(node, typeChecker), node);
                     return;
                 }
+                return;
 
-                allTypes.set(this.getFullName(node, typeChecker), node);
-                break;
             default:
                 ts.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes));
                 break;

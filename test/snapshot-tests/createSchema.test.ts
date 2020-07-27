@@ -64,7 +64,10 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
+    it("typeof-keyof", assertSchema("typeof-keyof", { expose: "export" }));
+
     it("function-with-tag", assertSchema("function-with-tag", { jsDoc: "extended" }));
+
     it(
         "sort",
         assertSchema("sort", {
@@ -81,7 +84,7 @@ describe("createSchema", () => {
     );
     it("function-prop-type", assertSchema("function-prop-type"));
     it("function-prop-type2", assertSchema("function-prop-type-2"));
-    it("function-prop-type-alias", assertSchema("function-prop-type-alias", { expose: "none" }));
+    it("function-prop-type-alias", assertSchema("function-prop-type-alias"));
     it("module-function-declare", assertSchema("module-function-declare"));
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
     it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));
