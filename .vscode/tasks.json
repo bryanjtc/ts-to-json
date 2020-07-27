@@ -8,7 +8,9 @@
       "type": "typescript",
       "tsconfig": "tsconfig.json",
       "option": "watch",
-      "problemMatcher": ["$tsc-watch"],
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
       "presentation": {
         "group": "watch",
         "panel": "shared"
@@ -18,7 +20,8 @@
     {
       "label": "test current file",
       "type": "shell",
-      "command": "npm run test:current ${fileBasename}"
+      "command": "npm run test:current ${fileBasename}",
+      "problemMatcher": []
     },
     {
       "label": "test current file no cache",

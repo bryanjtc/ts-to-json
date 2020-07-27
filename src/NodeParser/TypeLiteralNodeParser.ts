@@ -10,7 +10,11 @@ import { getKey } from "../Utils/nodeKey";
 import { Config } from "../Config";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser, private config: Config) {}
+    public constructor(
+        private childNodeParser: NodeParser,
+        private readonly additionalProperties: boolean,
+        private config: Config
+    ) {}
 
     public supportsNode(node: ts.TypeLiteralNode): boolean {
         return node.kind === ts.SyntaxKind.TypeLiteral;
@@ -62,13 +66,13 @@ export class TypeLiteralNodeParser implements SubNodeParser {
         return properties;
     }
 
-    private getAdditionalProperties(node: ts.TypeLiteralNode, context: Context): BaseType | false {
+    private getAdditionalProperties(node: ts.TypeLiteralNode, context: Context): BaseType | boolean {
         const indexSignature = node.members.find(ts.isIndexSignatureDeclaration);
         if (!indexSignature) {
-            return false;
+            return this.additionalProperties;
         }
 
-        return this.childNodeParser.createType(indexSignature.type!, context) ?? false;
+        return this.childNodeParser.createType(indexSignature.type!, context) ?? this.additionalProperties;
     }
 
     private getTypeId(node: ts.Node, context: Context): string {

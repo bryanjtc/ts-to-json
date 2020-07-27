@@ -18,7 +18,11 @@ import { notUndefined, isExcludedProp } from "../Utils";
 import { Config } from "../Config";
 
 export class MappedTypeNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser, private config: Config) {}
+    public constructor(
+        private childNodeParser: NodeParser,
+        private readonly additionalProperties: boolean,
+        private config: Config
+    ) {}
 
     public supportsNode(node: ts.MappedTypeNode): boolean {
         return node.kind === ts.SyntaxKind.MappedType;
@@ -26,7 +30,6 @@ export class MappedTypeNodeParser implements SubNodeParser {
 
     public createType(node: ts.MappedTypeNode, context: Context): BaseType | undefined {
         const constraintType = this.childNodeParser.createType(node.typeParameter.constraint!, context);
-
         const id = `indexed-type-${getKey(node, context)}`;
 
         if (!constraintType) {
@@ -123,12 +126,15 @@ export class MappedTypeNodeParser implements SubNodeParser {
         node: ts.MappedTypeNode,
         keyListType: UnionType,
         context: Context
-    ): BaseType | false {
+    ): BaseType | boolean {
         const key = keyListType.getTypes().filter((type) => !(type instanceof LiteralType))[0];
         if (key) {
-            return this.childNodeParser.createType(node.type!, this.createSubContext(node, key, context)) ?? false;
+            return (
+                this.childNodeParser.createType(node.type!, this.createSubContext(node, key, context)) ??
+                this.additionalProperties
+            );
         } else {
-            return false;
+            return this.additionalProperties;
         }
     }
 

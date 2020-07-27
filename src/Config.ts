@@ -13,6 +13,7 @@ export interface Config {
     encodeRefs?: boolean;
     extraTags?: string[];
     setObjectIdentifier?: boolean;
+    additionalProperties?: boolean;
 
     /**
      *   Node that enabling this option can have side effects!
@@ -91,4 +92,5 @@ export const DEFAULT_CONFIG: Config = {
     encodeRefs: true,
     extraTags: [],
     showUnknownTypeInfo: true,
+    additionalProperties: false,
 };

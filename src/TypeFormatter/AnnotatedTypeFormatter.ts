@@ -5,7 +5,7 @@ import { AnnotatedType } from "../Type/AnnotatedType";
 import { BaseType } from "../Type/BaseType";
 import { TypeFormatter } from "../TypeFormatter";
 
-export function makeNullable(def: Definition) {
+export function makeNullable(def: Definition): Definition {
     const union: Definition[] | undefined = (def.oneOf as Definition[]) || def.anyOf;
     if (union && union.filter((d: Definition) => d.type === "null").length === 0) {
         union.push({ type: "null" });
