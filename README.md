@@ -176,6 +176,11 @@ And connect via the debugger protocol.
      */
     forceToParseTypes?: string[];
 
+    /*
+        If set to true types like any, unknown will be set
+    */
+    allowArbitraryDataTypes?: boolean;
+
 ```
 
 > The following option can only be used when `expose` set to `none` and `type` option provided.

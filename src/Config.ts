@@ -80,6 +80,11 @@ export interface Config {
      *  This option has priority over includeProps and excludeRootProps options.
      */
     maxDepth?: number;
+
+    /*
+        If set to true types like any, unknown will be set
+    */
+    allowArbitraryDataTypes?: boolean;
 }
 
 export const DEFAULT_CONFIG: Config = {

@@ -27,7 +27,6 @@ function assertSchema(relativePath: string, options?: Options) {
             skipParseFiles: ["lib.dom.d.ts"],
             skipTypeCheck: true,
             topRef: true,
-
             ...options,
         };
 
@@ -64,8 +63,8 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
+    it("any-unknown", assertSchema("any-unknown", { type: "MyObject", allowArbitraryDataTypes: true }));
     it("typeof-keyof", assertSchema("typeof-keyof", { expose: "export" }));
-
     it("function-with-tag", assertSchema("function-with-tag", { jsDoc: "extended" }));
 
     it(

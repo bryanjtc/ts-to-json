@@ -40,9 +40,9 @@ export function createFormatter(config: Config): TypeFormatter {
         .addTypeFormatter(new BooleanTypeFormatter())
         .addTypeFormatter(new NullTypeFormatter())
 
-        .addTypeFormatter(new AnyTypeFormatter())
+        .addTypeFormatter(new AnyTypeFormatter(config))
         .addTypeFormatter(new UndefinedTypeFormatter())
-        .addTypeFormatter(new UnknownTypeFormatter())
+        .addTypeFormatter(new UnknownTypeFormatter(config))
         .addTypeFormatter(new VoidTypeFormatter())
 
         .addTypeFormatter(new LiteralTypeFormatter())
