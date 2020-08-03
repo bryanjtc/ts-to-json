@@ -81,7 +81,7 @@ export interface Config {
      */
     maxDepth?: number;
 
-    /*
+    /**
         If set to true types like any, unknown will be set
     */
     allowArbitraryDataTypes?: boolean;
