@@ -7,7 +7,7 @@ export function getPropsFromTypeLiteralRecursively(node?: ts.Node, skipNode?: ts
     if (node.parent) {
         getPropsFromTypeLiteralRecursively(node.parent, skipNode, props);
     }
-    if (!ts.isPropertySignature(node)) return props;
+    if (!ts.isPropertySignature(node) && !ts.isParameter(node)) return props;
     if (isTopLevelDeclarations(node)) return props;
 
     const propName = getPropName(node);
