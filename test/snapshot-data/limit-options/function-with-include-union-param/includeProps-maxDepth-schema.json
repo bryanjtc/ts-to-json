@@ -7,20 +7,29 @@
             "properties": {
                 "a": {
                     "kind": "function",
-                    "type": "object",
-                    "additionalProperties": false,
+                    "type": "null",
                     "parameters": {
                         "b": {
+                            "type": "string"
+                        },
+                        "c": {
                             "type": "object",
                             "properties": {
-                                "c": {
-                                    "type": "string"
+                                "d": {
+                                    "type": "string",
+                                    "enum": [
+                                        "left",
+                                        "middle",
+                                        "right"
+                                    ]
                                 }
                             },
                             "additionalProperties": false
                         }
                     },
-                    "required": []
+                    "required": [
+                        "b"
+                    ]
                 }
             },
             "required": [

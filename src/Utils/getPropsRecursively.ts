@@ -14,7 +14,7 @@ export const getPropsRecursively = (node: ts.Node | LiteralType, context: Contex
     ) {
         const contextRef = context.getReference();
 
-        if (!(node instanceof LiteralType) && !contextRef && ts.isUnionTypeNode(node.parent)) {
+        if (!(node instanceof LiteralType) && ts.isUnionTypeNode(node.parent)) {
             return getPropsFromTypeLiteralRecursively(node.parent);
         }
         // const parentNode = node instanceof LiteralType || contextRef ? contextRef : node.parent;

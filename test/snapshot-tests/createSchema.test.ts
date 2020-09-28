@@ -63,7 +63,6 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
-    it("function-include-props", assertSchema("function-include-props", { type: "MyObject", includeProps: ["a"] }));
     it("any-unknown", assertSchema("any-unknown", { type: "MyObject", allowArbitraryDataTypes: true }));
     it("typeof-keyof", assertSchema("typeof-keyof", { expose: "export" }));
     it("function-with-tag", assertSchema("function-with-tag", { jsDoc: "extended" }));
