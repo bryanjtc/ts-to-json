@@ -40,22 +40,25 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
 
     const chained = props?.join(".");
 
-    const rootMaxDept = isMaxDepth(props, config.maxDepth);
+    const rootMaxDeptReached = isMaxDepth(props, config.maxDepth);
 
     if (config.includeProps && config.includeProps.length) {
         for (let i = 0; i < config.includeProps.length; i++) {
             const includeProp = config.includeProps[i];
             const includePropArr = includeProp.split(".");
-            if (!rootMaxDept && (arrayStartWith(includePropArr, props) || arrayStartWith(props, includePropArr))) {
+            if (
+                !rootMaxDeptReached &&
+                (arrayStartWith(includePropArr, props) || arrayStartWith(props, includePropArr))
+            ) {
                 return false;
             }
         }
-    } else if (config.excludeRootProps && config.excludeRootProps.length) {
-        if (!rootMaxDept && !config.excludeRootProps.includes(chained)) {
+    } else if (!rootMaxDeptReached && config.excludeRootProps && config.excludeRootProps.length) {
+        if (!config.excludeRootProps.includes(chained)) {
             return false;
         }
     } else {
-        if (!rootMaxDept) return false;
+        if (!rootMaxDeptReached) return false;
     }
 
     return true;
