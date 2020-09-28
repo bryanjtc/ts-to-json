@@ -208,4 +208,9 @@ And connect via the debugger protocol.
      */
     maxDepth?: number;
 
+    /**
+    *  Limits the maximum depth of function parameters
+    */
+    funcParamMaxDepth?: number;
+
 ```

@@ -4,9 +4,12 @@ export const getPropNode = (node: ts.Node): ts.Node | undefined => {
     if (ts.isSourceFile(node)) return;
 
     if (
-        [ts.SyntaxKind.PropertySignature, ts.SyntaxKind.PropertyDeclaration, ts.SyntaxKind.MethodSignature].includes(
-            node.kind
-        )
+        [
+            ts.SyntaxKind.PropertySignature,
+            ts.SyntaxKind.PropertyDeclaration,
+            ts.SyntaxKind.MethodSignature,
+            ts.SyntaxKind.Parameter,
+        ].includes(node.kind)
     ) {
         return node;
     }

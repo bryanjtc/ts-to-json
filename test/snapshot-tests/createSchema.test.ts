@@ -218,4 +218,32 @@ describe("createSchema", () => {
             })
         );
     });
+
+    const limitOptionsFunctionsDirs = getRelativeDirectories(resolve(`${basePath}/limit-options-functions`));
+
+    limitOptionsFunctionsDirs.forEach((dir) => {
+        it(
+            "limit-options-functions/" + dir,
+            assertSchema("limit-options-functions/" + dir, {
+                type: "MyObject",
+                schemaExtension: "funcParamMaxDepth-1",
+                handleUnknownTypes: true,
+                expose: "none",
+                funcParamMaxDepth: 1,
+            })
+        );
+    });
+
+    limitOptionsFunctionsDirs.forEach((dir) => {
+        it(
+            "limit-options-functions/" + dir,
+            assertSchema("limit-options-functions/" + dir, {
+                type: "MyObject",
+                schemaExtension: "funcParamMaxDepth-2",
+                handleUnknownTypes: true,
+                expose: "none",
+                funcParamMaxDepth: 2,
+            })
+        );
+    });
 });

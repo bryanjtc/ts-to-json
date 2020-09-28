@@ -82,6 +82,11 @@ export interface Config {
     maxDepth?: number;
 
     /**
+     *  Limits the maximum depth of function parameters
+     */
+    funcParamMaxDepth?: number;
+
+    /**
         If set to true types like any, unknown will be set
     */
     allowArbitraryDataTypes?: boolean;

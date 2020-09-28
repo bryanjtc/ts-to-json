@@ -31,3 +31,11 @@ export const getClosestTopLevelDeclarationName = (node?: ts.Node) => {
     }
     return;
 };
+
+export const getRootTopLevelDeclarationNode = (node?: ts.Node): ts.Node | undefined => {
+    if (!node) return;
+    if (node.parent && !ts.isSourceFile(node.parent)) {
+        return getRootTopLevelDeclarationNode(node.parent);
+    }
+    return node;
+};

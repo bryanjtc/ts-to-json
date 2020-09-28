@@ -10,30 +10,27 @@
                     "type": "null",
                     "parameters": {
                         "b": {
-                            "type": "string"
-                        },
-                        "c": {
                             "type": "object",
-                            "properties": {
-                                "d": {
-                                    "type": "string",
-                                    "enum": [
-                                        "left",
-                                        "middle",
-                                        "right"
-                                    ]
-                                }
-                            },
                             "additionalProperties": false
                         }
                     },
-                    "required": [
-                        "b"
-                    ]
+                    "required": []
+                },
+                "d": {
+                    "kind": "function",
+                    "type": "null",
+                    "parameters": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": []
                 }
             },
             "required": [
-                "a"
+                "a",
+                "d"
             ],
             "additionalProperties": false
         }

@@ -10,16 +10,12 @@
                     "type": "null",
                     "parameters": {
                         "b": {
-                            "type": "string"
-                        },
-                        "c": {
                             "type": "object",
                             "properties": {
-                                "d": {
+                                "c": {
                                     "type": "string",
                                     "enum": [
                                         "left",
-                                        "middle",
                                         "right"
                                     ]
                                 }
@@ -27,17 +23,32 @@
                             "additionalProperties": false
                         }
                     },
-                    "required": [
-                        "b"
-                    ]
+                    "required": []
                 },
-                "b": {
-                    "type": "number"
+                "d": {
+                    "kind": "function",
+                    "type": "null",
+                    "parameters": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "c": {
+                                    "type": "string",
+                                    "enum": [
+                                        "left",
+                                        "right"
+                                    ]
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": []
                 }
             },
             "required": [
                 "a",
-                "b"
+                "d"
             ],
             "additionalProperties": false
         }

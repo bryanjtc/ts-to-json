@@ -37,3 +37,5 @@ export * from "./typeName";
 export * from "./uniqueArray";
 export * from "./uniqueTypeArray";
 export * from "./sortProps";
+export * from "./isMemberOfFunctionParameter";
+export * from "./isLiteralType";
