@@ -148,10 +148,7 @@ export class SchemaGenerator {
             case ts.SyntaxKind.TypeAliasDeclaration:
             case ts.SyntaxKind.FunctionDeclaration:
             case ts.SyntaxKind.ExportAssignment:
-                if (
-                    this.config?.expose === "all" ||
-                    (this.isExportType(node) && !this.isGenericType(node as ts.TypeAliasDeclaration))
-                ) {
+                if (this.config?.expose === "all" || this.isExportType(node)) {
                     allTypes.set(this.getFullName(node, typeChecker), node);
                     return;
                 }
@@ -166,9 +163,9 @@ export class SchemaGenerator {
         const localSymbol = localSymbolAtNode(node);
         return localSymbol ? "exportSymbol" in localSymbol : false;
     }
-    private isGenericType(node: ts.TypeAliasDeclaration): boolean {
-        return !!(node.typeParameters && node.typeParameters.length > 0);
-    }
+    // private isGenericType(node: ts.TypeAliasDeclaration): boolean {
+    //     return !!(node.typeParameters && node.typeParameters.length > 0);
+    // }
     private getFullName(node: ts.Node, typeChecker: ts.TypeChecker): string {
         const symbol = symbolAtNode(node)!;
         return typeChecker.getFullyQualifiedName(symbol).replace(/".*"\./, "");

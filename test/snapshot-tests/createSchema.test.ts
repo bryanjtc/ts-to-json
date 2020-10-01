@@ -63,6 +63,7 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
+    it("generic-type-name", assertSchema("generic-type-name", { type: "MyObject" }));
     it("any-unknown", assertSchema("any-unknown", { type: "MyObject", allowArbitraryDataTypes: true }));
     it("typeof-keyof", assertSchema("typeof-keyof", { expose: "export" }));
     it("function-with-tag", assertSchema("function-with-tag", { jsDoc: "extended" }));
