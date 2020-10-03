@@ -110,8 +110,8 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new LiteralNodeParser(chainNodeParser))
         .addNodeParser(new ParenthesizedNodeParser(chainNodeParser))
 
-        .addNodeParser(new TypeReferenceNodeParser(typeChecker, chainNodeParser))
-        .addNodeParser(new ExpressionWithTypeArgumentsNodeParser(typeChecker, chainNodeParser))
+        .addNodeParser(new TypeReferenceNodeParser(typeChecker, chainNodeParser, mergedConfig))
+        .addNodeParser(new ExpressionWithTypeArgumentsNodeParser(typeChecker, chainNodeParser, mergedConfig))
 
         .addNodeParser(new IndexedAccessTypeNodeParser(chainNodeParser))
         .addNodeParser(new TypeofNodeParser(typeChecker, chainNodeParser, mergedConfig))

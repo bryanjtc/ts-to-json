@@ -2,9 +2,16 @@ import * as ts from "typescript";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
+import { UnknownTypeReference } from "../Error/UnknownTypeReference";
+import { UnknownSymbolType } from "../Type/UnknownSymbolType";
+import { Config } from "../Config";
 
 export class ExpressionWithTypeArgumentsNodeParser implements SubNodeParser {
-    public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
+    public constructor(
+        private typeChecker: ts.TypeChecker,
+        private childNodeParser: NodeParser,
+        private config: Config
+    ) {}
 
     public supportsNode(node: ts.ExpressionWithTypeArguments): boolean {
         return node.kind === ts.SyntaxKind.ExpressionWithTypeArguments;
@@ -13,6 +20,10 @@ export class ExpressionWithTypeArgumentsNodeParser implements SubNodeParser {
         const typeSymbol = this.typeChecker.getSymbolAtLocation(node.expression)!;
         if (typeSymbol.flags & ts.SymbolFlags.Alias) {
             const aliasedSymbol = this.typeChecker.getAliasedSymbol(typeSymbol);
+            if (aliasedSymbol.name === "unknown") {
+                if (this.config.handleUnknownTypes) return new UnknownSymbolType(node, aliasedSymbol);
+                throw new UnknownTypeReference(node);
+            }
             return this.childNodeParser.createType(
                 aliasedSymbol.declarations![0],
                 this.createSubContext(node, context)

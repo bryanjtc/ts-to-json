@@ -4,7 +4,7 @@ import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
 import { isHidden, symbolAtNode } from "../Utils";
-import { UnknownType } from "../Type/UnknownType";
+import { UnknownSymbolType } from "../Type/UnknownSymbolType";
 
 export class FunctionNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
@@ -29,7 +29,7 @@ export class FunctionNodeParser implements SubNodeParser {
                 }
 
                 if (!type) {
-                    type = new UnknownType();
+                    type = new UnknownSymbolType(node, nameSymbol);
                 }
                 context.setDefault(nameSymbol.name, type);
             });

@@ -33,14 +33,18 @@
                     "kind": "function",
                     "properties": {
                         "anyOf": [
-                            {},
+                            {
+                                "type": "T"
+                            },
                             {
                                 "type": "string"
                             }
                         ]
                     },
                     "parameters": {
-                        "arg": {}
+                        "arg": {
+                            "type": "T"
+                        }
                     },
                     "required": [
                         "arg"
@@ -50,14 +54,18 @@
                     "kind": "function",
                     "properties": {
                         "anyOf": [
-                            {},
+                            {
+                                "type": "T"
+                            },
                             {
                                 "type": "string"
                             }
                         ]
                     },
                     "parameters": {
-                        "arg": {}
+                        "arg": {
+                            "type": "T"
+                        }
                     },
                     "required": [
                         "arg"
@@ -65,9 +73,11 @@
                 },
                 "F": {
                     "kind": "function",
-                    "properties": {},
+                    "type": "P",
                     "parameters": {
-                        "arg": {}
+                        "arg": {
+                            "type": "T"
+                        }
                     },
                     "required": [
                         "arg"

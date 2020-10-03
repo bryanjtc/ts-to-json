@@ -22,7 +22,7 @@ export const getAnyNodeName = (node?: ts.Node | LiteralType): string | undefined
         return node.getName().split('"').join("");
     } else if (ts.isLiteralTypeNode(node)) {
         return (node.literal as any).text;
-    } else if (ts.isEnumMember(node)) {
+    } else if (ts.isEnumMember(node) || ts.isTypeReferenceNode(node)) {
         return getNodeName(node);
     }
     return getPropName(node);

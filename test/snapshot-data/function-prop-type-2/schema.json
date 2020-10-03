@@ -9,7 +9,9 @@
                     "kind": "function",
                     "type": "null",
                     "parameters": {
-                        "arg": {}
+                        "arg": {
+                            "type": "R"
+                        }
                     },
                     "required": [
                         "arg"
