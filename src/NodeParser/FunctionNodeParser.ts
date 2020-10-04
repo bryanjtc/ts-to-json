@@ -17,6 +17,7 @@ export class FunctionNodeParser implements SubNodeParser {
         );
     }
     public createType(node: ts.FunctionDeclaration, context: Context): BaseType {
+        context.isFunction = true;
         if (node.typeParameters && node.typeParameters.length) {
             node.typeParameters.forEach((typeParam) => {
                 const nameSymbol = this.typeChecker.getSymbolAtLocation(typeParam.name)!;

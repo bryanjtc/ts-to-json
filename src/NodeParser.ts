@@ -14,6 +14,7 @@ export class Context {
     private parentContext?: Context;
     public ignoreLimits? = false;
     private skipNode: ts.Node;
+    public isFunction = false;
 
     public constructor(reference?: ts.Node, parentContext?: Context) {
         this.reference = reference;
