@@ -16,8 +16,8 @@ export class FunctionNodeParser implements SubNodeParser {
             node.kind === ts.SyntaxKind.MethodSignature
         );
     }
-    public createType(node: ts.FunctionDeclaration, context: Context): BaseType {
-        context.isFunction = true;
+
+    private pushParameters(node: ts.FunctionDeclaration, context: Context) {
         if (node.typeParameters && node.typeParameters.length) {
             node.typeParameters.forEach((typeParam) => {
                 const nameSymbol = this.typeChecker.getSymbolAtLocation(typeParam.name)!;
@@ -35,6 +35,10 @@ export class FunctionNodeParser implements SubNodeParser {
                 context.setDefault(nameSymbol.name, type);
             });
         }
+    }
+
+    public createType(node: ts.FunctionDeclaration, context: Context): BaseType {
+        this.pushParameters(node, context);
 
         return new FunctionType(
             this.getTypeId(node, context),
@@ -52,9 +56,12 @@ export class FunctionNodeParser implements SubNodeParser {
             if (isHidden(parameterSymbol)) {
                 return result;
             }
+            const newContext = new Context(parameterNode);
+            this.pushParameters(node, newContext);
+            newContext.isParameter = true;
             const objectParameter: FunctionParameter = new FunctionParameter(
                 parameterSymbol.getName(),
-                this.childNodeParser.createType(parameterNode.type!, context)!,
+                this.childNodeParser.createType(parameterNode.type!, newContext)!,
                 !parameterNode.questionToken
             );
 

@@ -63,6 +63,8 @@ function assertSchema(relativePath: string, options?: Options) {
 }
 
 describe("createSchema", () => {
+    it("with-promise-type", assertSchema("with-promise-type", { type: "MyObject" }));
+
     it("generic-type-name", assertSchema("generic-type-name", { type: "MyObject" }));
     it("any-unknown", assertSchema("any-unknown", { type: "MyObject", allowArbitraryDataTypes: true }));
     it("typeof-keyof", assertSchema("typeof-keyof", { expose: "export" }));
@@ -90,7 +92,7 @@ describe("createSchema", () => {
     it("function-prop-type-alias", assertSchema("function-prop-type-alias"));
     it("module-function-declare", assertSchema("module-function-declare"));
     it("typescript-html-element-type", assertSchema("typescript-html-element-type"));
-    it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps" }));
+    it("extends-from-packages", assertSchema("extends-from-packages", { type: "MyProps", handleUnknownTypes: true }));
     it("circular-ref-union", assertSchema("circular-ref-union", { type: "MyType", expose: "all" }));
     it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipParseFiles: ["external-props.ts"] }));
     it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipParseTypes: ["ExternalProps"] }));

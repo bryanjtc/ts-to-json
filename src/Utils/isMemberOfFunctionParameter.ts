@@ -12,11 +12,11 @@ function isMember(node: ts.Node): boolean {
     return false;
 }
 
-function isContextMemberOfFunction(context: Context): boolean {
-    if (context.isFunction) return true;
+export function isParameterOrMemberOfParameter(context: Context): boolean {
+    if (context.isParameter) return true;
     const parentContext = context.getParentContext();
     if (parentContext) {
-        return isContextMemberOfFunction(parentContext);
+        return isParameterOrMemberOfParameter(parentContext);
     }
     return false;
 }
@@ -26,7 +26,7 @@ export const isMemberOfFunctionParameter = (node: ts.Node | LiteralType, context
 
     if (isMember(node)) return true;
 
-    if (isContextMemberOfFunction(context)) return true;
+    if (isParameterOrMemberOfParameter(context)) return true;
 
     const ref = context.getReference();
 

@@ -7,7 +7,7 @@ export function getPropsFromParentContextRecursively(context: Context, props: st
         getPropsFromParentContextRecursively(parentContext, props);
     }
     const reference = context.getReference();
-    if (reference) {
+    if (reference && !context.isParameter) {
         const node = reference.parent;
         const propName = getPropName(node);
         if (propName) props.push(propName);

@@ -34,7 +34,9 @@ export const isExcludedProp = (node: ts.Node | LiteralType, context: Context, co
     if (!props || !props.length) return false;
 
     if (isMemberOfFunctionParameter(node, context)) {
-        if (isMaxDepth(props, config.funcParamMaxDepth)) return true;
+        if (isMaxDepth(props, config.funcParamMaxDepth)) {
+            return true;
+        }
         return false;
     }
 
