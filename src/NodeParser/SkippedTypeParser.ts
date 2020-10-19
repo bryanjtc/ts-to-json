@@ -7,7 +7,7 @@ import { Config } from "../../src/Config";
 import { isInSkipTypes } from "../Utils/isInSkipTypes";
 import { isInForceParseTypes } from "../Utils";
 import { UnknownType } from "../Type/UnknownType";
-import { getNodeName } from "../Utils";
+import { getNodeName, isFunctionKind } from "../Utils";
 
 /*
     To skip processing types specified in skipTypes options
@@ -25,6 +25,16 @@ export class SkippedTypeParser implements SubNodeParser {
     }
     public createType(node: ts.Node, context: Context): BaseType {
         const name = getNodeName(node);
+
+        if (
+            this.config &&
+            this.config.skipParseTypes &&
+            this.config.skipParseTypes.includes("function") &&
+            isFunctionKind(node)
+        ) {
+            return new StaticType("function");
+        }
+
         if (name) return new StaticType(name);
         return new UnknownType();
     }

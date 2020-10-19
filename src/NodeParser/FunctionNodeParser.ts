@@ -3,18 +3,14 @@ import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
-import { isHidden, symbolAtNode } from "../Utils";
+import { isHidden, symbolAtNode, isFunctionKind } from "../Utils";
 import { UnknownSymbolType } from "../Type/UnknownSymbolType";
 
 export class FunctionNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.FunctionTypeNode | ts.FunctionDeclaration | ts.MethodSignature): boolean {
-        return (
-            node.kind === ts.SyntaxKind.FunctionDeclaration ||
-            node.kind === ts.SyntaxKind.FunctionType ||
-            node.kind === ts.SyntaxKind.MethodSignature
-        );
+        return isFunctionKind(node);
     }
 
     private pushParameters(node: ts.FunctionDeclaration, context: Context) {

@@ -96,6 +96,7 @@ describe("createSchema", () => {
     it("circular-ref-union", assertSchema("circular-ref-union", { type: "MyType", expose: "all" }));
     it("skipFiles option", assertSchema("skipFiles", { type: "MyType", skipParseFiles: ["external-props.ts"] }));
     it("skipTypes option", assertSchema("skipTypes", { type: "MyType", skipParseTypes: ["ExternalProps"] }));
+    it("skip-function-types", assertSchema("skip-function-types", { type: "MyObject", skipParseTypes: ["function"] }));
     it(
         "should parse type even if type is in skipParseFiles list",
         assertSchema("skipFiles-with-forceToParseTypes", {

@@ -39,3 +39,4 @@ export * from "./uniqueTypeArray";
 export * from "./sortProps";
 export * from "./isMemberOfFunctionParameter";
 export * from "./isLiteralType";
+export * from "./isFunctionKind";
