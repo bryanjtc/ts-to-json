@@ -102,10 +102,7 @@ export class FunctionTypeFormatter implements SubTypeFormatter {
             );
         const def = this.childTypeFormatter.getDefinition(type.getReturnType());
         const anyParam = Object.keys(parameters).length;
-        /* to use in my application, disabled in test to pass original tests */
-        if (anyParam && this.config.setObjectIdentifier) {
-            (parameters as any).__obj__ = true;
-        }
+
         return {
             kind: "function",
             ...(def.type

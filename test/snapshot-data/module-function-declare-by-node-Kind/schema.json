@@ -6,8 +6,7 @@
             "properties": {
                 "width": {
                     "type": "number"
-                },
-                "__obj__": true
+                }
             },
             "required": [
                 "options"
@@ -22,15 +21,13 @@
                                 "HTMLElement",
                                 "string"
                             ]
-                        },
-                        "__obj__": true
+                        }
                     },
                     "required": [
                         "elm"
                     ],
                     "additionalProperties": false
-                },
-                "__obj__": true
+                }
             }
         }
     }
