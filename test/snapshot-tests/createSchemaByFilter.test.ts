@@ -10,7 +10,7 @@ import { SchemaGenerator } from "../../src/SchemaGenerator";
 
 const basePath = "test/snapshot-data";
 
-function assertSchema(relativePath: string, nodeKinds: ts.SyntaxKind | ts.SyntaxKind[]) {
+function assertSchema(relativePath: string, filterNode: (node: ts.Node) => boolean, extraTags?: Config["extraTags"]) {
     return () => {
         const filePath = resolve(`${basePath}/${relativePath}/*.ts`);
 
@@ -19,6 +19,7 @@ function assertSchema(relativePath: string, nodeKinds: ts.SyntaxKind | ts.Syntax
             topRef: true,
             jsDoc: "extended",
             path: filePath,
+            extraTags,
             skipTypeCheck: true,
             skipParseFiles: ["lib.dom.d.ts"],
             setObjectIdentifier: true,
@@ -33,7 +34,7 @@ function assertSchema(relativePath: string, nodeKinds: ts.SyntaxKind | ts.Syntax
             createFormatter(config)
         );
 
-        const schema = generator.createSchemaByNodeKind(nodeKinds);
+        const schema = generator.createSchemaByFilter(filterNode);
 
         const jsonFilePath = resolve(`${basePath}/${relativePath}/schema.json`);
 
@@ -50,7 +51,13 @@ function assertSchema(relativePath: string, nodeKinds: ts.SyntaxKind | ts.Syntax
 
 describe("createSchemaByNodeKind", () => {
     it(
-        "module-function-declare-by-node-Kind",
-        assertSchema("module-function-declare-by-node-Kind", ts.SyntaxKind.FunctionDeclaration)
+        "module-function-declare-by-filter",
+        assertSchema("module-function-declare-by-filter", (node) => {
+            if (node.kind === ts.SyntaxKind.FunctionDeclaration) {
+                return true;
+            }
+
+            return false;
+        })
     );
 });

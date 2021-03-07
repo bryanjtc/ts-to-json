@@ -1,0 +1,37 @@
+{
+    "definitions": {
+        "MyFunction": {
+            "kind": "function",
+            "type": "object",
+            "properties": {
+                "width": {
+                    "type": "number"
+                },
+                "__obj__": true
+            },
+            "required": [
+                "options"
+            ],
+            "additionalProperties": false,
+            "parameters": {
+                "options": {
+                    "type": "object",
+                    "properties": {
+                        "elm": {
+                            "type": [
+                                "HTMLElement",
+                                "string"
+                            ]
+                        },
+                        "__obj__": true
+                    },
+                    "required": [
+                        "elm"
+                    ],
+                    "additionalProperties": false
+                },
+                "__obj__": true
+            }
+        }
+    }
+}

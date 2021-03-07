@@ -1,8 +1,5 @@
 /* eslint-disable no-redeclare */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-export = MyFunction;
-
-declare function MyFunction(options: MyFunction.Options): MyFunction.ReturnType;
+export declare function MyFunction(options: MyFunction.Options): MyFunction.ReturnType;
 
 declare namespace MyFunction {
     interface Options {

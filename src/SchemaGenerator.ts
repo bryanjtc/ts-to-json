@@ -49,7 +49,7 @@ export class SchemaGenerator {
         };
     }
 
-    private getRootNodes(fullName: string | undefined) {
+    private getRootNodes(fullName: string | undefined, exposeAll?: boolean) {
         if (fullName && fullName !== "*") {
             return [this.findNamedNode(fullName)];
         } else {
@@ -58,7 +58,7 @@ export class SchemaGenerator {
                 .getSourceFiles()
                 .filter((sourceFile) => rootFileNames.includes(sourceFile.fileName));
             const rootNodes = new Map<string, ts.Node>();
-            this.appendTypes(rootSourceFiles, this.program.getTypeChecker(), rootNodes);
+            this.appendTypes(rootSourceFiles, this.program.getTypeChecker(), rootNodes, exposeAll);
             return [...rootNodes.values()];
         }
     }
@@ -134,13 +134,19 @@ export class SchemaGenerator {
     private appendTypes(
         sourceFiles: readonly ts.SourceFile[],
         typeChecker: ts.TypeChecker,
-        types: Map<string, ts.Node>
+        types: Map<string, ts.Node>,
+        exposeAll?: boolean
     ) {
         for (const sourceFile of sourceFiles) {
-            this.inspectNode(sourceFile, typeChecker, types);
+            this.inspectNode(sourceFile, typeChecker, types, exposeAll);
         }
     }
-    private inspectNode(node: ts.Node, typeChecker: ts.TypeChecker, allTypes: Map<string, ts.Node>): void {
+    private inspectNode(
+        node: ts.Node,
+        typeChecker: ts.TypeChecker,
+        allTypes: Map<string, ts.Node>,
+        exposeAll?: boolean
+    ): void {
         switch (node.kind) {
             case ts.SyntaxKind.InterfaceDeclaration:
             case ts.SyntaxKind.ClassDeclaration:
@@ -148,14 +154,14 @@ export class SchemaGenerator {
             case ts.SyntaxKind.TypeAliasDeclaration:
             case ts.SyntaxKind.FunctionDeclaration:
             case ts.SyntaxKind.ExportAssignment:
-                if (this.config?.expose === "all" || this.isExportType(node)) {
+                if (this.config?.expose === "all" || this.isExportType(node) || exposeAll) {
                     allTypes.set(this.getFullName(node, typeChecker), node);
                     return;
                 }
                 return;
 
             default:
-                ts.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes));
+                ts.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes, exposeAll));
                 break;
         }
     }
@@ -175,14 +181,11 @@ export class SchemaGenerator {
         My Implementations
     */
 
-    public createSchemaByNodeKind(nodeKinds: ts.SyntaxKind | ts.SyntaxKind[]): Schema | null {
-        const typeChecker = this.program.getTypeChecker();
-
-        const nodes = this.getRootNodesByKind(Array.isArray(nodeKinds) ? nodeKinds : [nodeKinds]);
-
+    private createSchemaByNodes(nodes: ts.Node[] | null): Schema | null {
         if (!nodes || !nodes.length) {
             return null;
         }
+        const typeChecker = this.program.getTypeChecker();
 
         let allSchema: Schema = { definitions: {} };
 
@@ -204,13 +207,28 @@ export class SchemaGenerator {
         return allSchema;
     }
 
-    private getRootNodesByKind(kinds: ts.SyntaxKind[]): ts.Node[] | null {
-        const rootNodes = this.getRootNodes("*");
+    public createSchemaByFilter(filterNode: (node: ts.Node) => boolean): Schema | null {
+        const rootNodes = this.getRootNodes("*", true);
 
-        const nodes = rootNodes.filter((n) => this.isExportType(n)).filter((n) => kinds.indexOf(n.kind) !== -1);
+        const nodes = rootNodes.filter((n) => filterNode(n));
+
+        return this.createSchemaByNodes(nodes);
+    }
+
+    public createSchemaByNodeKind(nodeKinds: ts.SyntaxKind | ts.SyntaxKind[]): Schema | null {
+        const nodes = this.getRootNodesByKind(Array.isArray(nodeKinds) ? nodeKinds : [nodeKinds]);
+
+        return this.createSchemaByNodes(nodes);
+    }
+
+    private getRootNodesByKind(kinds: ts.SyntaxKind[]): ts.Node[] | null {
+        const rootNodes = this.getRootNodes("*", true);
+
+        const nodes = rootNodes.filter((n) => kinds.includes(n.kind));
 
         return nodes;
     }
+
     private getRootChildDefinitions(rootType: BaseType): StringMap<Definition> {
         return this.typeFormatter
             .getChildren(rootType)
