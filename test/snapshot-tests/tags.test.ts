@@ -1,5 +1,3 @@
-// import * as functionTestFiles from "../valid-data/function";
-
 import { assertSchema } from "./assertSchema";
 
 describe("tags", () => {
@@ -18,6 +16,15 @@ describe("tags", () => {
             expose: "none",
             jsDoc: "extended",
             type: "MyObject",
+        })
+    );
+
+    it(
+        "tags-with-asterisk-wildcard",
+        assertSchema("tags-with-asterisk-wildcard", {
+            extraTags: ["props*"],
+            expose: "export",
+            jsDoc: "extended",
         })
     );
 });
