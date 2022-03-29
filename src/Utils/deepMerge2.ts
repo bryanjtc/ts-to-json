@@ -101,14 +101,4 @@ function deepmerge(target, source, options = {}) {
     }
 }
 
-deepmerge.all = function deepmergeAll(array, options) {
-    if (!Array.isArray(array)) {
-        throw new Error("first argument should be an array");
-    }
-
-    return array.reduce(function (prev, next) {
-        return deepmerge(prev, next, options);
-    }, {});
-};
-
 export { deepmerge, deepmerge as deepMerge };
