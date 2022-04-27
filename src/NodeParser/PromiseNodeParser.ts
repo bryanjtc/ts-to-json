@@ -12,7 +12,7 @@ export class PromiseNodeParser implements SubNodeParser {
 
         if (node.typeName.getText() !== "Promise") return false;
 
-        const type = (this.typeChecker.getTypeFromTypeNode(node) as unknown) as ts.TypeReferenceNode;
+        const type = this.typeChecker.getTypeFromTypeNode(node) as unknown as ts.TypeReferenceNode;
 
         if (!type.typeArguments || !type.typeArguments.length) return false;
 

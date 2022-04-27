@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 enum FromZero {
     y,
     b,

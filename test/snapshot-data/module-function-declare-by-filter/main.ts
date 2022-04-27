@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-redeclare */
 export declare function MyFunction(options: MyFunction.Options): MyFunction.ReturnType;
 

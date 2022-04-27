@@ -13,7 +13,6 @@ import { preserveAnnotation } from "../Utils/preserveAnnotation";
 import { removeUndefined } from "../Utils/removeUndefined";
 import { StringMap } from "../Utils/StringMap";
 import { uniqueArray } from "../Utils/uniqueArray";
-import { Config } from "../Config";
 
 export class ObjectTypeFormatter implements SubTypeFormatter {
     public constructor(protected childTypeFormatter: TypeFormatter) {}

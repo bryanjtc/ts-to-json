@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 export interface MyObject extends SubNamespace.HelperA {
     a: SubNamespace.HelperA;
     l: MyObject;
