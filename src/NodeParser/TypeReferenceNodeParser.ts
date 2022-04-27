@@ -55,12 +55,14 @@ export class TypeReferenceNodeParser implements SubNodeParser {
             return new AnnotatedType(new StringType(), { format: "date-time" }, false);
         } else if (typeSymbol.name === "RegExp") {
             return new AnnotatedType(new StringType(), { format: "regex" }, false);
-        } else {
+        } else if (typeSymbol.declarations) {
             return this.childNodeParser.createType(
-                typeSymbol.declarations!.filter((n: ts.Declaration) => !invlidTypes[n.kind])[0],
+                typeSymbol.declarations.filter((n: ts.Declaration) => !invlidTypes[n.kind])[0],
                 this.createSubContext(node, context)
             );
         }
+
+        return undefined;
     }
 
     protected createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
