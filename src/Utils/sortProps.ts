@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Definition } from "../Schema/Definition";
+import sortObject from "sortobject";
 
 export const sortProps = (schema: Definition) => {
-    return schema;
+    const sorted = sortObject(schema);
+    return sorted;
 };

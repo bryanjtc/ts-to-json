@@ -43,6 +43,7 @@
     "is-mergeable-object": "^1.1.1",
     "json5": "^2.2.0",
     "safe-stable-stringify": "^2.3.1",
+    "sortobject": "^4.16.0",
     "typescript": "~4.6.2"
   },
   "devDependencies": {
