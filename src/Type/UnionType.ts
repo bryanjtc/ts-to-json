@@ -1,16 +1,17 @@
 import { BaseType } from "./BaseType";
 import { uniqueTypeArray } from "../Utils/uniqueTypeArray";
+import { NeverType } from "./NeverType";
 
 export class UnionType extends BaseType {
     private readonly types: BaseType[];
 
-    public constructor(types: readonly BaseType[]) {
+    public constructor(types: readonly (BaseType | undefined)[]) {
         super();
         this.types = uniqueTypeArray(
             types.reduce((flatTypes, type) => {
                 if (type instanceof UnionType) {
                     flatTypes.push(...type.getTypes());
-                } else if (type !== undefined) {
+                } else if (type !== undefined && !(type instanceof NeverType)) {
                     flatTypes.push(type);
                 }
                 return flatTypes;
@@ -19,11 +20,11 @@ export class UnionType extends BaseType {
     }
 
     public getId(): string {
-        return "(" + this.types.map((type) => type.getId()).join("|") + ")";
+        return `(${this.types.map((type) => type.getId()).join("|")})`;
     }
 
     public getName(): string {
-        return "(" + this.types.map((type) => type.getName()).join("|") + ")";
+        return `(${this.types.map((type) => type.getName()).join("|")})`;
     }
 
     public getTypes(): BaseType[] {

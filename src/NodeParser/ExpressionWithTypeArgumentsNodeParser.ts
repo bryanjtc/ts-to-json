@@ -1,15 +1,15 @@
-import * as ts from "typescript";
+import ts from "typescript";
+import { Config } from "../Config";
+import { UnknownTypeReference } from "../Error/UnknownTypeReference";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
-import { UnknownTypeReference } from "../Error/UnknownTypeReference";
 import { UnknownSymbolType } from "../Type/UnknownSymbolType";
-import { Config } from "../Config";
 
 export class ExpressionWithTypeArgumentsNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
         private config: Config
     ) {}
 
@@ -36,7 +36,7 @@ export class ExpressionWithTypeArgumentsNodeParser implements SubNodeParser {
         return;
     }
 
-    private createSubContext(node: ts.ExpressionWithTypeArguments, parentContext: Context): Context {
+    protected createSubContext(node: ts.ExpressionWithTypeArguments, parentContext: Context): Context {
         const subContext = new Context(node, parentContext);
         if (node.typeArguments?.length) {
             node.typeArguments.forEach((typeArg) => {

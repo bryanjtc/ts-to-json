@@ -21,7 +21,6 @@ function assertSchema(relativePath: string, nodeKinds: ts.SyntaxKind | ts.Syntax
             path: filePath,
             skipTypeCheck: true,
             skipParseFiles: ["lib.dom.d.ts"],
-            setObjectIdentifier: true,
             handleUnknownTypes: true,
         };
 

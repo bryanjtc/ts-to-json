@@ -4,25 +4,25 @@
         "def-interface-2119475284-0-147-2119475284-0-240": {
             "type": "object",
             "properties": {
-                "a": {
+                "c": {
                     "type": "string"
                 },
                 "b": {
                     "type": "string"
                 },
-                "c": {
+                "a": {
                     "type": "string"
                 },
                 "h": {
                     "type": "object",
                     "properties": {
-                        "a": {
+                        "c": {
                             "type": "string"
                         },
                         "b": {
                             "type": "string"
                         },
-                        "c": {
+                        "a": {
                             "type": "string"
                         }
                     },
@@ -48,25 +48,25 @@
                 "a": {
                     "type": "object",
                     "properties": {
-                        "a": {
+                        "c": {
                             "type": "string"
                         },
                         "b": {
                             "type": "string"
                         },
-                        "c": {
+                        "a": {
                             "type": "string"
                         },
                         "h": {
                             "type": "object",
                             "properties": {
-                                "a": {
+                                "c": {
                                     "type": "string"
                                 },
                                 "b": {
                                     "type": "string"
                                 },
-                                "c": {
+                                "a": {
                                     "type": "string"
                                 }
                             },
@@ -90,25 +90,25 @@
                     "kind": "function",
                     "type": "object",
                     "properties": {
-                        "a": {
+                        "c": {
                             "type": "string"
                         },
                         "b": {
                             "type": "string"
                         },
-                        "c": {
+                        "a": {
                             "type": "string"
                         },
                         "h": {
                             "type": "object",
                             "properties": {
-                                "a": {
+                                "c": {
                                     "type": "string"
                                 },
                                 "b": {
                                     "type": "string"
                                 },
-                                "c": {
+                                "a": {
                                     "type": "string"
                                 }
                             },
@@ -128,25 +128,25 @@
                         "options": {
                             "type": "object",
                             "properties": {
-                                "a": {
+                                "c": {
                                     "type": "string"
                                 },
                                 "b": {
                                     "type": "string"
                                 },
-                                "c": {
+                                "a": {
                                     "type": "string"
                                 },
                                 "h": {
                                     "type": "object",
                                     "properties": {
-                                        "a": {
+                                        "c": {
                                             "type": "string"
                                         },
                                         "b": {
                                             "type": "string"
                                         },
-                                        "c": {
+                                        "a": {
                                             "type": "string"
                                         }
                                     },

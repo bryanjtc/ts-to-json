@@ -7,10 +7,10 @@ import { BooleanType } from "../Type/BooleanType";
 import { NullType } from "../Type/NullType";
 import { NumberType } from "../Type/NumberType";
 import { PrimitiveType } from "../Type/PrimitiveType";
+import { StaticType } from "../Type/StaticType";
 import { StringType } from "../Type/StringType";
 import { UnionType } from "../Type/UnionType";
 import { uniqueArray } from "../Utils/uniqueArray";
-import { StaticType } from "../Type/StaticType";
 
 export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public supportsType(type: UnionType): boolean {
@@ -25,10 +25,10 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
         return [];
     }
 
-    private isPrimitiveUnion(type: UnionType): boolean {
+    protected isPrimitiveUnion(type: UnionType): boolean {
         return type.getTypes().every((item) => item instanceof PrimitiveType);
     }
-    private getPrimitiveType(item: BaseType): RawTypeName {
+    protected getPrimitiveType(item: BaseType): RawTypeName {
         if (item instanceof StringType) {
             return "string";
         } else if (item instanceof NumberType) {

@@ -1,17 +1,18 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { UnknownNodeError } from "./Error/UnknownNodeError";
+import { MutableParser } from "./MutableParser";
 import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
 import { Config } from "./Config";
 
-export class ChainNodeParser implements SubNodeParser {
-    private typeCaches = new WeakMap<ts.Node, Map<string, BaseType | undefined>>();
+export class ChainNodeParser implements SubNodeParser, MutableParser {
+    protected readonly typeCaches = new WeakMap<ts.Node, Map<string, BaseType | undefined>>();
 
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private nodeParsers: SubNodeParser[],
+        protected typeChecker: ts.TypeChecker,
+        protected nodeParsers: SubNodeParser[],
         private config: Config
     ) {}
 
@@ -42,7 +43,7 @@ export class ChainNodeParser implements SubNodeParser {
         return type;
     }
 
-    private getNodeParser(node: ts.Node, context: Context): SubNodeParser {
+    protected getNodeParser(node: ts.Node, context: Context): SubNodeParser {
         for (const nodeParser of this.nodeParsers) {
             if (nodeParser.supportsNode(node)) {
                 return nodeParser;

@@ -1,18 +1,18 @@
-import * as ts from "typescript";
+import ts from "typescript";
+import { Config } from "../Config";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { ReferenceType } from "../Type/ReferenceType";
+import { isExcludedProp } from "../Utils/isExcludedProp";
 import { isNodeHidden } from "../Utils/isHidden";
-import { isExcludedProp } from "../Utils";
 import { getKey } from "../Utils/nodeKey";
-import { Config } from "../Config";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
     public constructor(
-        private childNodeParser: NodeParser,
-        private readonly additionalProperties: boolean,
+        protected childNodeParser: NodeParser,
+        protected readonly additionalProperties: boolean,
         private config: Config
     ) {}
 
@@ -35,7 +35,7 @@ export class TypeLiteralNodeParser implements SubNodeParser {
         return new ObjectType(id, [], properties, this.getAdditionalProperties(node, context));
     }
 
-    private getProperties(node: ts.TypeLiteralNode, context: Context): ObjectProperty[] | undefined {
+    protected getProperties(node: ts.TypeLiteralNode, context: Context): ObjectProperty[] | undefined {
         let hasRequiredNever = false;
 
         const properties = node.members
@@ -66,7 +66,7 @@ export class TypeLiteralNodeParser implements SubNodeParser {
         return properties;
     }
 
-    private getAdditionalProperties(node: ts.TypeLiteralNode, context: Context): BaseType | boolean {
+    protected getAdditionalProperties(node: ts.TypeLiteralNode, context: Context): BaseType | boolean {
         const indexSignature = node.members.find(ts.isIndexSignatureDeclaration);
         if (!indexSignature) {
             return this.additionalProperties;
@@ -75,7 +75,7 @@ export class TypeLiteralNodeParser implements SubNodeParser {
         return this.childNodeParser.createType(indexSignature.type!, context) ?? this.additionalProperties;
     }
 
-    private getTypeId(node: ts.Node, context: Context): string {
+    protected getTypeId(node: ts.Node, context: Context): string {
         return `structure-${getKey(node, context)}`;
     }
 }

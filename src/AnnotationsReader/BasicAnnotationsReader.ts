@@ -1,18 +1,22 @@
-import * as ts from "typescript";
+import json5 from "json5";
+import ts from "typescript";
 import { AnnotationsReader } from "../AnnotationsReader";
 import { Annotations } from "../Type/AnnotatedType";
 import { symbolAtNode } from "../Utils/symbolAtNode";
 
 export class BasicAnnotationsReader implements AnnotationsReader {
+    private static requiresDollar = new Set<string>(["id", "comment", "ref"]);
     private static textTags = new Set<string>([
         "title",
         "description",
+        "id",
 
         "format",
         "pattern",
+        "ref",
 
         // New since draft-07:
-        "$comment",
+        "comment",
         "contentMediaType",
         "contentEncoding",
     ]);
@@ -48,6 +52,9 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         "else",
         "readOnly",
         "writeOnly",
+
+        // New since draft 2019-09:
+        "deprecated",
     ]);
 
     public constructor(private extraTags?: Set<string>) {}
@@ -66,38 +73,44 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         const annotations = jsDocTags.reduce((result: Annotations, jsDocTag) => {
             const value = this.parseJsDocTag(jsDocTag);
             if (value !== undefined) {
-                result[jsDocTag.name] = value;
+                if (BasicAnnotationsReader.requiresDollar.has(jsDocTag.name)) {
+                    result["$" + jsDocTag.name] = value;
+                } else {
+                    result[jsDocTag.name] = value;
+                }
             }
-
             return result;
         }, {});
+
         return Object.keys(annotations).length ? annotations : undefined;
     }
 
     private parseJsDocTag(jsDocTag: ts.JSDocTagInfo): any {
-        if (!jsDocTag.text) {
-            return undefined;
-        }
+        const isTextTag = BasicAnnotationsReader.textTags.has(jsDocTag.name);
+        // Non-text tags without explicit value (e.g. `@deprecated`) default to `true`.
+        const defaultText = isTextTag ? "" : "true";
+        const text = jsDocTag.text?.map((part) => part.text).join("") || defaultText;
 
-        if (BasicAnnotationsReader.textTags.has(jsDocTag.name)) {
-            return jsDocTag.text;
+        if (isTextTag) {
+            return text;
         } else if (BasicAnnotationsReader.jsonTags.has(jsDocTag.name)) {
-            return this.parseJson(jsDocTag.text);
+            return this.parseJson(text) ?? text;
         } else if (
             this.extraTags &&
             [...this.extraTags].find(
                 (x) => x === jsDocTag.name || (x.endsWith("*") && jsDocTag.name.startsWith(x.replace("*", "")))
             )
         ) {
-            return this.parseJson(jsDocTag.text) ?? jsDocTag.text;
+            return this.parseJson(text) ?? text;
         } else {
             // Unknown jsDoc tag.
             return undefined;
         }
     }
+
     private parseJson(value: string): any {
         try {
-            return JSON.parse(value);
+            return json5.parse(value);
         } catch (e) {
             return undefined;
         }

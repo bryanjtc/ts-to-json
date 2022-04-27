@@ -1,23 +1,15 @@
-import * as ts from "typescript";
+import ts from "typescript";
+import { Config } from "../Config";
 import { Context } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { EnumType, EnumValue } from "../Type/EnumType";
-import { isHidden } from "../Utils/isHidden";
-import { getKey, isExcludedProp } from "../Utils";
-import { Config } from "../Config";
-
-function isMemberHidden(member: ts.EnumMember) {
-    if (!("symbol" in member)) {
-        return false;
-    }
-
-    const symbol: ts.Symbol = (member as any).symbol;
-    return isHidden(symbol);
-}
+import { isExcludedProp } from "../Utils/isExcludedProp";
+import { isNodeHidden } from "../Utils/isHidden";
+import { getKey } from "../Utils/nodeKey";
 
 export class EnumNodeParser implements SubNodeParser {
-    public constructor(private typeChecker: ts.TypeChecker, private config: Config) {}
+    public constructor(protected typeChecker: ts.TypeChecker, private config: Config) {}
 
     public supportsNode(node: ts.EnumDeclaration | ts.EnumMember): boolean {
         return node.kind === ts.SyntaxKind.EnumDeclaration || node.kind === ts.SyntaxKind.EnumMember;
@@ -29,12 +21,12 @@ export class EnumNodeParser implements SubNodeParser {
             `enum-${getKey(node, context)}`,
             members
                 .filter((member: ts.Node) => !isExcludedProp(member, context, this.config))
-                .filter((member: ts.EnumMember) => !isMemberHidden(member))
+                .filter((member: ts.EnumMember) => !isNodeHidden(member))
                 .map((member, index) => this.getMemberValue(member, index))
         );
     }
 
-    private getMemberValue(member: ts.EnumMember, index: number): EnumValue {
+    protected getMemberValue(member: ts.EnumMember, index: number): EnumValue {
         const constantValue = this.typeChecker.getConstantValue(member);
         if (constantValue !== undefined) {
             return constantValue;
@@ -49,7 +41,7 @@ export class EnumNodeParser implements SubNodeParser {
             return this.parseInitializer(initializer);
         }
     }
-    private parseInitializer(initializer: ts.Node): EnumValue {
+    protected parseInitializer(initializer: ts.Node): EnumValue {
         if (initializer.kind === ts.SyntaxKind.TrueKeyword) {
             return true;
         } else if (initializer.kind === ts.SyntaxKind.FalseKeyword) {

@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { NoRootTypeError } from "./Error/NoRootTypeError";
 import { Context, NodeParser } from "./NodeParser";
 import { Definition } from "./Schema/Definition";
@@ -10,16 +10,17 @@ import { StringMap } from "./Utils/StringMap";
 import { localSymbolAtNode, symbolAtNode } from "./Utils/symbolAtNode";
 import { notUndefined } from "./Utils/notUndefined";
 import { removeUnreachable } from "./Utils/removeUnreachable";
-import { TopRefNodeParser } from "./TopRefNodeParser";
 import { Config } from "./Config";
-import { sortProps } from "./Utils";
+import { hasJsDocTag } from "./Utils/hasJsDocTag";
+import { sortProps } from "./Utils/sortProps";
+import { TopRefNodeParser } from "./TopRefNodeParser";
 
 export class SchemaGenerator {
     public constructor(
-        private readonly program: ts.Program,
-        private readonly nodeParser: NodeParser,
-        private readonly typeFormatter: TypeFormatter,
-        private readonly config?: Config
+        protected readonly program: ts.Program,
+        protected readonly nodeParser: NodeParser,
+        protected readonly typeFormatter: TypeFormatter,
+        protected readonly config?: Config
     ) {}
 
     public createSchema(fullName: string | undefined): Schema {
@@ -43,13 +44,14 @@ export class SchemaGenerator {
         const reachableDefinitions = removeUnreachable(rootTypeDefinition, definitions);
 
         return {
+            ...(this.config?.schemaId ? { $id: this.config.schemaId } : {}),
             $schema: "http://json-schema.org/draft-07/schema#",
             ...(rootTypeDefinition ?? {}),
             definitions: reachableDefinitions,
         };
     }
 
-    private getRootNodes(fullName: string | undefined, exposeAll?: boolean) {
+    protected getRootNodes(fullName: string | undefined, exposeAll?: boolean) {
         if (fullName && fullName !== "*") {
             return [this.findNamedNode(fullName)];
         } else {
@@ -62,7 +64,7 @@ export class SchemaGenerator {
             return [...rootNodes.values()];
         }
     }
-    private findNamedNode(fullName: string): ts.Node {
+    protected findNamedNode(fullName: string): ts.Node {
         const typeChecker = this.program.getTypeChecker();
         const allTypes = new Map<string, ts.Node>();
         const { projectFiles, externalFiles } = this.partitionFiles();
@@ -81,10 +83,10 @@ export class SchemaGenerator {
 
         throw new NoRootTypeError(fullName);
     }
-    private getRootTypeDefinition(rootType: BaseType): Definition {
+    protected getRootTypeDefinition(rootType: BaseType): Definition {
         return this.typeFormatter.getDefinition(rootType);
     }
-    private appendRootChildDefinitions(rootType: BaseType, childDefinitions: StringMap<Definition>): void {
+    protected appendRootChildDefinitions(rootType: BaseType, childDefinitions: StringMap<Definition>): void {
         const seen = new Set<string>();
 
         const children = this.typeFormatter
@@ -102,14 +104,18 @@ export class SchemaGenerator {
         for (const child of children) {
             const name = child.getName();
             const previousId = ids.get(name);
-            if (!this.config?.ignoreMultipleDefinitions && previousId && child.getId() !== previousId) {
+            // remove def prefix from ids to avoid false alarms
+            // FIXME: we probably shouldn't be doing this as there is probably something wrong with the deduplication
+            const childId = child.getId().replace(/def-/g, "");
+
+            if (!this.config?.ignoreMultipleDefinitions && previousId && childId !== previousId) {
                 throw new Error(
                     `Type "${name}" has multiple definitions.
                     To suppress this error you can use 'ignoreMultipleDefinitions'.
                     Note that using this option can introduce new problems.`
                 );
             }
-            ids.set(name, child.getId());
+            ids.set(name, childId);
         }
 
         children.reduce((definitions, child) => {
@@ -120,7 +126,10 @@ export class SchemaGenerator {
             return definitions;
         }, childDefinitions);
     }
-    private partitionFiles() {
+    protected partitionFiles(): {
+        projectFiles: ts.SourceFile[];
+        externalFiles: ts.SourceFile[];
+    } {
         const projectFiles = new Array<ts.SourceFile>();
         const externalFiles = new Array<ts.SourceFile>();
 
@@ -131,23 +140,33 @@ export class SchemaGenerator {
 
         return { projectFiles, externalFiles };
     }
-    private appendTypes(
+    protected appendTypes(
         sourceFiles: readonly ts.SourceFile[],
         typeChecker: ts.TypeChecker,
         types: Map<string, ts.Node>,
         exposeAll?: boolean
-    ) {
+    ): void {
         for (const sourceFile of sourceFiles) {
             this.inspectNode(sourceFile, typeChecker, types, exposeAll);
         }
     }
-    private inspectNode(
+    protected inspectNode(
         node: ts.Node,
         typeChecker: ts.TypeChecker,
         allTypes: Map<string, ts.Node>,
         exposeAll?: boolean
     ): void {
         switch (node.kind) {
+            case ts.SyntaxKind.VariableDeclaration: {
+                const variableDeclarationNode = node as ts.VariableDeclaration;
+                if (
+                    variableDeclarationNode.initializer?.kind === ts.SyntaxKind.ArrowFunction ||
+                    variableDeclarationNode.initializer?.kind === ts.SyntaxKind.FunctionExpression
+                ) {
+                    this.inspectNode(variableDeclarationNode.initializer, typeChecker, allTypes);
+                }
+                break;
+            }
             case ts.SyntaxKind.InterfaceDeclaration:
             case ts.SyntaxKind.ClassDeclaration:
             case ts.SyntaxKind.EnumDeclaration:
@@ -160,19 +179,26 @@ export class SchemaGenerator {
                 }
                 return;
 
+            case ts.SyntaxKind.FunctionExpression:
+            case ts.SyntaxKind.ArrowFunction:
+                allTypes.set(`NamedParameters<typeof ${this.getFullName(node, typeChecker)}>`, node);
+                return;
             default:
                 ts.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes, exposeAll));
-                break;
+                return;
         }
     }
-    private isExportType(node: ts.Node): boolean {
+    protected isExportType(node: ts.Node): boolean {
+        if (this.config?.jsDoc !== "none" && hasJsDocTag(node, "internal")) {
+            return false;
+        }
         const localSymbol = localSymbolAtNode(node);
         return localSymbol ? "exportSymbol" in localSymbol : false;
     }
-    // private isGenericType(node: ts.TypeAliasDeclaration): boolean {
-    //     return !!(node.typeParameters && node.typeParameters.length > 0);
-    // }
-    private getFullName(node: ts.Node, typeChecker: ts.TypeChecker): string {
+    protected isGenericType(node: ts.TypeAliasDeclaration): boolean {
+        return !!(node.typeParameters && node.typeParameters.length > 0);
+    }
+    protected getFullName(node: ts.Node, typeChecker: ts.TypeChecker): string {
         const symbol = symbolAtNode(node)!;
         return typeChecker.getFullyQualifiedName(symbol).replace(/".*"\./, "");
     }

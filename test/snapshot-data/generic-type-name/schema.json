@@ -11,9 +11,7 @@
                 "value1": {},
                 "value2": {
                     "type": "boolean",
-                    "enum": [
-                        true
-                    ]
+                    "const": true
                 }
             },
             "required": [

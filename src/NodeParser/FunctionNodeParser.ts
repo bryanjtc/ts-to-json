@@ -3,9 +3,13 @@ import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
-import { isHidden, symbolAtNode, isFunctionKind } from "../Utils";
+import { isNodeHidden, symbolAtNode, isFunctionKind } from "../Utils";
 import { UnknownSymbolType } from "../Type/UnknownSymbolType";
 
+/**
+ * A function node parser that creates a function type so that mapped types can
+ * use functions as values. There is no formatter for function types.
+ */
 export class FunctionNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
 
@@ -49,7 +53,7 @@ export class FunctionNodeParser implements SubNodeParser {
         return node.parameters.filter(ts.isParameter).reduce((result: FunctionParameter[], parameterNode) => {
             const parameterSymbol = symbolAtNode(parameterNode);
             if (!parameterSymbol) return result;
-            if (isHidden(parameterSymbol)) {
+            if (isNodeHidden(parameterNode)) {
                 return result;
             }
             const newContext = new Context(parameterNode);

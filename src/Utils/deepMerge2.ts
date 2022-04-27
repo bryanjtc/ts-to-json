@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // https://github.com/TehShrike/deepmerge
 /* eslint-disable @typescript-eslint/no-use-before-define */
 // @ts-nocheck
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-import defaultIsMergeableObject = require("is-mergeable-object");
+import defaultIsMergeableObject from "is-mergeable-object";
 
 function emptyTarget(val) {
     return Array.isArray(val) ? [] : {};

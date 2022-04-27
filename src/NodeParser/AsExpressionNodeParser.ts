@@ -1,11 +1,11 @@
-import { NodeParser } from "./../NodeParser";
-import * as ts from "typescript";
+import { NodeParser } from "../NodeParser";
+import ts from "typescript";
 import { Context } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 
 export class AsExpressionNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser) {}
+    public constructor(protected childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.AsExpression): boolean {
         return node.kind === ts.SyntaxKind.AsExpression;

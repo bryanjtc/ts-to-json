@@ -1,5 +1,5 @@
 import { BaseError } from "./BaseError";
-import * as ts from "typescript";
+import ts from "typescript";
 import { getNodeInfo } from "./utils";
 
 export class LogicError extends BaseError {

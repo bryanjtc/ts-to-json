@@ -1,10 +1,12 @@
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import { JSONSchema7 } from "json-schema";
+
+export type JSONSchemaDefinition = JSONSchema7 | boolean;
 
 export interface Definition extends JSONSchema7 {
     propertyOrder?: string[];
     parameters?: { [key: string]: JSONSchema7 };
     properties?: {
-        [key: string]: Definition | JSONSchema7Definition;
+        [key: string]: Definition | JSONSchemaDefinition;
     };
     defaultProperties?: string[];
     locale?: string;
@@ -12,5 +14,3 @@ export interface Definition extends JSONSchema7 {
     name?: string;
     label?: string;
 }
-
-export { JSONSchema7Definition as JSONSchemaDefinition };

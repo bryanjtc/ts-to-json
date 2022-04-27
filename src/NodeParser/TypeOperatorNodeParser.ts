@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { ArrayType } from "../Type/ArrayType";
@@ -11,7 +11,7 @@ import { derefType } from "../Utils/derefType";
 import { getTypeKeys } from "../Utils/typeKeys";
 
 export class TypeOperatorNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser) {}
+    public constructor(protected childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.TypeOperatorNode): boolean {
         return node.kind === ts.SyntaxKind.TypeOperator;
@@ -20,6 +20,10 @@ export class TypeOperatorNodeParser implements SubNodeParser {
     public createType(node: ts.TypeOperatorNode, context: Context): BaseType {
         const type = this.childNodeParser.createType(node.type, context);
         const derefed = derefType(type);
+        // Remove readonly modifier from type
+        if (node.operator === ts.SyntaxKind.ReadonlyKeyword && derefed) {
+            return derefed;
+        }
         if (derefed instanceof ArrayType) {
             return new NumberType();
         }

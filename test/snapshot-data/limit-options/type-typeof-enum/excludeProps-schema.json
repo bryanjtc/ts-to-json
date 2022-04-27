@@ -10,15 +10,11 @@
                     "properties": {
                         "y": {
                             "type": "number",
-                            "enum": [
-                                0
-                            ]
+                            "const": 0
                         },
                         "c": {
                             "type": "number",
-                            "enum": [
-                                1
-                            ]
+                            "const": 1
                         }
                     },
                     "required": [

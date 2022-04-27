@@ -1,25 +1,30 @@
 import { JSONSchema7Definition } from "json-schema";
-import { isArray, isBoolean } from "util";
-import { Definition } from "./../Schema/Definition";
+import { Definition } from "../Schema/Definition";
 import { StringMap } from "./StringMap";
+
+const DEFINITION_OFFSET = "#/definitions/".length;
 
 function addReachable(
     definition: Definition | JSONSchema7Definition,
     definitions: StringMap<Definition>,
     reachable: Set<string>
 ) {
-    if (isBoolean(definition)) {
+    if (typeof definition === "boolean") {
         return;
     }
 
     if (definition.$ref) {
-        const typeName = decodeURIComponent(definition.$ref.slice(14));
-        if (reachable.has(typeName)) {
-            // we've already processed this definition
+        const typeName = decodeURIComponent(definition.$ref.slice(DEFINITION_OFFSET));
+        if (reachable.has(typeName) || !isLocalRef(definition.$ref)) {
+            // we've already processed this definition, or this definition refers to an external schema
             return;
         }
         reachable.add(typeName);
-        addReachable(definitions[typeName], definitions, reachable);
+        const refDefinition = definitions[typeName];
+        if (!refDefinition) {
+            throw new Error(`Encountered a reference to a missing definition: "${definition.$ref}". This is a bug.`);
+        }
+        addReachable(refDefinition, definitions, reachable);
     } else if (definition.anyOf) {
         for (const def of definition.anyOf) {
             addReachable(def, definitions, reachable);
@@ -46,7 +51,7 @@ function addReachable(
         }
     } else if (definition.type === "array") {
         const items = definition.items;
-        if (isArray(items)) {
+        if (Array.isArray(items)) {
             for (const item of items) {
                 addReachable(item, definitions, reachable);
             }
@@ -75,4 +80,8 @@ export function removeUnreachable(
     }
 
     return out;
+}
+
+function isLocalRef(ref: string) {
+    return ref.charAt(0) === "#";
 }

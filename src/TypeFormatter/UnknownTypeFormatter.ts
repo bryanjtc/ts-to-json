@@ -1,8 +1,8 @@
+import { Config } from "../Config";
 import { Definition } from "../Schema/Definition";
 import { SubTypeFormatter } from "../SubTypeFormatter";
 import { BaseType } from "../Type/BaseType";
 import { UnknownType } from "../Type/UnknownType";
-import { Config } from "../Config";
 
 export class UnknownTypeFormatter implements SubTypeFormatter {
     public constructor(private config: Config) {}

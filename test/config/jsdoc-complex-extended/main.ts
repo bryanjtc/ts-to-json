@@ -14,12 +14,31 @@ export interface MyObject {
      * This field is of integer type.
      * Integer!
      *
+     * The type of this field is integer.
+     *
+     * This is of type
+     * - integer
+     * - number
+     *
      * @title Number field title
      * @exclusiveMaximum 10
      * @multipleOf 3
      * @asType integer
      */
     numberValue: number;
+
+    /**
+     * @title Required value
+     */
+    requiredValue: number | string;
+    /**
+     * @title Nullable value
+     */
+    nullableValue: number | string |null;
+    /**
+     * @title Optional value
+     */
+    optionalValue: number | string | undefined;
 
     /**
      * Some ignored comment description
@@ -44,6 +63,11 @@ export interface MyObject {
      * @nullable
      */
     number: number;
+
+    /**
+     * @asType number
+     */
+    overriddenRefType: MyExportString;
 }
 
 /**

@@ -1,18 +1,19 @@
-import { Node } from "typescript";
+import ts from "typescript";
 
 export interface Config {
     path?: string;
     type?: string;
+    minify?: boolean;
+    schemaId?: string;
     tsconfig?: string;
-    expose: "all" | "none" | "export";
-    topRef: boolean;
-    jsDoc: "none" | "extended" | "basic";
+    expose?: "all" | "none" | "export";
+    topRef?: boolean;
+    jsDoc?: "none" | "extended" | "basic";
     sortProps?: boolean;
     strictTuples?: boolean;
     skipTypeCheck?: boolean;
     encodeRefs?: boolean;
     extraTags?: string[];
-    setObjectIdentifier?: boolean;
     additionalProperties?: boolean;
 
     /**
@@ -30,7 +31,7 @@ export interface Config {
      *   e.g. HTMLElement will stay HTMLElement
      *   This option has priority over other limit options.
      */
-    shouldParseNode?: (node: Node) => boolean;
+    shouldParseNode?: (node: ts.Node) => boolean;
 
     /**
      *  Use this option when parser unable to parse specific type and throws error.
@@ -100,6 +101,7 @@ export const DEFAULT_CONFIG: Config = {
     strictTuples: false,
     skipTypeCheck: false,
     encodeRefs: true,
+    minify: false,
     extraTags: [],
     showUnknownTypeInfo: true,
     additionalProperties: false,

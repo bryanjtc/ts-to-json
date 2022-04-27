@@ -1,22 +1,23 @@
-import * as ts from "typescript";
+import ts, { PropertyName } from "typescript";
+import { Config } from "../Config";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { ArrayType } from "../Type/ArrayType";
 import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { ReferenceType } from "../Type/ReferenceType";
+import { extendKey } from "../Utils/extendKey";
+import { isExcludedProp } from "../Utils/isExcludedProp";
 import { isNodeHidden } from "../Utils/isHidden";
 import { isPublic, isStatic } from "../Utils/modifiers";
 import { getKey } from "../Utils/nodeKey";
 import { notUndefined } from "../Utils/notUndefined";
-import { isExcludedProp, extendKey } from "../Utils";
-import { Config } from "../Config";
 
 export class InterfaceAndClassNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
-        private readonly additionalProperties: boolean,
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
+        protected readonly additionalProperties: boolean,
         private config: Config
     ) {}
 
@@ -77,7 +78,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
      * @param node - The interface or class to check.
      * @return The array item type if node is an array, null otherwise.
      */
-    private getArrayItemType(node: ts.InterfaceDeclaration | ts.ClassDeclaration): ts.TypeNode | null {
+    protected getArrayItemType(node: ts.InterfaceDeclaration | ts.ClassDeclaration): ts.TypeNode | null {
         if (node.heritageClauses && node.heritageClauses.length === 1) {
             const clause = node.heritageClauses[0];
             if (clause.types.length === 1) {
@@ -94,7 +95,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         return null;
     }
 
-    private getBaseTypes(node: ts.InterfaceDeclaration | ts.ClassDeclaration, context: Context): BaseType[] {
+    protected getBaseTypes(node: ts.InterfaceDeclaration | ts.ClassDeclaration, context: Context): BaseType[] {
         if (!node.heritageClauses) {
             return [];
         }
@@ -110,7 +111,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         );
     }
 
-    private getProperties(
+    protected getProperties(
         node: ts.InterfaceDeclaration | ts.ClassDeclaration,
         context: Context
     ): ObjectProperty[] | undefined {
@@ -137,7 +138,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
             .map(
                 (member) =>
                     new ObjectProperty(
-                        member.name.getText(),
+                        this.getPropertyName(member.name),
                         this.childNodeParser.createType(ts.isMethodSignature(member) ? member : member.type!, context),
                         !member.questionToken
                     )
@@ -156,7 +157,7 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         return properties;
     }
 
-    private getAdditionalProperties(
+    protected getAdditionalProperties(
         node: ts.InterfaceDeclaration | ts.ClassDeclaration,
         context: Context
     ): BaseType | boolean {
@@ -168,8 +169,18 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         return this.childNodeParser.createType(indexSignature.type!, context) ?? this.additionalProperties;
     }
 
-    private getTypeId(node: ts.Node, context: Context): string {
+    protected getTypeId(node: ts.Node, context: Context): string {
         const nodeType = ts.isInterfaceDeclaration(node) ? "interface" : "class";
         return extendKey(`${nodeType}-${getKey(node, context)}`, node, context, this.config, true);
+    }
+
+    protected getPropertyName(propertyName: PropertyName): string {
+        if (propertyName.kind === ts.SyntaxKind.ComputedPropertyName) {
+            const symbol = this.typeChecker.getSymbolAtLocation(propertyName);
+            if (symbol) {
+                return symbol.getName();
+            }
+        }
+        return propertyName.getText();
     }
 }

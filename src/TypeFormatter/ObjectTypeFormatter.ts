@@ -1,6 +1,7 @@
 import { Definition } from "../Schema/Definition";
 import { SubTypeFormatter } from "../SubTypeFormatter";
 import { AnyType } from "../Type/AnyType";
+import { SymbolType } from "../Type/SymbolType";
 import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { UndefinedType } from "../Type/UndefinedType";
@@ -12,10 +13,10 @@ import { preserveAnnotation } from "../Utils/preserveAnnotation";
 import { removeUndefined } from "../Utils/removeUndefined";
 import { StringMap } from "../Utils/StringMap";
 import { uniqueArray } from "../Utils/uniqueArray";
-import { Config } from "../../src/Config";
+import { Config } from "../Config";
 
 export class ObjectTypeFormatter implements SubTypeFormatter {
-    public constructor(private childTypeFormatter: TypeFormatter, private config: Config) {}
+    public constructor(protected childTypeFormatter: TypeFormatter) {}
 
     public supportsType(type: ObjectType): boolean {
         return type instanceof ObjectType;
@@ -58,7 +59,7 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
         return uniqueArray(children);
     }
 
-    private getObjectDefinition(type: ObjectType): Definition {
+    protected getObjectDefinition(type: ObjectType): Definition {
         const objectProperties = type.getProperties();
         const additionalProperties: BaseType | boolean = type.getAdditionalProperties();
 
@@ -85,7 +86,9 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
             ...(anyProps ? { properties } : {}),
             ...(Object.keys(properties).length > 0 ? { properties } : {}),
             ...(required.length > 0 ? { required } : {}),
-            ...(additionalProperties === true || additionalProperties instanceof AnyType
+            ...(additionalProperties === true ||
+            additionalProperties instanceof AnyType ||
+            additionalProperties instanceof SymbolType
                 ? {}
                 : {
                       additionalProperties:
@@ -96,9 +99,10 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
         };
     }
 
-    private prepareObjectProperty(property: ObjectProperty): ObjectProperty {
+    protected prepareObjectProperty(property: ObjectProperty): ObjectProperty {
         const propertyType = property.getType();
         const propType = derefType(propertyType);
+
         if (propType instanceof UndefinedType) {
             return new ObjectProperty(property.getName(), propertyType, false);
         } else if (!(propType instanceof UnionType)) {
