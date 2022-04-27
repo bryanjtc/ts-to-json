@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
@@ -7,9 +7,9 @@ import { getKey, shouldParseNode, isInForceParseTypes, extendKey, isRecursionToT
 import { Config } from "../src/Config";
 
 export class CircularReferenceNodeParser implements SubNodeParser {
-    private circular = new Map<string, BaseType>();
+    protected circular = new Map<string, BaseType>();
 
-    public constructor(private childNodeParser: SubNodeParser, private config: Config) {}
+    public constructor(protected childNodeParser: SubNodeParser, private config: Config) {}
 
     public supportsNode(node: ts.Node): boolean {
         if (!shouldParseNode(node, this.config)) {
@@ -20,7 +20,6 @@ export class CircularReferenceNodeParser implements SubNodeParser {
 
         return this.childNodeParser.supportsNode(node);
     }
-
     public createType(node: ts.Node, context: Context): BaseType | undefined {
         const key = extendKey(getKey(node, context), node, context, this.config);
         context.ignoreLimits = hasLimitOptions(this.config) && isRecursionToType(node, context, this.config.type);

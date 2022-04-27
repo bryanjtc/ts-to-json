@@ -1,10 +1,11 @@
-import { Config } from "./../src/Config";
+import { Config } from "../src/Config";
 import { ChainTypeFormatter } from "../src/ChainTypeFormatter";
 import { CircularReferenceTypeFormatter } from "../src/CircularReferenceTypeFormatter";
 import { TypeFormatter } from "../src/TypeFormatter";
 import { AliasTypeFormatter } from "../src/TypeFormatter/AliasTypeFormatter";
 import { AnnotatedTypeFormatter } from "../src/TypeFormatter/AnnotatedTypeFormatter";
 import { AnyTypeFormatter } from "../src/TypeFormatter/AnyTypeFormatter";
+import { SymbolTypeFormatter } from "../src/TypeFormatter/SymbolTypeFormatter";
 import { ArrayTypeFormatter } from "../src/TypeFormatter/ArrayTypeFormatter";
 import { BooleanTypeFormatter } from "../src/TypeFormatter/BooleanTypeFormatter";
 import { DefinitionTypeFormatter } from "../src/TypeFormatter/DefinitionTypeFormatter";
@@ -26,12 +27,23 @@ import { UndefinedTypeFormatter } from "../src/TypeFormatter/UndefinedTypeFormat
 import { UnionTypeFormatter } from "../src/TypeFormatter/UnionTypeFormatter";
 import { UnknownTypeFormatter } from "../src/TypeFormatter/UnknownTypeFormatter";
 import { VoidTypeFormatter } from "../src/TypeFormatter/VoidTypeFormatter";
+import { MutableTypeFormatter } from "../src/MutableTypeFormatter";
+import { NeverTypeFormatter } from "../src/TypeFormatter/NeverTypeFormatter";
 import { StaticNodeFormatter } from "../src/TypeFormatter/StaticNodeFormatter";
 import { UnknownSymbolTypeFormatter } from "../src/TypeFormatter/UnknownSymbolTypeFormatter";
 
-export function createFormatter(config: Config): TypeFormatter {
+export type FormatterAugmentor = (
+    formatter: MutableTypeFormatter,
+    circularReferenceTypeFormatter: CircularReferenceTypeFormatter
+) => void;
+
+export function createFormatter(config: Config, augmentor?: FormatterAugmentor): TypeFormatter {
     const chainTypeFormatter = new ChainTypeFormatter([]);
     const circularReferenceTypeFormatter = new CircularReferenceTypeFormatter(chainTypeFormatter);
+
+    if (augmentor) {
+        augmentor(chainTypeFormatter, circularReferenceTypeFormatter);
+    }
 
     chainTypeFormatter
         .addTypeFormatter(new AnnotatedTypeFormatter(circularReferenceTypeFormatter))
@@ -40,18 +52,20 @@ export function createFormatter(config: Config): TypeFormatter {
         .addTypeFormatter(new NumberTypeFormatter())
         .addTypeFormatter(new BooleanTypeFormatter())
         .addTypeFormatter(new NullTypeFormatter())
+        .addTypeFormatter(new SymbolTypeFormatter())
 
         .addTypeFormatter(new AnyTypeFormatter(config))
         .addTypeFormatter(new UndefinedTypeFormatter())
         .addTypeFormatter(new UnknownTypeFormatter(config))
         .addTypeFormatter(new VoidTypeFormatter())
+        .addTypeFormatter(new NeverTypeFormatter())
 
         .addTypeFormatter(new LiteralTypeFormatter())
         .addTypeFormatter(new EnumTypeFormatter())
 
         .addTypeFormatter(new ReferenceTypeFormatter(circularReferenceTypeFormatter, config.encodeRefs ?? true))
         .addTypeFormatter(new DefinitionTypeFormatter(circularReferenceTypeFormatter, config.encodeRefs ?? true))
-        .addTypeFormatter(new ObjectTypeFormatter(circularReferenceTypeFormatter, config))
+        .addTypeFormatter(new ObjectTypeFormatter(circularReferenceTypeFormatter))
         .addTypeFormatter(new AliasTypeFormatter(circularReferenceTypeFormatter))
 
         .addTypeFormatter(new PrimitiveUnionTypeFormatter())

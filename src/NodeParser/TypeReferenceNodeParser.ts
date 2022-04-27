@@ -1,10 +1,12 @@
-import * as ts from "typescript";
+import ts from "typescript";
+import { Config } from "../Config";
+import { UnknownTypeReference } from "../Error/UnknownTypeReference";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
+import { AnnotatedType } from "../Type/AnnotatedType";
 import { ArrayType } from "../Type/ArrayType";
 import { BaseType } from "../Type/BaseType";
-import { UnknownTypeReference } from "../Error/UnknownTypeReference";
-import { Config } from "../Config";
+import { StringType } from "../Type/StringType";
 import { UnknownSymbolType } from "../Type/UnknownSymbolType";
 
 const invlidTypes: { [index: number]: boolean } = {
@@ -14,8 +16,8 @@ const invlidTypes: { [index: number]: boolean } = {
 
 export class TypeReferenceNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
         private config: Config
     ) {}
 
@@ -49,6 +51,10 @@ export class TypeReferenceNodeParser implements SubNodeParser {
                 return undefined;
             }
             return new ArrayType(type);
+        } else if (typeSymbol.name === "Date") {
+            return new AnnotatedType(new StringType(), { format: "date-time" }, false);
+        } else if (typeSymbol.name === "RegExp") {
+            return new AnnotatedType(new StringType(), { format: "regex" }, false);
         } else {
             return this.childNodeParser.createType(
                 typeSymbol.declarations!.filter((n: ts.Declaration) => !invlidTypes[n.kind])[0],
@@ -57,7 +63,7 @@ export class TypeReferenceNodeParser implements SubNodeParser {
         }
     }
 
-    private createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
+    protected createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
         const subContext = new Context(node, parentContext);
         if (node.typeArguments && node.typeArguments.length) {
             for (const typeArg of node.typeArguments) {

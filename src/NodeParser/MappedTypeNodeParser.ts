@@ -1,7 +1,9 @@
-import * as ts from "typescript";
+import ts from "typescript";
+import { Config } from "../Config";
 import { LogicError } from "../Error/LogicError";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
+import { AnnotatedType } from "../Type/AnnotatedType";
 import { ArrayType } from "../Type/ArrayType";
 import { BaseType } from "../Type/BaseType";
 import { EnumType, EnumValue } from "../Type/EnumType";
@@ -9,18 +11,20 @@ import { LiteralType } from "../Type/LiteralType";
 import { NumberType } from "../Type/NumberType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { StringType } from "../Type/StringType";
+import { SymbolType } from "../Type/SymbolType";
 import { UnionType } from "../Type/UnionType";
+import assert from "../Utils/assert";
 import { derefAnnotatedType, derefType } from "../Utils/derefType";
+import { isExcludedProp } from "../Utils/isExcludedProp";
 import { getKey } from "../Utils/nodeKey";
+import { notUndefined } from "../Utils/notUndefined";
 import { preserveAnnotation } from "../Utils/preserveAnnotation";
 import { removeUndefined } from "../Utils/removeUndefined";
-import { notUndefined, isExcludedProp } from "../Utils";
-import { Config } from "../Config";
 
 export class MappedTypeNodeParser implements SubNodeParser {
     public constructor(
-        private childNodeParser: NodeParser,
-        private readonly additionalProperties: boolean,
+        protected childNodeParser: NodeParser,
+        protected readonly additionalProperties: boolean,
         private config: Config
     ) {}
 
@@ -30,13 +34,12 @@ export class MappedTypeNodeParser implements SubNodeParser {
 
     public createType(node: ts.MappedTypeNode, context: Context): BaseType | undefined {
         const constraintType = this.childNodeParser.createType(node.typeParameter.constraint!, context);
+        const keyListType = derefType(constraintType);
         const id = `indexed-type-${getKey(node, context)}`;
 
         if (!constraintType) {
             return new ObjectType(id, [], [], false);
         }
-
-        const keyListType = derefType(constraintType);
 
         if (keyListType instanceof UnionType) {
             // Key type resolves to a set of known properties
@@ -49,10 +52,17 @@ export class MappedTypeNodeParser implements SubNodeParser {
         } else if (keyListType instanceof LiteralType) {
             // Key type resolves to single known property
             return new ObjectType(id, [], this.getProperties(node, new UnionType([keyListType]), context), false);
-        } else if (keyListType instanceof StringType) {
+        } else if (keyListType instanceof StringType || keyListType instanceof SymbolType) {
             // Key type widens to `string`
             const type = this.childNodeParser.createType(node.type!, context);
-            return type === undefined ? undefined : new ObjectType(id, [], [], type);
+            const resultType = type === undefined ? undefined : new ObjectType(id, [], [], type);
+            if (resultType && constraintType instanceof AnnotatedType) {
+                const annotations = constraintType.getAnnotations();
+                if (annotations) {
+                    return new AnnotatedType(resultType, { propertyNames: annotations }, false);
+                }
+            }
+            return resultType;
         } else if (keyListType instanceof NumberType) {
             const type = this.childNodeParser.createType(node.type!, this.createSubContext(node, keyListType, context));
             return type === undefined ? undefined : new ArrayType(type);
@@ -69,12 +79,24 @@ export class MappedTypeNodeParser implements SubNodeParser {
         }
     }
 
-    private getProperties(node: ts.MappedTypeNode, keyListType: UnionType, context: Context): ObjectProperty[] {
+    protected mapKey(node: ts.MappedTypeNode, rawKey: LiteralType, context: Context): LiteralType {
+        if (!node.nameType) {
+            return rawKey;
+        }
+        const key = derefType(
+            this.childNodeParser.createType(node.nameType, this.createSubContext(node, rawKey, context))
+        );
+        assert(key instanceof LiteralType, "Must resolve to Literal");
+        return key;
+    }
+
+    protected getProperties(node: ts.MappedTypeNode, keyListType: UnionType, context: Context): ObjectProperty[] {
         return keyListType
             .getTypes()
             .filter((type) => type instanceof LiteralType)
             .filter((type: LiteralType) => !isExcludedProp(type, new Context(node), this.config))
             .reduce((result: ObjectProperty[], key: LiteralType) => {
+                const namedKey = this.mapKey(node, key, context);
                 const propertyType = this.childNodeParser.createType(
                     node.type!,
                     this.createSubContext(node, key, context)
@@ -93,7 +115,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
                 }
 
                 const objectProperty = new ObjectProperty(
-                    key.getValue().toString(),
+                    namedKey.getValue().toString(),
                     preserveAnnotation(propertyType, newType),
                     !node.questionToken && !hasUndefined
                 );
@@ -103,10 +125,10 @@ export class MappedTypeNodeParser implements SubNodeParser {
             }, []);
     }
 
-    private getValues(node: ts.MappedTypeNode, keyListType: EnumType, context: Context): ObjectProperty[] {
+    protected getValues(node: ts.MappedTypeNode, keyListType: EnumType, context: Context): ObjectProperty[] {
         return keyListType
             .getValues()
-            .filter((value: EnumValue) => !!value)
+            .filter((value: EnumValue) => value != null)
             .map((value: EnumValue) => {
                 const type = this.childNodeParser.createType(
                     node.type!,
@@ -122,7 +144,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
             .filter(notUndefined);
     }
 
-    private getAdditionalProperties(
+    protected getAdditionalProperties(
         node: ts.MappedTypeNode,
         keyListType: UnionType,
         context: Context
@@ -138,7 +160,11 @@ export class MappedTypeNodeParser implements SubNodeParser {
         }
     }
 
-    private createSubContext(node: ts.MappedTypeNode, key: LiteralType | StringType, parentContext: Context): Context {
+    protected createSubContext(
+        node: ts.MappedTypeNode,
+        key: LiteralType | StringType,
+        parentContext: Context
+    ): Context {
         const subContext = new Context(node, parentContext);
 
         parentContext.getParameters().forEach((parentParameter) => {

@@ -1,15 +1,16 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { UnionType } from "../Type/UnionType";
 import { BaseType } from "../Type/BaseType";
-import { notUndefined, isExcludedProp } from "../Utils";
+import { notUndefined } from "../Utils/notUndefined";
 import { Config } from "../Config";
+import { isExcludedProp } from "../Utils/isExcludedProp";
 
 export class UnionNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
         private config: Config
     ) {}
 

@@ -1,60 +1,67 @@
-import * as Ajv from "ajv";
-import { readFileSync } from "fs";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import { readFileSync, writeFileSync } from "fs";
+import stringify from "safe-stable-stringify";
 import { resolve } from "path";
-import * as ts from "typescript";
+import ts from "typescript";
 import { createFormatter } from "../factory/formatter";
 import { createParser } from "../factory/parser";
 import { createProgram } from "../factory/program";
 import { Config } from "../src/Config";
 import { SchemaGenerator } from "../src/SchemaGenerator";
 
-const validator = new Ajv({
-    extendRefs: "fail",
-    format: "full",
-});
+const validator = new Ajv();
+addFormats(validator);
 
 const basePath = "test/valid-data";
+
+export function createGenerator(config: Config): SchemaGenerator {
+    const program: ts.Program = createProgram(config);
+    return new SchemaGenerator(program, createParser(program, config), createFormatter(config), config);
+}
 
 export function assertValidSchema(
     relativePath: string,
     type?: string,
     jsDoc: Config["jsDoc"] = "none",
-    extraTags?: Config["extraTags"]
+    extraTags?: Config["extraTags"],
+    schemaId?: Config["schemaId"]
 ) {
-    return () => {
+    return (): void => {
         const config: Config = {
-            path: resolve(`${basePath}/${relativePath}/*.ts`),
+            path: `${basePath}/${relativePath}/*.ts`,
             type,
-            expose: "export",
-            topRef: true,
             jsDoc,
             extraTags,
             skipTypeCheck: !!process.env.FAST_TEST,
         };
 
-        const program: ts.Program = createProgram(config);
-        const generator: SchemaGenerator = new SchemaGenerator(
-            program,
-            createParser(program, config),
-            createFormatter(config)
-        );
+        if (schemaId) {
+            config.schemaId = schemaId;
+        }
 
+        const generator = createGenerator(config);
         const schema = generator.createSchema(type);
-        const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${relativePath}/schema.json`), "utf8"));
-        const actual: any = JSON.parse(JSON.stringify(schema));
+        const schemaFile = resolve(`${basePath}/${relativePath}/schema.json`);
 
-        // uncomment to write test files
-        // writeFileSync(
-        //     resolve(`${basePath}/${relativePath}/schema.json`),
-        //     JSON.stringify(schema, null, 4) + "\n",
-        //     "utf8"
-        // );
+        if (process.env.UPDATE_SCHEMA) {
+            writeFileSync(schemaFile, stringify(schema, null, 2) + "\n", "utf8");
+        }
+
+        const expected: any = JSON.parse(readFileSync(schemaFile, "utf8"));
+        const actual: any = JSON.parse(JSON.stringify(schema));
 
         expect(typeof actual).toBe("object");
         expect(actual).toEqual(expected);
 
-        validator.validateSchema(actual);
-        expect(validator.errors).toBeNull();
-        validator.compile(actual); // Will find MissingRef errors
+        let localValidator = validator;
+        if (extraTags) {
+            localValidator = new Ajv({ strict: false });
+            addFormats(localValidator);
+        }
+
+        localValidator.validateSchema(actual);
+        expect(localValidator.errors).toBeNull();
+        localValidator.compile(actual); // Will find MissingRef errors
     };
 }

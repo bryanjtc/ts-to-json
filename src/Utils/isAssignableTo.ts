@@ -37,7 +37,7 @@ function combineIntersectingTypes(intersection: IntersectionType): BaseType[] {
     if (objectTypes.length === 1) {
         combined.push(objectTypes[0]);
     } else if (objectTypes.length > 1) {
-        combined.push(new ObjectType("combined-objects-" + intersection.getId(), objectTypes, [], false));
+        combined.push(new ObjectType(`combined-objects-${intersection.getId()}`, objectTypes, [], false));
     }
     return combined;
 }
@@ -167,6 +167,14 @@ export function isAssignableTo(
     }
 
     if (target instanceof ObjectType) {
+        // primitives are not assignable to `object`
+        if (
+            target.getNonPrimitive() &&
+            (source instanceof NumberType || source instanceof StringType || source instanceof BooleanType)
+        ) {
+            return false;
+        }
+
         const targetMembers = getObjectProperties(target);
         if (targetMembers.length === 0) {
             // When target object is empty then anything except null and undefined can be assigned to it
@@ -197,6 +205,25 @@ export function isAssignableTo(
                     );
                 })
             );
+        }
+
+        const isArrayLikeType = source instanceof ArrayType || source instanceof TupleType;
+        if (isArrayLikeType) {
+            const lengthPropType = targetMembers
+                .find((prop) => prop.getName() === "length" && prop.isRequired())
+                ?.getType();
+
+            if (source instanceof ArrayType) {
+                return lengthPropType instanceof NumberType;
+            }
+
+            if (source instanceof TupleType) {
+                if (lengthPropType instanceof LiteralType) {
+                    const types = source.getTypes();
+                    const lengthPropValue = lengthPropType.getValue();
+                    return types.length === lengthPropValue;
+                }
+            }
         }
     }
 

@@ -1,16 +1,20 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { symbolAtNode, getNodeName, shouldExtendKey } from "./Utils";
+import { getNodeName, shouldExtendKey } from "./Utils";
+import { hasJsDocTag } from "./Utils/hasJsDocTag";
+import { symbolAtNode } from "./Utils/symbolAtNode";
 import { Config } from "../src/Config";
 
 export class ExposeNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private subNodeParser: SubNodeParser,
+        protected typeChecker: ts.TypeChecker,
+        protected subNodeParser: SubNodeParser,
+        protected expose: "all" | "none" | "export",
+        protected jsDoc: "none" | "extended" | "basic",
         private config: Config
     ) {}
 
@@ -32,20 +36,23 @@ export class ExposeNodeParser implements SubNodeParser {
         return new DefinitionType(this.getDefinitionName(node, context), baseType);
     }
 
-    private isExportNode(node: ts.Node): boolean {
-        if (this.config.expose === "all") {
+    protected isExportNode(node: ts.Node): boolean {
+        if (this.expose === "all") {
             return node.kind !== ts.SyntaxKind.TypeLiteral;
-        } else if (this.config.expose === "none") {
+        } else if (this.expose === "none") {
             const nodeName = getNodeName(node);
             if (!this.config.type || nodeName !== this.config.type) {
                 return false;
             }
+        } else if (this.jsDoc !== "none" && hasJsDocTag(node, "internal")) {
+            return false;
         }
 
         const localSymbol: ts.Symbol = (node as any).localSymbol;
         return localSymbol ? "exportSymbol" in localSymbol : false;
     }
-    private getDefinitionName(node: ts.Node, context: Context): string {
+
+    protected getDefinitionName(node: ts.Node, context: Context): string {
         const symbol = symbolAtNode(node)!;
 
         let fullName = this.typeChecker.getFullyQualifiedName(symbol).replace(/^".*"\./, "");

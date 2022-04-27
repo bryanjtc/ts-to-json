@@ -2,6 +2,10 @@ import { assertValidSchema } from "./utils";
 
 describe("valid-data-type", () => {
     it("type-aliases-primitive", assertValidSchema("type-aliases-primitive", "MyString"));
+    it(
+        "type-aliases-primitive-with-id",
+        assertValidSchema("type-aliases-primitive-with-id", "MyString", "none", undefined, "testId")
+    );
     it("type-aliases-object", assertValidSchema("type-aliases-object", "MyAlias"));
     it("type-aliases-mixed", assertValidSchema("type-aliases-mixed", "MyObject"));
     it("type-aliases-union", assertValidSchema("type-aliases-union", "MyUnion"));
@@ -26,25 +30,44 @@ describe("valid-data-type", () => {
 
     it("type-maps", assertValidSchema("type-maps", "MyObject"));
     it("type-primitives", assertValidSchema("type-primitives", "MyObject"));
+    it("type-date", assertValidSchema("type-date", "MyObject"));
+    it("type-date-annotation", assertValidSchema("type-date-annotation", "MyObject", "basic"));
+    it("type-regexp", assertValidSchema("type-regexp", "MyObject"));
     it("type-union", assertValidSchema("type-union", "TypeUnion"));
     it("type-union-tagged", assertValidSchema("type-union-tagged", "Shape"));
     it("type-intersection", assertValidSchema("type-intersection", "MyObject"));
     it("type-intersection-conflict", assertValidSchema("type-intersection-conflict", "MyObject"));
     it("type-intersection-partial-conflict", assertValidSchema("type-intersection-partial-conflict", "MyType"));
     it("type-intersection-partial-conflict-ref", assertValidSchema("type-intersection-partial-conflict", "MyType"));
+    it(
+        "type-intersection-recursive-interface",
+        assertValidSchema("type-intersection-recursive-interface", "Intersection")
+    );
+    it(
+        "type-intersection-union-recursive-interface",
+        assertValidSchema("type-intersection-union-recursive-interface", "Intersection")
+    );
     it("type-intersection-union", assertValidSchema("type-intersection-union", "MyObject"));
+    it("type-intersection-union-enum", assertValidSchema("type-intersection-union-enum", "MyObject"));
+    it("type-intersection-union-primitive", assertValidSchema("type-intersection-union", "MyObject"));
+    it("type-intersection-aliased-union", assertValidSchema("type-intersection-aliased-union", "MyObject"));
     it("type-intersection-additional-props", assertValidSchema("type-intersection-additional-props", "MyObject"));
     it("type-extend", assertValidSchema("type-extend", "MyObject"));
     it("type-extend-circular", assertValidSchema("type-extend-circular", "MyType"));
+    it("type-extends-never", assertValidSchema("type-extends-never", "MyType"));
 
     it("type-typeof", assertValidSchema("type-typeof", "MyType"));
     it("type-typeof-value", assertValidSchema("type-typeof-value", "MyType"));
+    it("type-typeof-object-property", assertValidSchema("type-typeof-object-property", "MyType"));
+    it("type-typeof-class-static-property", assertValidSchema("type-typeof-class-static-property", "MyType"));
     it("type-typeof-enum", assertValidSchema("type-typeof-enum", "MyObject"));
     it("type-typeof-class", assertValidSchema("type-typeof-class", "MyObject"));
+    it("type-keys", assertValidSchema("type-typeof-keys", "MyType"));
 
     it("type-indexed-access-tuple-1", assertValidSchema("type-indexed-access-tuple-1", "MyType"));
     it("type-indexed-access-tuple-2", assertValidSchema("type-indexed-access-tuple-2", "MyType"));
     it("type-indexed-access-tuple-union", assertValidSchema("type-indexed-access-tuple-union", "FormLayout"));
+    it("type-indexed-access-type-union", assertValidSchema("type-indexed-access-type-union", "MyType"));
     it("type-indexed-access-object-1", assertValidSchema("type-indexed-access-object-1", "MyType"));
     it("type-indexed-access-object-2", assertValidSchema("type-indexed-access-object-2", "MyType"));
     it("type-indexed-access-keyof", assertValidSchema("type-indexed-access-keyof", "MyType"));
@@ -53,6 +76,8 @@ describe("valid-data-type", () => {
     it("type-keyof-object-function", assertValidSchema("type-keyof-object-function", "MyType"));
     it("type-mapped-simple", assertValidSchema("type-mapped-simple", "MyObject"));
     it("type-mapped-index", assertValidSchema("type-mapped-index", "MyObject"));
+    it("type-mapped-index-as", assertValidSchema("type-mapped-index-as", "MyObject"));
+    it("type-mapped-index-as-template", assertValidSchema("type-mapped-index-as-template", "MyObject"));
     it("type-mapped-literal", assertValidSchema("type-mapped-literal", "MyObject"));
     it("type-mapped-generic", assertValidSchema("type-mapped-generic", "MyObject"));
     it("type-mapped-native", assertValidSchema("type-mapped-native", "MyObject"));
@@ -65,8 +90,11 @@ describe("valid-data-type", () => {
     it("type-mapped-enum", assertValidSchema("type-mapped-enum", "MyObject"));
     it("type-mapped-enum-optional", assertValidSchema("type-mapped-enum-optional", "MyObject"));
     it("type-mapped-enum-null", assertValidSchema("type-mapped-enum-null", "MyObject"));
+    it("type-mapped-enum-number", assertValidSchema("type-mapped-enum-number", "MyObject"));
     it("type-mapped-exclude", assertValidSchema("type-mapped-exclude", "MyObject", "extended"));
     it("type-mapped-double-exclude", assertValidSchema("type-mapped-double-exclude", "MyObject", "extended"));
+    it("type-mapped-symbol", assertValidSchema("type-mapped-symbol", "MyObject"));
+    it("type-mapped-annotated-string", assertValidSchema("type-mapped-annotated-string", "ExchangeRate", "extended"));
 
     it("type-conditional-simple", assertValidSchema("type-conditional-simple", "MyObject"));
     it("type-conditional-inheritance", assertValidSchema("type-conditional-inheritance", "MyObject"));
@@ -79,4 +107,7 @@ describe("valid-data-type", () => {
     it("type-conditional-narrowing", assertValidSchema("type-conditional-narrowing", "MyObject"));
     it("type-conditional-omit", assertValidSchema("type-conditional-omit", "MyObject"));
     it("type-conditional-jsdoc", assertValidSchema("type-conditional-jsdoc", "MyObject", "extended"));
+
+    it("type-recursive-deep-exclude", assertValidSchema("type-recursive-deep-exclude", "MyType"));
+    it("ignore-export", assertValidSchema("ignore-export", "*"));
 });

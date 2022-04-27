@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Config } from "../../src/Config";
 import { isInForceParseTypes } from ".";
 

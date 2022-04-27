@@ -1,17 +1,31 @@
-import * as Ajv from "ajv";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import * as ts from "typescript";
-
-import { createFormatter } from "../factory/formatter";
-import { createParser } from "../factory/parser";
+import ts from "typescript";
+import { BaseType, Context, DefinitionType, ReferenceType, SubNodeParser } from "../index";
+import { createFormatter, FormatterAugmentor } from "../factory/formatter";
+import { createParser, ParserAugmentor } from "../factory/parser";
 import { createProgram } from "../factory/program";
 import { Config, DEFAULT_CONFIG } from "../src/Config";
+import { Definition } from "../src/Schema/Definition";
 import { SchemaGenerator } from "../src/SchemaGenerator";
+import { SubTypeFormatter } from "../src/SubTypeFormatter";
+import { EnumType } from "../src/Type/EnumType";
+import { FunctionType } from "../src/Type/FunctionType";
+import { StringType } from "../src/Type/StringType";
+import { TypeFormatter } from "../src/TypeFormatter";
+import { uniqueArray } from "../src/Utils/uniqueArray";
 
 const basePath = "test/config";
 
-function assertSchema(name: string, userConfig: Config & { type: string }, tsconfig?: boolean) {
+function assertSchema(
+    name: string,
+    userConfig: Config & { type: string },
+    tsconfig?: boolean,
+    formatterAugmentor?: FormatterAugmentor,
+    parserAugmentor?: ParserAugmentor
+) {
     return () => {
         const config: Config = {
             ...DEFAULT_CONFIG,
@@ -27,8 +41,9 @@ function assertSchema(name: string, userConfig: Config & { type: string }, tscon
         const program: ts.Program = createProgram(config);
         const generator: SchemaGenerator = new SchemaGenerator(
             program,
-            createParser(program, config),
-            createFormatter(config)
+            createParser(program, config, parserAugmentor),
+            createFormatter(config, formatterAugmentor),
+            config
         );
 
         const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${name}/schema.json`), "utf8"));
@@ -38,16 +53,94 @@ function assertSchema(name: string, userConfig: Config & { type: string }, tscon
         expect(actual).toEqual(expected);
 
         const validator = new Ajv({
-            extendRefs: "fail",
             // skip full check if we are not encoding refs
-            format: config.encodeRefs === false ? undefined : "full",
+            validateFormats: config.encodeRefs === false ? undefined : true,
         });
+
+        addFormats(validator);
 
         validator.validateSchema(actual);
         expect(validator.errors).toBeNull();
 
         validator.compile(actual); // Will find MissingRef errors
     };
+}
+
+export class ExampleFunctionTypeFormatter implements SubTypeFormatter {
+    public supportsType(type: FunctionType): boolean {
+        return type instanceof FunctionType;
+    }
+    public getDefinition(_type: FunctionType): Definition {
+        return {
+            type: "object",
+            properties: {
+                isFunction: {
+                    type: "boolean",
+                    const: true,
+                },
+            },
+        };
+    }
+    public getChildren(_type: FunctionType): BaseType[] {
+        return [];
+    }
+}
+
+export class ExampleEnumTypeFormatter implements SubTypeFormatter {
+    public supportsType(type: EnumType): boolean {
+        return type instanceof EnumType;
+    }
+    public getDefinition(type: EnumType): Definition {
+        return {
+            type: "object",
+            properties: {
+                isEnum: {
+                    type: "boolean",
+                    const: true,
+                },
+                enumLength: {
+                    type: "number",
+                    const: type.getValues().length,
+                },
+            },
+        };
+    }
+    public getChildren(_type: EnumType): BaseType[] {
+        return [];
+    }
+}
+
+// Just like DefinitionFormatter but adds { $comment: "overriden" }
+export class ExampleDefinitionOverrideFormatter implements SubTypeFormatter {
+    public constructor(private childTypeFormatter: TypeFormatter) {}
+    public supportsType(type: DefinitionType): boolean {
+        return type instanceof DefinitionType;
+    }
+    public getDefinition(type: DefinitionType): Definition {
+        const ref = type.getName();
+        return { $ref: `#/definitions/${ref}`, $comment: "overriden" };
+    }
+    public getChildren(type: DefinitionType): BaseType[] {
+        return uniqueArray([type, ...this.childTypeFormatter.getChildren(type.getType())]);
+    }
+}
+
+export class ExampleConstructorParser implements SubNodeParser {
+    supportsNode(node: ts.Node): boolean {
+        return node.kind === ts.SyntaxKind.ConstructorType;
+    }
+    createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType | undefined {
+        return new StringType();
+    }
+}
+
+export class ExampleNullParser implements SubNodeParser {
+    supportsNode(node: ts.Node): boolean {
+        return node.kind === ts.SyntaxKind.NullKeyword;
+    }
+    createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType | undefined {
+        return new StringType();
+    }
 }
 
 describe("config", () => {
@@ -61,8 +154,27 @@ describe("config", () => {
         })
     );
     it(
+        "expose-all-topref-true-not-exported",
+        assertSchema("expose-all-topref-true-not-exported", {
+            type: "MyObject",
+            expose: "all",
+            topRef: true,
+            jsDoc: "none",
+        })
+    );
+
+    it(
         "expose-all-topref-false",
         assertSchema("expose-all-topref-false", {
+            type: "MyObject",
+            expose: "all",
+            topRef: false,
+            jsDoc: "none",
+        })
+    );
+    it(
+        "expose-all-topref-false-not-exported",
+        assertSchema("expose-all-topref-false-not-exported", {
             type: "MyObject",
             expose: "all",
             topRef: false,
@@ -219,5 +331,90 @@ describe("config", () => {
             topRef: true,
             jsDoc: "none",
         })
+    );
+
+    it(
+        "additional-properties",
+        assertSchema("additional-properties", {
+            type: "MyObject",
+            additionalProperties: true,
+        })
+    );
+
+    // it(
+    //     "arrow-function-parameters",
+    //     assertSchema("arrow-function-parameters", {
+    //         type: "NamedParameters<typeof myFunction>",
+    //         expose: "all",
+    //     })
+    // );
+    // it(
+    //     "function-parameters-all",
+    //     assertSchema("function-parameters-all", {
+    //         type: "*",
+    //     })
+    // );
+
+    it(
+        "custom-formatter-configuration",
+        assertSchema(
+            "custom-formatter-configuration",
+            {
+                type: "MyObject",
+            },
+            false,
+            (formatter) => formatter.addTypeFormatter(new ExampleFunctionTypeFormatter())
+        )
+    );
+
+    it(
+        "custom-formatter-configuration-override",
+        assertSchema(
+            "custom-formatter-configuration-override",
+            {
+                type: "MyObject",
+            },
+            false,
+            (formatter) => formatter.addTypeFormatter(new ExampleEnumTypeFormatter())
+        )
+    );
+
+    it(
+        "custom-formatter-configuration-circular",
+        assertSchema(
+            "custom-formatter-configuration-circular",
+            {
+                type: "MyObject",
+            },
+            false,
+            (formatter, circularReferenceTypeFormatter) =>
+                formatter.addTypeFormatter(new ExampleDefinitionOverrideFormatter(circularReferenceTypeFormatter))
+        )
+    );
+
+    it(
+        "custom-parser-configuration",
+        assertSchema(
+            "custom-parser-configuration",
+            {
+                type: "MyObject",
+            },
+            false,
+            undefined,
+            (parser) => parser.addNodeParser(new ExampleConstructorParser())
+        )
+    );
+
+    it(
+        "custom-parser-configuration-override",
+        assertSchema(
+            "custom-parser-configuration-override",
+            {
+                type: "MyObject",
+            },
+            false,
+            undefined,
+            (parser) => parser.addNodeParser(new ExampleNullParser())
+        )
     );
 });

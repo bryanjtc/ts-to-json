@@ -7,7 +7,7 @@ import { TypeFormatter } from "../TypeFormatter";
 import { uniqueArray } from "../Utils/uniqueArray";
 
 export class UnionTypeFormatter implements SubTypeFormatter {
-    public constructor(private childTypeFormatter: TypeFormatter) {}
+    public constructor(protected childTypeFormatter: TypeFormatter) {}
 
     public supportsType(type: UnionType): boolean {
         return type instanceof UnionType;
@@ -29,14 +29,27 @@ export class UnionTypeFormatter implements SubTypeFormatter {
             }
         }
         if (stringType && oneNotEnum) {
+            const values = [];
+            for (const def of definitions) {
+                if (def.enum) {
+                    values.push(...def.enum);
+                } else if (def.const) {
+                    values.push(def.const);
+                } else {
+                    return {
+                        type: "string",
+                    };
+                }
+            }
             return {
                 type: "string",
+                enum: values,
             };
         }
 
         const flattenedDefinitions: JSONSchema7[] = [];
 
-        // Flatten anOf inside anyOf unless the anyOf has an annotation
+        // Flatten anyOf inside anyOf unless the anyOf has an annotation
         for (const def of definitions) {
             if (Object.keys(def) === ["anyOf"]) {
                 flattenedDefinitions.push(...(def.anyOf as any));

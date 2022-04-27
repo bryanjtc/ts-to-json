@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2019",
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "isolatedModules": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -15,16 +16,28 @@
     "strictNullChecks": true,
     "preserveConstEnums": true,
     "removeComments": true,
+    "resolveJsonModule": true,
     "noLib": false,
     "sourceMap": true,
     "pretty": true,
     "watch": false,
-    "typeRoots": ["node_modules/@types"],
-    "sourceRoot": "src",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "outDir": "dist",
     "incremental": true
   },
-  "files": ["ts-to-json.ts", "index.ts"],
-  "include": ["./src/**/*.ts", "./factory/**/*.ts", "./test/**.ts"],
-  "exclude": ["dist"]
+  "files": [
+    "ts-json-schema-generator.ts",
+    "index.ts"
+  ],
+  "include": [
+    "./src/**/*.ts",
+    "./factory/**/*.ts",
+    "./test/**.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

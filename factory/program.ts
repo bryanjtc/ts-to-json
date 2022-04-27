@@ -1,6 +1,6 @@
 import * as glob from "glob";
 import * as path from "path";
-import * as ts from "typescript";
+import ts from "typescript";
 
 import { Config } from "../src/Config";
 import { DiagnosticError } from "../src/Error/DiagnosticError";
@@ -22,7 +22,7 @@ function loadTsConfigFile(configFile: string) {
         const parseResult = ts.parseJsonConfigFileContent(
             config.config,
             ts.sys,
-            path.dirname(configFile),
+            path.resolve(path.dirname(configFile)),
             {},
             configFile
         );
@@ -31,6 +31,8 @@ function loadTsConfigFile(configFile: string) {
         delete parseResult.options.outDir;
         delete parseResult.options.outFile;
         delete parseResult.options.declaration;
+        delete parseResult.options.declarationDir;
+        delete parseResult.options.declarationMap;
 
         return parseResult;
     } else {

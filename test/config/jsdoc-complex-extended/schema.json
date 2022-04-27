@@ -14,9 +14,21 @@
         "numberValue": {
           "type": "integer",
           "title": "Number field title",
-          "description": "This field is of integer type.\nInteger!",
+          "description": "This field is of integer type. Integer!\n\nThe type of this field is integer.\n\nThis is of type\n- integer\n- number",
           "exclusiveMaximum": 10,
           "multipleOf": 3
+        },
+        "requiredValue": {
+          "type": ["number", "string"],
+          "title": "Required value"
+        },
+        "nullableValue": {
+          "type": ["number", "string", "null"],
+          "title": "Nullable value"
+        },
+        "optionalValue": {
+          "type": ["number", "string"],
+          "title": "Optional value"
         },
         "privateString": {
           "type": "string",
@@ -43,19 +55,22 @@
           "title": "Non empty array"
         },
         "number": {
-          "type": [
-            "number",
-            "null"
-          ]
+          "type": ["number", "null"]
+        },
+        "overriddenRefType": {
+          "type": "number"
         }
       },
       "required": [
         "stringValue",
         "numberValue",
+        "requiredValue",
+        "nullableValue",
         "exportString",
         "privateString",
         "numberArray",
-        "number"
+        "number",
+        "overriddenRefType"
       ],
       "additionalProperties": false,
       "description": "Some description here",

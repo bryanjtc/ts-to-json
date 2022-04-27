@@ -1,16 +1,17 @@
-import * as ts from "typescript";
+import ts from "typescript";
+import { Config } from "../Config";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { AliasType } from "../Type/AliasType";
 import { BaseType } from "../Type/BaseType";
 import { ReferenceType } from "../Type/ReferenceType";
-import { getKey, extendKey } from "../Utils";
-import { Config } from "../Config";
+import { extendKey } from "../Utils/extendKey";
+import { getKey } from "../Utils/nodeKey";
 
 export class TypeAliasNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
         private config: Config
     ) {}
 
@@ -49,11 +50,11 @@ export class TypeAliasNodeParser implements SubNodeParser {
         return new AliasType(id, type);
     }
 
-    private getTypeId(node: ts.TypeAliasDeclaration, context: Context): string {
+    protected getTypeId(node: ts.TypeAliasDeclaration, context: Context): string {
         return extendKey(`alias-${getKey(node, context)}`, node, context, this.config);
     }
 
-    private getTypeName(node: ts.TypeAliasDeclaration, context: Context): string {
+    protected getTypeName(node: ts.TypeAliasDeclaration, context: Context): string {
         const argumentIds = context.getArguments().map((arg) => arg?.getName());
         const fullName = node.name.getText();
 

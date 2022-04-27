@@ -22,7 +22,6 @@ function assertSchema(relativePath: string, filterNode: (node: ts.Node) => boole
             extraTags,
             skipTypeCheck: true,
             skipParseFiles: ["lib.dom.d.ts"],
-            setObjectIdentifier: true,
             handleUnknownTypes: true,
         };
 

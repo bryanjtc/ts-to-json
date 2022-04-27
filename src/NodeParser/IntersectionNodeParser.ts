@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
@@ -7,10 +7,10 @@ import { PrimitiveType } from "../Type/PrimitiveType";
 import { UnionType } from "../Type/UnionType";
 import { derefType } from "../Utils/derefType";
 import { uniqueTypeArray } from "../Utils/uniqueTypeArray";
-import { UndefinedType } from "./../Type/UndefinedType";
+import { UndefinedType } from "../Type/UndefinedType";
 
 export class IntersectionNodeParser implements SubNodeParser {
-    public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
+    public constructor(protected typeChecker: ts.TypeChecker, protected childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.IntersectionTypeNode): boolean {
         return node.kind === ts.SyntaxKind.IntersectionType;
@@ -24,9 +24,18 @@ export class IntersectionNodeParser implements SubNodeParser {
             return undefined;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         return translate(types as BaseType[]);
     }
+}
+
+function derefAndFlattenUnions(type: BaseType): BaseType[] {
+    const derefed = derefType(type);
+    return derefed instanceof UnionType
+        ? derefed.getTypes().reduce((result: BaseType[], derefedType: BaseType) => {
+              result.push(...derefAndFlattenUnions(derefedType));
+              return result;
+          }, [])
+        : [type];
 }
 
 /**
@@ -40,10 +49,7 @@ export function translate(types: BaseType[]): BaseType | undefined {
         return types[0];
     }
 
-    const unions = types.map((type) => {
-        const derefed = derefType(type);
-        return derefed instanceof UnionType ? derefed.getTypes() : [type];
-    });
+    const unions = types.map(derefAndFlattenUnions);
     const result: BaseType[] = [];
     function process(i: number, t: BaseType[] = []) {
         for (const type of unions[i]) {

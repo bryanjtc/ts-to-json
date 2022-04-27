@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { AnnotationsReader } from "../AnnotationsReader";
 import { ExtendedAnnotationsReader } from "../AnnotationsReader/ExtendedAnnotationsReader";
 import { Context } from "../NodeParser";
@@ -7,25 +7,32 @@ import { AnnotatedType } from "../Type/AnnotatedType";
 import { BaseType } from "../Type/BaseType";
 import { ReferenceType } from "../Type/ReferenceType";
 import { removeUndefined } from "../Utils/removeUndefined";
-import { DefinitionType } from "./../Type/DefinitionType";
-import { UnionType } from "./../Type/UnionType";
+import { DefinitionType } from "../Type/DefinitionType";
+import { UnionType } from "../Type/UnionType";
+import { AnyType } from "../Type/AnyType";
 
 export class AnnotatedNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: SubNodeParser, private annotationsReader: AnnotationsReader) {}
+    public constructor(protected childNodeParser: SubNodeParser, protected annotationsReader: AnnotationsReader) {}
 
     public supportsNode(node: ts.Node): boolean {
         return this.childNodeParser.supportsNode(node);
     }
 
     public createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType | undefined {
+        const annotatedNode = this.getAnnotatedNode(node);
+        let annotations = this.annotationsReader.getAnnotations(annotatedNode);
+        const nullable = this.getNullable(annotatedNode);
+
+        // Short-circuit parsing the underlying type if an explicit ref annotation was passed.
+        if (annotations && "$ref" in annotations) {
+            return new AnnotatedType(new AnyType(), annotations, nullable);
+        }
+
         const baseType = this.childNodeParser.createType(node, context, reference);
 
         if (baseType === undefined) {
             return undefined;
         }
-
-        const annotatedNode = this.getAnnotatedNode(node);
-        let annotations = this.annotationsReader.getAnnotations(annotatedNode);
 
         // Don't return annotations for lib types such as Exclude.
         if (node.getSourceFile().fileName.match(/[/\\]typescript[/\\]lib[/\\]lib\.[^/\\]+\.d\.ts$/i)) {
@@ -58,18 +65,16 @@ export class AnnotatedNodeParser implements SubNodeParser {
             }
         }
 
-        const nullable = this.getNullable(annotatedNode);
-
         return !annotations && !nullable ? baseType : new AnnotatedType(baseType, annotations || {}, nullable);
     }
 
-    private getNullable(annotatedNode: ts.Node) {
+    protected getNullable(annotatedNode: ts.Node) {
         return this.annotationsReader instanceof ExtendedAnnotationsReader
             ? this.annotationsReader.isNullable(annotatedNode)
             : false;
     }
 
-    private getAnnotatedNode(node: ts.Node): ts.Node {
+    protected getAnnotatedNode(node: ts.Node): ts.Node {
         if (!node.parent) {
             return node;
         } else if (node.parent.kind === ts.SyntaxKind.PropertySignature) {

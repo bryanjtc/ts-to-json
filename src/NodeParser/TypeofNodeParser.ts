@@ -1,19 +1,19 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { LogicError } from "../Error/LogicError";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { ObjectType, ObjectProperty } from "../Type/ObjectType";
 import { ReferenceType } from "../Type/ReferenceType";
-import { isExcludedProp } from "../Utils";
 import { getKey } from "../Utils/nodeKey";
 import { LiteralType } from "../Type/LiteralType";
 import { Config } from "../Config";
+import { isExcludedProp } from "../Utils/isExcludedProp";
 
 export class TypeofNodeParser implements SubNodeParser {
     public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
         private config: Config
     ) {}
 
@@ -31,11 +31,16 @@ export class TypeofNodeParser implements SubNodeParser {
         if (symbol.flags & ts.SymbolFlags.Alias) {
             symbol = this.typeChecker.getAliasedSymbol(symbol);
         }
-        const valueDec = symbol.valueDeclaration;
+
+        const valueDec = symbol.valueDeclaration!;
         context.setSkipNode(valueDec);
         if (ts.isEnumDeclaration(valueDec)) {
             return this.createObjectFromEnum(valueDec, context, reference, node);
-        } else if (ts.isVariableDeclaration(valueDec) || ts.isPropertySignature(valueDec)) {
+        } else if (
+            ts.isVariableDeclaration(valueDec) ||
+            ts.isPropertySignature(valueDec) ||
+            ts.isPropertyDeclaration(valueDec)
+        ) {
             if (valueDec.type) {
                 return this.childNodeParser.createType(valueDec.type, context);
             } else if (valueDec.initializer) {
@@ -45,12 +50,14 @@ export class TypeofNodeParser implements SubNodeParser {
             return this.childNodeParser.createType(valueDec, context);
         } else if (ts.isFunctionDeclaration(valueDec)) {
             return this.childNodeParser.createType(valueDec, context, reference);
+        } else if (ts.isPropertyAssignment(valueDec)) {
+            return this.childNodeParser.createType(valueDec.initializer, context);
         }
 
         throw new LogicError(`Invalid type query "${valueDec.getFullText()}" (ts.SyntaxKind = ${valueDec.kind})`, node);
     }
 
-    private createObjectFromEnum(
+    protected createObjectFromEnum(
         node: ts.EnumDeclaration,
         context: Context,
         reference?: ReferenceType,

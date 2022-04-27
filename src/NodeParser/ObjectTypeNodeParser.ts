@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
@@ -11,6 +11,6 @@ export class ObjectTypeNodeParser implements SubNodeParser {
     }
 
     public createType(node: ts.KeywordTypeNode, context: Context): BaseType {
-        return new ObjectType(`object-${getKey(node, context)}`, [], [], true);
+        return new ObjectType(`object-${getKey(node, context)}`, [], [], true, true);
     }
 }

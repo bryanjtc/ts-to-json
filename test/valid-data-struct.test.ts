@@ -4,6 +4,13 @@ describe("valid-data-struct", () => {
     // TODO: generics recursive
     it("simple-object", assertValidSchema("simple-object", "SimpleObject"));
 
+    it("object-function-expression", assertValidSchema("object-function-expression", "MyType"));
+    it("object-literal-expression", assertValidSchema("object-literal-expression", "MyType"));
+
+    it("literal-object-type", assertValidSchema("literal-object-type", "MyType"));
+    it("literal-array-type", assertValidSchema("literal-array-type", "MyType"));
+    it("literal-index-type", assertValidSchema("literal-index-type", "MyType"));
+
     it("interface-single", assertValidSchema("interface-single", "MyObject"));
     it("interface-multi", assertValidSchema("interface-multi", "MyObject"));
     it("interface-recursion", assertValidSchema("interface-recursion", "MyObject"));
@@ -11,6 +18,7 @@ describe("valid-data-struct", () => {
     it("interface-extended-extra-props", assertValidSchema("interface-extended-extra-props", "MyObject"));
     it("interface-array", assertValidSchema("interface-array", "TagArray"));
     it("interface-property-dash", assertValidSchema("interface-property-dash", "MyObject"));
+    it("interface-computed-property-name", assertValidSchema("interface-computed-property-name", "MyObject"));
 
     it("class-single", assertValidSchema("class-single", "MyObject"));
     it("class-multi", assertValidSchema("class-multi", "MyObject"));

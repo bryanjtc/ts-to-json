@@ -1,10 +1,10 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Context, NodeParser } from "./NodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 
 export class TopRefNodeParser implements NodeParser {
-    public constructor(private childNodeParser: NodeParser, private fullName: string, private topRef: boolean) {}
+    public constructor(protected childNodeParser: NodeParser, protected fullName: string, protected topRef: boolean) {}
     // hack to change the fullName by 'createSchemaByNodeKind' for parsing multiple node
     // other option would be adding a 'fullName' field to BaseType
     public setFullName(fullName: string) {
