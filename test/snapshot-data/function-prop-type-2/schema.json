@@ -10,7 +10,7 @@
                     "type": "null",
                     "parameters": {
                         "arg": {
-                            "type": "R"
+                            "type": "unknown"
                         }
                     },
                     "required": [

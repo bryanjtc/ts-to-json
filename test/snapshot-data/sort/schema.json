@@ -2,27 +2,27 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "def-interface-2119475284-0-147-2119475284-0-240": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-                "c": {
+                "a": {
                     "type": "string"
                 },
                 "b": {
                     "type": "string"
                 },
-                "a": {
+                "c": {
                     "type": "string"
                 },
                 "h": {
-                    "type": "object",
+                    "additionalProperties": false,
                     "properties": {
-                        "c": {
+                        "a": {
                             "type": "string"
                         },
                         "b": {
                             "type": "string"
                         },
-                        "a": {
+                        "c": {
                             "type": "string"
                         }
                     },
@@ -31,7 +31,7 @@
                         "b",
                         "a"
                     ],
-                    "additionalProperties": false
+                    "type": "object"
                 }
             },
             "required": [
@@ -40,33 +40,33 @@
                 "a",
                 "h"
             ],
-            "additionalProperties": false
+            "type": "object"
         },
         "def-interface-2119475284-147-239-2119475284-0-240": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "a": {
-                    "type": "object",
+                    "additionalProperties": false,
                     "properties": {
-                        "c": {
+                        "a": {
                             "type": "string"
                         },
                         "b": {
                             "type": "string"
                         },
-                        "a": {
+                        "c": {
                             "type": "string"
                         },
                         "h": {
-                            "type": "object",
+                            "additionalProperties": false,
                             "properties": {
-                                "c": {
+                                "a": {
                                     "type": "string"
                                 },
                                 "b": {
                                     "type": "string"
                                 },
-                                "a": {
+                                "c": {
                                     "type": "string"
                                 }
                             },
@@ -75,7 +75,7 @@
                                 "b",
                                 "a"
                             ],
-                            "additionalProperties": false
+                            "type": "object"
                         }
                     },
                     "required": [
@@ -84,69 +84,34 @@
                         "a",
                         "h"
                     ],
-                    "additionalProperties": false
+                    "type": "object"
                 },
                 "func": {
-                    "kind": "function",
-                    "type": "object",
-                    "properties": {
-                        "c": {
-                            "type": "string"
-                        },
-                        "b": {
-                            "type": "string"
-                        },
-                        "a": {
-                            "type": "string"
-                        },
-                        "h": {
-                            "type": "object",
-                            "properties": {
-                                "c": {
-                                    "type": "string"
-                                },
-                                "b": {
-                                    "type": "string"
-                                },
-                                "a": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "c",
-                                "b",
-                                "a"
-                            ],
-                            "additionalProperties": false
-                        }
-                    },
-                    "required": [
-                        "options"
-                    ],
                     "additionalProperties": false,
+                    "kind": "function",
                     "parameters": {
                         "options": {
-                            "type": "object",
+                            "additionalProperties": false,
                             "properties": {
-                                "c": {
+                                "a": {
                                     "type": "string"
                                 },
                                 "b": {
                                     "type": "string"
                                 },
-                                "a": {
+                                "c": {
                                     "type": "string"
                                 },
                                 "h": {
-                                    "type": "object",
+                                    "additionalProperties": false,
                                     "properties": {
-                                        "c": {
+                                        "a": {
                                             "type": "string"
                                         },
                                         "b": {
                                             "type": "string"
                                         },
-                                        "a": {
+                                        "c": {
                                             "type": "string"
                                         }
                                     },
@@ -155,7 +120,7 @@
                                         "b",
                                         "a"
                                     ],
-                                    "additionalProperties": false
+                                    "type": "object"
                                 }
                             },
                             "required": [
@@ -164,16 +129,51 @@
                                 "a",
                                 "h"
                             ],
-                            "additionalProperties": false
+                            "type": "object"
                         }
-                    }
+                    },
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        },
+                        "b": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        },
+                        "h": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                },
+                                "b": {
+                                    "type": "string"
+                                },
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "c",
+                                "b",
+                                "a"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "options"
+                    ],
+                    "type": "object"
                 }
             },
             "required": [
                 "a",
                 "func"
             ],
-            "additionalProperties": false
+            "type": "object"
         }
     }
 }

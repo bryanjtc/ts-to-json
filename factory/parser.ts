@@ -178,12 +178,17 @@ export function createParser(program: ts.Program, config: Config, augmentor?: Pa
             )
         )
 
+        /**
+         * keep the following parsers in same order
+         */
+
         .addNodeParser(
-            withCircular(withExpose(withJsDoc(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))))
+            withCircular(
+                withExpose(withJsDoc(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser), mergedConfig)))
+            )
         )
 
-        // keep the following parsers in same order
-        .addNodeParser(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))
+        .addNodeParser(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser), mergedConfig))
 
         .addNodeParser(new VoidKeywordTypeParser())
 

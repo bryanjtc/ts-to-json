@@ -4,9 +4,13 @@ import * as ts from "typescript";
 
 export class UnknownSymbolType extends BaseType {
     private name: string;
-    constructor(parentNode: ts.Node, node: ts.Symbol) {
+    constructor(parentNode: ts.Node, symbol: ts.Symbol, useSymbolName = false) {
         super();
-        let name: string | undefined = node.getName();
+        if (!useSymbolName) {
+            this.name = "unknown";
+            return;
+        }
+        let name: string | undefined = symbol.getName();
         if (name === "unknown") {
             name = getAnyNodeName(parentNode);
         }

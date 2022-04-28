@@ -5,13 +5,18 @@ import { BaseType } from "../Type/BaseType";
 import { FunctionParameter, FunctionType } from "../Type/FunctionType";
 import { isNodeHidden, symbolAtNode, isFunctionKind } from "../Utils";
 import { UnknownSymbolType } from "../Type/UnknownSymbolType";
+import { Config } from "../Config";
 
 /**
  * A function node parser that creates a function type so that mapped types can
  * use functions as values. There is no formatter for function types.
  */
 export class FunctionNodeParser implements SubNodeParser {
-    public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
+    public constructor(
+        protected typeChecker: ts.TypeChecker,
+        protected childNodeParser: NodeParser,
+        private config: Config
+    ) {}
 
     public supportsNode(node: ts.FunctionTypeNode | ts.FunctionDeclaration | ts.MethodSignature): boolean {
         return isFunctionKind(node);
@@ -30,7 +35,7 @@ export class FunctionNodeParser implements SubNodeParser {
                 }
 
                 if (!type) {
-                    type = new UnknownSymbolType(node, nameSymbol);
+                    type = new UnknownSymbolType(node, nameSymbol, this.config.allowArbitraryDataTypes);
                 }
                 context.setDefault(nameSymbol.name, type);
             });

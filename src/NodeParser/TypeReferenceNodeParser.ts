@@ -30,14 +30,16 @@ export class TypeReferenceNodeParser implements SubNodeParser {
         const typeSymbol = this.typeChecker.getSymbolAtLocation(node.typeName)!;
 
         if (!typeSymbol || typeSymbol.name === "unknown") {
-            if (this.config.handleUnknownTypes) return new UnknownSymbolType(node, typeSymbol);
+            if (this.config.handleUnknownTypes)
+                return new UnknownSymbolType(node, typeSymbol, this.config.allowArbitraryDataTypes);
             throw new UnknownTypeReference(node, `are you using global types?`);
         }
 
         if (typeSymbol.flags & ts.SymbolFlags.Alias) {
             const aliasedSymbol = this.typeChecker.getAliasedSymbol(typeSymbol);
             if (aliasedSymbol.name === "unknown") {
-                if (this.config.handleUnknownTypes) return new UnknownSymbolType(node, aliasedSymbol);
+                if (this.config.handleUnknownTypes)
+                    return new UnknownSymbolType(node, aliasedSymbol, this.config.allowArbitraryDataTypes);
                 throw new UnknownTypeReference(node);
             }
             return this.childNodeParser.createType(
@@ -63,6 +65,8 @@ export class TypeReferenceNodeParser implements SubNodeParser {
                     this.createSubContext(node, context)
                 );
             } else {
+                if (this.config.handleUnknownTypes)
+                    return new UnknownSymbolType(node, typeSymbol, this.config.allowArbitraryDataTypes);
                 throw new UnknownSymbolDeclarations(node);
             }
         }

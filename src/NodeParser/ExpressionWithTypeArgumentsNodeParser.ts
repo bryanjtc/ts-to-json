@@ -21,7 +21,8 @@ export class ExpressionWithTypeArgumentsNodeParser implements SubNodeParser {
         if (typeSymbol.flags & ts.SymbolFlags.Alias) {
             const aliasedSymbol = this.typeChecker.getAliasedSymbol(typeSymbol);
             if (aliasedSymbol.name === "unknown") {
-                if (this.config.handleUnknownTypes) return new UnknownSymbolType(node, aliasedSymbol);
+                if (this.config.handleUnknownTypes)
+                    return new UnknownSymbolType(node, aliasedSymbol, this.config.allowArbitraryDataTypes);
                 throw new UnknownTypeReference(node);
             }
             return this.childNodeParser.createType(

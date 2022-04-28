@@ -88,7 +88,7 @@ export interface Config {
     funcParamMaxDepth?: number;
 
     /**
-        If set to true types like any and unknown will be set
+        If set to true types like any,unknown,HTMLElement ... will be set
     */
     allowArbitraryDataTypes?: boolean;
 }
