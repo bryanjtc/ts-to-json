@@ -1,5 +1,6 @@
 import ts from "typescript";
 import { Config } from "../Config";
+import { UnknownSymbolDeclarations } from "../Error/UnknownSymbolDeclarations";
 import { UnknownTypeReference } from "../Error/UnknownTypeReference";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
@@ -9,7 +10,7 @@ import { BaseType } from "../Type/BaseType";
 import { StringType } from "../Type/StringType";
 import { UnknownSymbolType } from "../Type/UnknownSymbolType";
 
-const invlidTypes: { [index: number]: boolean } = {
+const invalidTypes: { [index: number]: boolean } = {
     [ts.SyntaxKind.ModuleDeclaration]: true,
     [ts.SyntaxKind.VariableDeclaration]: true,
 };
@@ -40,7 +41,7 @@ export class TypeReferenceNodeParser implements SubNodeParser {
                 throw new UnknownTypeReference(node);
             }
             return this.childNodeParser.createType(
-                aliasedSymbol.declarations!.filter((n: ts.Declaration) => !invlidTypes[n.kind])[0],
+                aliasedSymbol.declarations!.filter((n: ts.Declaration) => !invalidTypes[n.kind])[0],
                 this.createSubContext(node, context)
             );
         } else if (typeSymbol.flags & ts.SymbolFlags.TypeParameter) {
@@ -55,14 +56,16 @@ export class TypeReferenceNodeParser implements SubNodeParser {
             return new AnnotatedType(new StringType(), { format: "date-time" }, false);
         } else if (typeSymbol.name === "RegExp") {
             return new AnnotatedType(new StringType(), { format: "regex" }, false);
-        } else if (typeSymbol.declarations) {
-            return this.childNodeParser.createType(
-                typeSymbol.declarations.filter((n: ts.Declaration) => !invlidTypes[n.kind])[0],
-                this.createSubContext(node, context)
-            );
+        } else {
+            if (typeSymbol.declarations) {
+                return this.childNodeParser.createType(
+                    typeSymbol.declarations.filter((n: ts.Declaration) => !invalidTypes[n.kind])[0],
+                    this.createSubContext(node, context)
+                );
+            } else {
+                throw new UnknownSymbolDeclarations(node);
+            }
         }
-
-        return undefined;
     }
 
     protected createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
