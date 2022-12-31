@@ -1,12 +1,12 @@
 name: Build
-on: push
+on: [push, pull_request]
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12, 14, 16, 18]
+        node-version: [14, 16, 18]
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
