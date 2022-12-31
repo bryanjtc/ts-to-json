@@ -28,7 +28,6 @@ export function getAllOfDefinitionReducer(childTypeFormatter: TypeFormatter) {
             let additionalProps: Definition[] = [];
             let additionalTypes: RawTypeName[] = [];
             const addAdditionalProps: (addProps: Definition) => void = (addProps: Definition) => {
-                //@ts-expect-error // TODO: fix this
                 if (addProps !== false) {
                     if (addProps.anyOf) {
                         for (const prop of addProps.anyOf as Definition[]) {

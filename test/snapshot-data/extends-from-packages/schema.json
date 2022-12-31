@@ -104,22 +104,26 @@
                 "targets": {
                     "anyOf": [
                         {
-                            "type": "string"
-                        },
-                        {
-                            "type": "object"
-                        },
-                        {
-                            "type": "HTMLElement"
-                        },
-                        {
-                            "type": "SVGElement"
-                        },
-                        {
-                            "type": "NodeList"
-                        },
-                        {
-                            "type": "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "HTMLElement"
+                                },
+                                {
+                                    "type": "SVGElement"
+                                },
+                                {
+                                    "type": "NodeList"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         {
                             "type": "array",
@@ -444,22 +448,26 @@
                 "targets": {
                     "anyOf": [
                         {
-                            "type": "string"
-                        },
-                        {
-                            "type": "object"
-                        },
-                        {
-                            "type": "HTMLElement"
-                        },
-                        {
-                            "type": "SVGElement"
-                        },
-                        {
-                            "type": "NodeList"
-                        },
-                        {
-                            "type": "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "HTMLElement"
+                                },
+                                {
+                                    "type": "SVGElement"
+                                },
+                                {
+                                    "type": "NodeList"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         {
                             "type": "array",

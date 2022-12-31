@@ -6,19 +6,17 @@
       "type": "string"
     },
     "MyObject": {
-      "additionalProperties": false,
       "examples": [
-        {
-          "nested": "hello"
-        }
+        { "nested": "hello" }
       ],
+      "additionalProperties": false,
       "properties": {
         "nested": {
-          "$ref": "#/definitions/MyNestedObject",
           "examples": [
             "Hello world",
             "This string rocks"
-          ]
+          ],
+          "$ref": "#/definitions/MyNestedObject"
         }
       },
       "required": [

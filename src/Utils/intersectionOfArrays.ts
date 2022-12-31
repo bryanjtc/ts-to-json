@@ -2,10 +2,9 @@ import stringify from "safe-stable-stringify";
 
 export function intersectionOfArrays<T>(a: T[], b: T[]): T[] {
     const output: T[] = [];
-    // @ts-expect-error // TODO: Fix this
     const inA: Set<string> = new Set(a.map((item: T) => stringify(item)));
     for (const value of b) {
-        if (inA.has(stringify(value as unknown as string))) {
+        if (inA.has(stringify(value))) {
             output.push(value);
         }
     }
