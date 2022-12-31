@@ -53,6 +53,7 @@ function assertSchema(
         expect(actual).toEqual(expected);
 
         const validator = new Ajv({
+            strict: false,
             // skip full check if we are not encoding refs
             validateFormats: config.encodeRefs === false ? undefined : true,
         });

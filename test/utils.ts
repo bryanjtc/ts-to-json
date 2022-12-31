@@ -10,7 +10,7 @@ import { createProgram } from "../factory/program";
 import { Config } from "../src/Config";
 import { SchemaGenerator } from "../src/SchemaGenerator";
 
-const validator = new Ajv();
+const validator = new Ajv({ strict: false });
 addFormats(validator);
 
 const basePath = "test/valid-data";

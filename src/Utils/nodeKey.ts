@@ -7,7 +7,7 @@ export function hash(a: unknown): string | number {
         return a;
     }
 
-    const str = typeof a === "string" ? a : stringify(a);
+    const str = typeof a === "string" ? a : (stringify(a) as string);
 
     // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
     if (str.length < 20) {

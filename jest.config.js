@@ -8,4 +8,8 @@ module.exports = {
     transform: {
         ".*": "@swc/jest",
     },
+    snapshotFormat: {
+        escapeString: true,
+        printBasicPrototype: true,
+    },
 };
