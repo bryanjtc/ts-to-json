@@ -1,4 +1,4 @@
-import * as glob from "glob";
+import { sync } from "glob";
 import * as path from "path";
 import ts from "typescript";
 
@@ -59,7 +59,7 @@ function getTsConfig(config: Config) {
 }
 
 export function createProgram(config: Config, oldProgram?: ts.Program): ts.Program {
-    const rootNamesFromPath = config.path ? glob.sync(path.resolve(config.path)) : [];
+    const rootNamesFromPath = config.path ? sync(path.resolve(config.path)) : [];
     const tsconfig = getTsConfig(config);
     const rootNames = rootNamesFromPath.length ? rootNamesFromPath : tsconfig.fileNames;
 
